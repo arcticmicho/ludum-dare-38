@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Animation))]
 public class UIView : MonoBehaviour
 {
     [SerializeField]
@@ -21,7 +22,7 @@ public class UIView : MonoBehaviour
 
     protected virtual void OnInitialize()
     {
-
+        m_animationConfig.Initialize(GetComponent<Animation>());
     }
 
     public void RequestView()
@@ -34,12 +35,17 @@ public class UIView : MonoBehaviour
     {
         gameObject.SetActive(true);
         GetChilds();
-        PlayTransitionAnimation(onAnimationFinish);
+        PlayOpenTransitionAnimation(onAnimationFinish);
+        OnViewOpen();
     }
 
-    private void PlayTransitionAnimation(Action onAnimationFinish)
+    private void PlayOpenTransitionAnimation(Action onAnimationFinish)
     {
-        
+        UIAnimationSync.UIAnimationTask task;
+        if(!m_animationConfig.TryPlayOpenAnimation(out task, onAnimationFinish))
+        {
+            onAnimationFinish();
+        }
     }
 
     private void GetChilds()
@@ -50,6 +56,14 @@ public class UIView : MonoBehaviour
             if(m_childElements[i].ElementParent)
             {
                 m_childElements[i].UIElement.transform.SetParent(m_childElements[i].ElementParent, false);
+            }else
+            {
+                m_childElements[i].UIElement.transform.SetParent(transform, false);
+                m_childElements[i].UIElement.transform.position = Vector3.zero;
+            }
+            if(m_childElements[i].PlayOpenAnimation)
+            {
+                m_childElements[i].UIElement.ElementRequested(this);
             }
             m_currentElements.Add(m_childElements[i].UIElement);
         }
@@ -57,17 +71,35 @@ public class UIView : MonoBehaviour
 
     public void ViewOpened()
     {
-
+        OnViewOpened();
     }    
 
-    public void Close()
+    public void CloseView(Action onAnimationFinish)
     {
-
+        OnViewClose();
+        PlayCloseTransitionAnimation(onAnimationFinish);
+        for (int i = 0; i < m_childElements.Count; i++)
+        {
+            if (m_childElements[i].PlayCloseAnimation)
+            {
+                m_childElements[i].UIElement.PlayCloseAnimation(onAnimationFinish);
+            }
+        }
     }    
 
-    public void ViewClose()
+    public void ViewClosed()
     {
+        gameObject.SetActive(false);
+        OnViewClosed();
+    }
 
+    private void PlayCloseTransitionAnimation(Action onAnimationFinish)
+    {
+        UIAnimationSync.UIAnimationTask task;
+        if (!m_animationConfig.TryPlayCloseAnimation(out task, onAnimationFinish))
+        {
+            onAnimationFinish();
+        }
     }
 
     protected virtual void OnViewClosed()
@@ -94,6 +126,16 @@ public class UIView : MonoBehaviour
     {
 
     }
+
+    public void RequestView(UIView view)
+    {
+        UIPartyManager.Instance.RequestView(view);
+    }
+
+    protected virtual void Update()
+    {
+        m_animationConfig.UpdateAnimationSync(Time.deltaTime);
+    }
 }
 
 [Serializable]
@@ -111,6 +153,20 @@ public class ChildElementDescriptor
     public Transform ElementParent
     {
         get { return m_elementParent; }
+    }
+
+    [SerializeField]
+    private bool m_playOpenAnimation;
+    public bool PlayOpenAnimation
+    {
+        get { return m_playOpenAnimation; }
+    }
+
+    [SerializeField]
+    private bool m_playCloseAnimation;
+    public bool PlayCloseAnimation
+    {
+        get { return m_playCloseAnimation; }
     }
 
     [SerializeField]

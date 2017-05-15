@@ -7,9 +7,9 @@ using System.Collections.Generic;
 public class UIAnimationSync
 {
     [SerializeField]
-    private AnimationClip m_openAnimation;
+    private string m_openAnimation;
     [SerializeField]
-    private AnimationClip m_closeAnimation;
+    private string m_closeAnimation;
 
     private List<UIAnimationTask> m_activeTasks;
 
@@ -17,13 +17,18 @@ public class UIAnimationSync
 
     public Action OnAnimationFinished;
 
-    private bool m_animationPlaying;
+    public bool HasActiveAnimations
+    {
+        get
+        {
+            return m_activeTasks.Count > 0;
+        }
+    }
 
     public void Initialize(Animation anim)
     {
         m_animations = anim;
         m_activeTasks = new List<UIAnimationTask>();
-        m_animationPlaying = false;
     }
 
     public void UpdateAnimationSync(float deltaTime)
@@ -50,14 +55,28 @@ public class UIAnimationSync
         return newTask;
     }
 
-    public UIAnimationTask PlayOpenAnimation(Action callback = null)
+    public bool TryPlayOpenAnimation(out UIAnimationTask task, Action callback = null)
     {
-        return PlayAnimation(m_openAnimation.name, callback);
+        return TryPlayAnimation(m_openAnimation, out task, callback);        
     }
 
-    public UIAnimationTask PlayCloseAnimation(Action callback = null)
+    public bool TryPlayCloseAnimation(out UIAnimationTask task, Action callback = null)
     {
-        return PlayAnimation(m_closeAnimation.name, callback);
+        return TryPlayAnimation(m_closeAnimation, out task, callback);        
+    }
+
+    public bool TryPlayAnimation(string clipName, out UIAnimationTask task, Action callback = null)
+    {
+        UIAnimationTask newTask = PlayAnimation(clipName, callback);
+        if(newTask != null)
+        {
+            task = newTask;
+            return true;
+        }else
+        {
+            task = null;
+            return false;
+        }
     }
 
 
