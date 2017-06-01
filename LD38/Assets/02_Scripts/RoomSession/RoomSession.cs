@@ -18,13 +18,12 @@ public class RoomSession
     {
         m_sessionData = data;
         m_sessionView = view;
-        m_mainCharacter = CharactersManager.Instance.GetSelectedWizard();
-        m_enemy = CharactersManager.Instance.GetEnemy();
     }
 
 	private void StartSession()
     {
-
+        m_mainCharacter = CharactersManager.Instance.GetSelectedWizard();
+        m_enemy = CharactersManager.Instance.GetEnemy();
     }
 
     private void EndSession()
