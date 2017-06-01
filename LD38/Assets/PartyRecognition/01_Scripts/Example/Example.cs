@@ -84,13 +84,13 @@ public class Example : MonoBehaviour
         switch (m_mode)
         {
             case ExampleMode.Recognize:
-                RecognitionResult result = PartyRecognitionManager.instance.Recognize(m_points.ToArray());
+                RecognitionResult result = PartyRecognitionManager.Instance.Recognize(m_points.ToArray());
                 Debug.Log("Result: " + result.Success + "Score: " + result.RecognitionScore + " ScorePercent: "+ result.RecognitionScoreAsPercent + " PatternName: "+ result.PatternName);
                 break;
             case ExampleMode.SavePattern:
-                Vector2[] normalizedPoints = PartyRecognitionManager.instance.NormalizePoints(m_points.ToArray());
+                Vector2[] normalizedPoints = PartyRecognitionManager.Instance.NormalizePoints(m_points.ToArray());
                 PRPatternDefinition newPattern = new PRPatternDefinition(normalizedPoints, m_patternName);
-                PartyRecognitionManager.instance.AddPattern(newPattern);
+                PartyRecognitionManager.Instance.AddPattern(newPattern);
                 break;
         }
 
