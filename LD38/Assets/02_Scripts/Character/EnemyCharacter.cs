@@ -9,19 +9,27 @@ public class EnemyCharacter : ICharacter
     private CharacterTemplate m_characterTemplate;
 
     private CharacterEntity m_entity;
+    public CharacterEntity Entity
+    {
+        get { return m_entity; }
+    }
+
+    private CharacterTemplate m_template;
 
     public EnemyCharacter(CharacterTemplate template)
     {
-
+        SetTemplateData(template);
+        InstantiateCharacterEntity();
     }
 
     private void SetTemplateData(CharacterTemplate template)
     {
+        m_template = template;
         m_characterTemplate = template;
         m_healthPoints = template.HealthPoints;
     }
 
-    public void InstantiateCharacterEntity(bool force)
+    public void InstantiateCharacterEntity(bool force = false)
     {
         if(m_entity == null || force)
         {

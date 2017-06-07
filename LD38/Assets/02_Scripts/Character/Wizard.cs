@@ -9,6 +9,11 @@ public class Wizard : ICharacter
     private float m_healthPoints;
 
     private CharacterEntity m_entity;
+    public CharacterEntity Entity
+    {
+        get { return m_entity; }
+    }
+
     private CharacterTemplate m_template;
 
     private bool m_isDead;
@@ -59,5 +64,23 @@ public class Wizard : ICharacter
         {
             m_isDead = true;
         }
+    }
+
+    public bool TryProcessPattern(Vector2[] patternPoints, out SkillDefinition skillDef)
+    {
+        if(m_skillTree != null)
+        {
+            if(m_skillTree.SearchForPattern(patternPoints, out skillDef))
+            {
+                return true;
+            }
+        }
+        skillDef = null;
+        return false;
+    }
+
+    public void ResetSkillTree()
+    {
+
     }
 }

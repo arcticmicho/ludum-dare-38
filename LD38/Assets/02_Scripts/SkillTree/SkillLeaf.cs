@@ -17,6 +17,15 @@ public class SkillLeaf
     }
 
     private List<SkillLeaf> m_leafConnections;
+    public List<SkillLeaf> LeafConnections
+    {
+        get { return m_leafConnections; }
+    }
+
+    public bool IsEmptyLeaf
+    {
+        get { return m_skill == null; }
+    }
 
     public SkillLeaf(SkillDefinition skillDef, SkillPattern pattern)
     {

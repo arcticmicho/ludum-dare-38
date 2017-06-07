@@ -58,4 +58,40 @@ public class SkillTree
             }
         }
     }
+
+    internal bool SearchForPattern(Vector2[] patternPoints, out SkillDefinition skillDef, bool moveToNext = false)
+    {
+        if(m_current == null)
+        {
+            m_current = m_root;
+        }
+
+        for(int i=0; i<m_current.LeafConnections.Count; i++)
+        {
+            if(!m_current.LeafConnections[i].IsEmptyLeaf)
+            {
+                PRPatternDefinition pattern;
+                if(PartyRecognitionManager.Instance.TryGetPatternById(m_current.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
+                {
+                    RecognitionResult result = PartyRecognitionManager.Instance.SimpleRecognize(patternPoints, pattern);
+                    if (result.Success)
+                    {
+                        if(moveToNext)
+                        {
+                            m_current = m_current.LeafConnections[i];
+                        }
+                        skillDef = m_current.LeafConnections[i].SkillDef;
+                        return true;
+                    }
+                }
+            }            
+        }
+        skillDef = null;
+        return false;
+    }
+
+    private void ResetSearch()
+    {
+        m_current = m_root;
+    }
 }

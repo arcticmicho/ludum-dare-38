@@ -11,6 +11,8 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
         get { return m_patternDefinitionSet; }
     }
 
+    private Dictionary<string, PRPatternDefinition> m_patternsDefinitionsDict;
+
     [SerializeField]
     private Texture2D[] m_patternTextures;
     public Texture2D[] PatternTextures
@@ -44,6 +46,7 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
     {
         base.Init();
         m_patternDefinitionSet = new List<PRPatternDefinition>();
+        m_patternsDefinitionsDict = new Dictionary<string, PRPatternDefinition>();
         LoadDefinitionSet();
     }
 
@@ -55,12 +58,19 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
         {
             PRPatternDefinition newPattern = PRPatternDefinition.Deserialize(pattern);
             m_patternDefinitionSet.Add(newPattern);
+            m_patternsDefinitionsDict.Add(newPattern.PatternName, newPattern);
         }
     }
 
     public void AddPattern(PRPatternDefinition newDef)
     {
         m_patternDefinitionSet.Add(newDef);
+        m_patternsDefinitionsDict.Add(newDef.PatternName, newDef);
+    }
+
+    public bool TryGetPatternById(string patternId, out PRPatternDefinition pDef)
+    {
+        return m_patternsDefinitionsDict.TryGetValue(patternId, out pDef);
     }
 
     /// <summary>
@@ -80,14 +90,32 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
         RecognitionResult result = new RecognitionResult(false,float.MaxValue);
         for(int i=0; i< m_patternDefinitionSet.Count; i++)
         {
-            RecognitionProcess process = new RecognitionProcess(pattern, m_patternDefinitionSet[i], strategy, m_successThresholdPercent);
-            RecognitionResult newResult = process.Recognize();
-            if(newResult.Success && result.RecognitionScore > newResult.RecognitionScore)
+            RecognitionResult newResult = SimpleRecognize(pattern, m_patternDefinitionSet[i], strategy);
+            if (newResult.Success && result.RecognitionScore > newResult.RecognitionScore)
             {
                 result = newResult;
             }
         }
         return result;
+    }
+
+
+    public RecognitionResult SimpleRecognize(PRPatternDefinition pattern1, PRPatternDefinition pattern2, IRecognitionHeuristicStrategy strategy)
+    {
+        RecognitionProcess process = new RecognitionProcess(pattern1, pattern2, strategy, m_successThresholdPercent);
+        return process.Recognize();
+    }
+
+    public RecognitionResult SimpleRecognize(Vector2[] points, PRPatternDefinition pattern2)
+    {
+        return SimpleRecognize(points, pattern2, new Greedy5RecognitionStrategy(0.5f, true));
+    }
+
+    public RecognitionResult SimpleRecognize(Vector2[] points, PRPatternDefinition pattern2, IRecognitionHeuristicStrategy strategy)
+    {
+        Vector2[] normalizedPoints = NormalizePoints(points, m_cloundPointsSampling);
+        PRPatternDefinition pattern = new PRPatternDefinition(normalizedPoints);
+        return SimpleRecognize(pattern, pattern2, strategy);
     }
 
     public Vector2[] NormalizePoints(Vector2[] points)
