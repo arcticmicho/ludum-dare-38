@@ -39,6 +39,7 @@ public class Wizard : ICharacter
         m_template = template;
         m_healthPoints = template.HealthPoints;
         m_skillTree = new SkillTree(template.Skills);
+        m_skillTree.InitializeSkillTree(template.Skills);
     }
 
     public float HealthPoints

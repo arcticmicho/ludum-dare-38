@@ -32,7 +32,15 @@ public class SkillTree
             {
                 if(!m_root.TryGetLeaf(skillDefinition.SkillPatterns[i], out currentLeaf))
                 {
-                    m_root.AddLeaf(new SkillLeaf(null, skillDefinition.SkillPatterns[i]));
+                    if (skillDefinition.SkillPatterns.Length - 1 == i)
+                    {
+                        m_root.AddLeaf(new SkillLeaf(skillDefinition, skillDefinition.SkillPatterns[i]));
+                    }
+                    else
+                    {
+                        m_root.AddLeaf(new SkillLeaf(null, skillDefinition.SkillPatterns[i]));
+                    }
+                        
                 }
             }else
             {

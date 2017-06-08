@@ -18,7 +18,7 @@ public class GameplayState<Actor, Data>
 
     public virtual GameplayTransition EvaluateTransition()
     {
-        return null;
+        return GameplayTransition.None;
     }
 
     public virtual void UpdateState()

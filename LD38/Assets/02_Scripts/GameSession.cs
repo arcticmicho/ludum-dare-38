@@ -27,6 +27,7 @@ public class GameSession
         InstantiateCharacters();        
 
         m_gameplayStateMachine = new GameplayPSM(m_mainCharacter);
+        m_gameplayStateMachine.StartGameplayStateMachine();
     }
 
     private void InstantiateCharacters()

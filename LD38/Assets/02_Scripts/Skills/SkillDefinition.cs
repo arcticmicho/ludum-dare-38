@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class SkillDefinition : ScriptableObject
 {
+    [SerializeField]
+    private string m_skillName;
+    public string SkillName
+    {
+        get { return m_skillName; }
+    }
 
     [SerializeField]
     private SkillPattern[] m_skillPatterns;

@@ -16,6 +16,11 @@ public class GameplayPSM
         m_states = new Dictionary<Type, GameplayState<Wizard, TransitionData>>();
     }
 
+    public void StartGameplayStateMachine()
+    {
+        ChangeState(new GameplayTransition(typeof(IdleGameplayState), false, null));
+    }
+
     public void UpdatePSM()
     {
         if(m_currentState != null)
