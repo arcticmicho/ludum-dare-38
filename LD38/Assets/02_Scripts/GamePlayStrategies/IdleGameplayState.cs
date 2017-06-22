@@ -14,6 +14,7 @@ public class IdleGameplayState : GameplayState<Wizard, TransitionData>
         m_transitionToActiveState = false;
         InputManager.Instance.OnDragEvent += OnDrag;
         Debug.Log("Entering Idle Gameplay State");
+        UIPartyManager.Instance.RequestView<IdleView>();
     }
 
     public override void UpdateState()

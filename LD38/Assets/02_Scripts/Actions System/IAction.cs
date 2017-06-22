@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IAction
 {
-    DateTime ActionTime { get; set; }
+    DateTime ActionTime { get; }
     void StartAction();
     void EndAction();
     bool ProcessAction(float deltaTime);

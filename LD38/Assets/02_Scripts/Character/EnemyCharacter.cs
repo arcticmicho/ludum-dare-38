@@ -40,7 +40,20 @@ public class EnemyCharacter : ICharacter
 
     public void ApplyDamage(float damage)
     {
+        m_healthPoints -= damage;
+        if(m_healthPoints <= 0f)
+        {
+            KillCharacter();
+        }
+        m_entity.CharacterCanvas.AddFlotingText("-" + damage);
+        m_entity.PlayHitAnimation();
+    }
 
+    public void KillCharacter()
+    {
+        m_isDead = true;
+        m_entity.PlayDeadAnimation();
+        GameManager.Instance.ActiveGameSession.NotifyEnemyDeath(this);
     }
 
     public float HealthPoints

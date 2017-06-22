@@ -19,6 +19,7 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
 
     public override void OnEnter(TransitionData data)
     {
+        m_skillToCast = null;
         m_mainCamera = Camera.main;
         m_trailRendererDepth = new Vector3(0f, 0f, m_mainCamera.transform.position.z + 2);
         base.OnEnter(data);
@@ -43,6 +44,11 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
     {
         if(m_finishActiveGameplay)
         {
+            if(m_skillToCast != null)
+            {
+                TransitionData data = new TransitionData(m_skillToCast);
+                return new GameplayTransition(typeof(CastingGameplayState), false, data);
+            }
             return new GameplayTransition(typeof(IdleGameplayState), false, null);
         }
         return GameplayTransition.None;
@@ -104,6 +110,7 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
             Debug.Log("Ability Found!: " + newDef.SkillName);
             m_skillToCast = newDef;
             m_character.Entity.PlayCastAnimation();
+            m_character.Entity.CharacterCanvas.ShowBubbleText(newDef.SkillName + "!!", 3);
         }
     }
 

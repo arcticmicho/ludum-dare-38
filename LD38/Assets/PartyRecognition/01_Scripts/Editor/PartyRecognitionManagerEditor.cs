@@ -54,9 +54,9 @@ public class PartyRecognitionManagerEditor : Editor
     private PRPatternDefinition GeneratePatternFromSprite(Texture2D tex)
     {
         float halfWidth = tex.width / 2f;
-        float offSetWidth = 4f;
+        float offSetWidth = 2f;
         float halftHeight = tex.height / 2f;
-        float offSetHeight = 4f;
+        float offSetHeight = 2f;
         List<Vector2> points = new List<Vector2>();
         for(int i = 0; i<tex.width; i++)
         {
@@ -70,8 +70,34 @@ public class PartyRecognitionManagerEditor : Editor
                 }
             }
         }
-        Vector2[] arrayPoints = m_instance.NormalizePoints(points.ToArray());
+        Vector2[] arrayPoints = OrderPoints(points);
+        arrayPoints = m_instance.NormalizePoints(arrayPoints);
         PRPatternDefinition def = new PRPatternDefinition(arrayPoints, tex.name);
         return def;
+    }
+
+    public Vector2[] OrderPoints(List<Vector2> points)
+    {
+        List<Vector2> pointsSet = new List<Vector2>(points);
+        List<Vector2> orderedPoints = new List<Vector2>();
+
+        Vector2 currentPoint = pointsSet[0];
+        pointsSet.Remove(currentPoint);
+        orderedPoints.Add(currentPoint);
+        while(pointsSet.Count > 0)
+        {
+            Vector2 nearestPoint = new Vector2(float.MaxValue, float.MaxValue);
+            foreach(Vector2 point in pointsSet)
+            {
+                if(MathUtils.EuclideanDistance(point, currentPoint) < MathUtils.EuclideanDistance(nearestPoint, currentPoint))
+                {
+                    nearestPoint = point;
+                }
+            }
+            orderedPoints.Add(nearestPoint);
+            currentPoint = nearestPoint;
+            pointsSet.Remove(nearestPoint);
+        }
+        return orderedPoints.ToArray();
     }
 }

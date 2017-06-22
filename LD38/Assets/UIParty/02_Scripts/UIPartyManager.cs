@@ -109,13 +109,13 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
         }
     }
 
-    private UIView GetView<T>() where T : UIView
+    public T GetView<T>() where T : UIView
     {
         for(int i=0; i<m_views.Count; i++)
         {
             if(m_views[i] is T)
             {
-                return m_views[i];
+                return m_views[i] as T;
             }
         }
         return null;

@@ -67,11 +67,16 @@ public class Wizard : ICharacter
         }
     }
 
+    public void KillCharacter()
+    {
+
+    }
+
     public bool TryProcessPattern(Vector2[] patternPoints, out SkillDefinition skillDef)
     {
         if(m_skillTree != null)
         {
-            if(m_skillTree.SearchForPattern(patternPoints, out skillDef))
+            if(m_skillTree.SearchForPattern(patternPoints, out skillDef, true))
             {
                 return true;
             }
@@ -82,6 +87,6 @@ public class Wizard : ICharacter
 
     public void ResetSkillTree()
     {
-
+        m_skillTree.ResetSearch();
     }
 }

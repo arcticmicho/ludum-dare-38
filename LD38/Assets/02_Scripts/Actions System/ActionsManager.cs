@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionsManager : MonoSingleton<ActionsManager>
+public class ActionsManager
 {
     private PriorityQueue<float,IAction> m_actions;
     private List<IAction> m_activeActions;
 
-	// Use this for initialization
-	void Start ()
+	public void Initialize()
     {
         m_actions = new PriorityQueue<float,IAction>(new MinComparer());
         m_activeActions = new List<IAction>();
 	}
 	
-	// Update is called once per frame
-	void Update ()
+	public void UpdateActions()
     {
         //One action per frame?
-		/*while*/if(m_actions.Peek().Value != null & m_actions.Peek().Value.ActionTime <= TimeManager.Instance.CurrentTime)
+		/*while*/if(!m_actions.IsEmpty && m_actions.Peek().Value.ActionTime <= TimeManager.Instance.CurrentTime)
         {
             IAction newAction = m_actions.Dequeue().Value;
             newAction.StartAction();

@@ -5,6 +5,7 @@ using UnityEngine;
 public interface ICharacter
 {
     void ApplyDamage(float damage);
+    void KillCharacter();
 
     float HealthPoints
     {
@@ -12,6 +13,11 @@ public interface ICharacter
     }
 
     bool IsDeath
+    {
+        get;
+    }
+
+    CharacterEntity Entity
     {
         get;
     }
