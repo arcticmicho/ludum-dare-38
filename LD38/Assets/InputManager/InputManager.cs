@@ -12,6 +12,12 @@ namespace GameModules
         End,
     }
 
+    public enum HoldStatus
+    {
+        Begin,
+        End,
+    }
+
     [System.Flags]
     public enum SwipeDirection
     {
@@ -29,29 +35,46 @@ namespace GameModules
             public float beginTime;
             public Vector3 beginPosition;
             public bool valid = true;
+            public bool holdProcessed = false;
         }
 
         [Header("Touch Setup")]
         [SerializeField]
-        private float _longTapMinTime = 0.5f;
-        [SerializeField]
-        private float _longTapMaxTime = 1.0f;
+        private float _tapMaxTime = 0.5f;
         [SerializeField]
         private float _swipeMaxTime = 0.4f; 
         [SerializeField]
         private float _dragDeadZone = 15;
 
         [SerializeField]
+        private float _swipeDeadZone = 15;
+
+        [SerializeField]
+        private float _dragAngleTreshold = 25;
+
+        [SerializeField]
+        private float _holdTime = 2.0f;
+
+        [SerializeField]
         private bool _mouseSimulation = true;
 
-        public delegate void OnTapDownDelegate(Vector3 position);
-        public event OnTapDownDelegate OnTapDownEvent;
+        [SerializeField]
+        private bool _continuousDragDetection = true;
 
-        public delegate void OnTapUpDelegate(Vector3 position);
-        public event OnTapUpDelegate OnTapUpEvent;
+        public delegate void OnTouchDownDelegate(Vector3 position);
+        public event OnTouchDownDelegate OnTouchDownEvent;
+
+        public delegate void OnTouchUpDelegate(Vector3 position);
+        public event OnTouchUpDelegate OnTouchUpEvent;
+
+        public delegate void OnTapDelegate(Vector3 position);
+        public event OnTapDelegate OnTapEvent;
 
         public delegate void OnLongTapDelegate(Vector3 position);
         public event OnLongTapDelegate OnLongTapEvent;
+
+        public delegate void OnHoldDelegate(HoldStatus status, Vector3 position);
+        public event OnHoldDelegate OnHoldEvent;
 
         public delegate void OnDragDelegate(DragStatus status, Vector3 position, Vector3 last);
         public event OnDragDelegate OnDragEvent;
@@ -68,36 +91,6 @@ namespace GameModules
         private Vector3 _lastMousePosition;
 
         private ObjectPool<TouchInfo> _infoPool = new ObjectPool<TouchInfo>(16);
-
-        #region Get/Set
-
-        public float LongTapMinTime
-        {
-            get { return _longTapMinTime; }
-        }
-
-        public float LongTapMaxTime
-        {
-            get { return _longTapMaxTime; }
-        }
-
-        public float SwipeMaxTime
-        {
-            get { return _swipeMaxTime; }
-            set { _swipeMaxTime = value; }
-        }
-
-        public float DragDeadZone
-        {
-            get { return _dragDeadZone; }
-            set { _dragDeadZone = value; }
-        }
-        #endregion
-
-        //protected override bool DestroyOnLoad()
-        //{
-        //    return false;
-        //}
 
         void Update()
         {
@@ -171,19 +164,35 @@ namespace GameModules
             #endif
         }
 
-        private void ProcessTapDown(Vector3 touchPosition)
+        private void ProcessTouchDown(Vector3 touchPosition)
         {
-            if (OnTapDownEvent != null)
+            if (OnTouchDownEvent != null)
             {
-                OnTapDownEvent(touchPosition);
+                OnTouchDownEvent(touchPosition);
             }
         }
 
-        private void ProcessTapUP(Vector3 touchPosition)
+        private void ProcessTouchUp(Vector3 touchPosition)
         {
-            if (OnTapDownEvent != null)
+            if (OnTouchUpEvent != null)
             {
-                OnTapUpEvent(touchPosition);
+                OnTouchUpEvent(touchPosition);
+            }
+        }
+
+        private void ProcessTap(Vector3 touchPosition)
+        {
+            if (OnTapEvent != null)
+            {
+                OnTapEvent(touchPosition);
+            }
+        }
+
+        private void ProcessOnHold(HoldStatus status, Vector3 touchPosition)
+        {
+            if (OnHoldEvent != null)
+            {
+                OnHoldEvent(status, touchPosition);
             }
         }
 
@@ -228,10 +237,11 @@ namespace GameModules
                     info.beginTime = Time.time;
                     info.beginPosition = touchPosition;
                     info.valid = true;
+                    info.holdProcessed = false;
 
                     if (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject())
                     {
-                        ProcessTapDown(touchPosition);
+                        ProcessTouchDown(touchPosition);
                     }
                     else
                     {
@@ -244,7 +254,7 @@ namespace GameModules
 
                     if (_currentDragTouch == null)
                     {
-                        if (Vector3.Distance(touchPosition, info.beginPosition) > DragDeadZone)
+                        if (Vector3.Distance(touchPosition, info.beginPosition) > _dragDeadZone)
                         {
                             _currentDragTouch = info;
                             if (info.valid)
@@ -252,12 +262,27 @@ namespace GameModules
                                 ProcessDrag(DragStatus.Begin, touchPosition, delta);
                             }
                         }
+                        else
+                        {
+                            if (info.valid)
+                            {
+                                float elapsed = Time.time - info.beginTime;
+                                if (!info.holdProcessed && elapsed > _holdTime)
+                                {
+                                    ProcessOnHold(HoldStatus.Begin, touchPosition);
+                                    info.holdProcessed = true;
+                                }
+                            }
+                        }
                     }
                     else if (_currentDragTouch == info)
                     {
                         if (info.valid)
                         {
-                            ProcessDrag(DragStatus.Moving, touchPosition, delta);
+                            if (_continuousDragDetection || delta.magnitude > 0.1f)
+                            {
+                                ProcessDrag(DragStatus.Moving, touchPosition, delta);
+                            }
                         }
                     }
 
@@ -273,36 +298,51 @@ namespace GameModules
                         _currentDragTouch = null;
                     }
 
-                    if (Vector3.Distance(touchPosition, info.beginPosition) > DragDeadZone)
+                    if (Vector3.Distance(touchPosition, info.beginPosition) > _swipeDeadZone)
                     {
-                        if ((Time.time - info.beginTime) < SwipeMaxTime)
+                        if ((Time.time - info.beginTime) < _swipeMaxTime)
                         {
                             if (OnSwipeEvent != null)
                             {
                                 SwipeDirection direction = SwipeDirection.None;
-                                if (Mathf.Abs(touchPosition.x - info.beginPosition.x) > _dragDeadZone)
-                                {
-                                    if (touchPosition.x - info.beginPosition.x < 0)
-                                    {
-                                        direction |= SwipeDirection.Left;
-                                    }
-                                    else
-                                    {
-                                        direction |= SwipeDirection.Right;
-                                    }
 
-                                }
-                                if (Mathf.Abs(touchPosition.y - info.beginPosition.y) > _dragDeadZone)
+                                Vector3 to = touchPosition - info.beginPosition;
+                                float angle = Vector2.Angle(Vector2.right, to);
+                                angle = Mathf.Sign(Vector3.Cross(Vector2.right, to).z) < 0 ? (360 - angle) % 360 : angle;
+
+                                if (IsAngleBetween(angle, 360 - _dragAngleTreshold, _dragAngleTreshold))
                                 {
-                                    if (touchPosition.y - info.beginPosition.y < 0)
-                                    {
-                                        direction |= SwipeDirection.Down;
-                                    }
-                                    else
-                                    {
-                                        direction |= SwipeDirection.Up;
-                                    }
+                                    direction = SwipeDirection.Right;
                                 }
+                                else if(IsAngleBetween(angle, _dragAngleTreshold, 90 - _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Right | SwipeDirection.Up;
+                                }
+                                else if (IsAngleBetween(angle, 90 - _dragAngleTreshold, 90 + _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Up;
+                                }
+                                else if (IsAngleBetween(angle, 90 + _dragAngleTreshold, 180 - _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Up | SwipeDirection.Left;
+                                }
+                                else if (IsAngleBetween(angle, 180 - _dragAngleTreshold, 180 + _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Left;
+                                }
+                                else if (IsAngleBetween(angle, 180 + _dragAngleTreshold, 270 - _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Left | SwipeDirection.Down;
+                                }
+                                else if (IsAngleBetween(angle, 270 - _dragAngleTreshold, 270 + _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Down;
+                                }
+                                else if (IsAngleBetween(angle, 270 + _dragAngleTreshold, 360 - _dragAngleTreshold))
+                                {
+                                    direction = SwipeDirection.Down | SwipeDirection.Right;
+                                }
+                                
 
                                 if (info.valid && direction != SwipeDirection.None)
                                 {
@@ -316,30 +356,71 @@ namespace GameModules
                         if (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject())
                         {
                             float elapsed = Time.time - info.beginTime;
-                            if (elapsed < _longTapMaxTime)
+                            if (elapsed < _tapMaxTime)
                             {
-                                ProcessTapUP(touchPosition);
+                                ProcessTap(touchPosition);
                             }
-                            else if (elapsed > _longTapMinTime)
+                            else
                             {
                                 ProcessLongTap(touchPosition);
                             }
                         }
                     }
+
+                    if (info.valid)
+                    {
+                        if(info.holdProcessed)
+                        {
+                            ProcessOnHold(HoldStatus.End,touchPosition);
+                        }
+                        ProcessTouchUp(touchPosition);
+                    }
+
                     _infoPool.ReleaseInstance(info);
                     _touchInfoList.Remove(touchFingerId);
+
                     break;
                 case TouchPhase.Canceled:
                     if (_currentDragTouch != null && _currentDragTouch == info)
                     {
-                        ProcessDrag(DragStatus.End, touchPosition, delta);
+                        if(info.valid)
+                        {
+                            ProcessDrag(DragStatus.End, touchPosition, delta);
+                        }
                         _currentDragTouch = null;
                     }
-                    _touchInfoList.Remove(touchFingerId);
+
+                    if(info.valid)
+                    {
+                        if (info.holdProcessed)
+                        {
+                            ProcessOnHold(HoldStatus.End, touchPosition);
+                        }
+                    }
 
                     _infoPool.ReleaseInstance(info);
+                    _touchInfoList.Remove(touchFingerId);
                     break;
             }
+        }
+
+        /// <summary>
+        /// Check if the given angle is between 2 angles. 360 degress check.
+        /// </summary>
+        private bool IsAngleBetween(float angle, float minAngle, float maxAngle)
+        {
+            if(minAngle > maxAngle)
+            {
+                if(angle > minAngle)
+                {
+                    return true;
+                }
+                else if(angle < maxAngle)
+                {
+                    return true;
+                }
+            }
+            return angle > minAngle && angle < maxAngle;
         }
     }
 }

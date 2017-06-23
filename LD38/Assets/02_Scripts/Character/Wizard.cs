@@ -6,6 +6,11 @@ using UnityEngine;
 public class Wizard : ICharacter
 {
     private SkillTree m_skillTree;
+    public SkillTree SkillTree
+    {
+        get { return m_skillTree; }
+    }
+
     private float m_healthPoints;
 
     private CharacterEntity m_entity;

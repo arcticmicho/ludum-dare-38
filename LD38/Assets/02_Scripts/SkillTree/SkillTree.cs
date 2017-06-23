@@ -105,4 +105,23 @@ public class SkillTree
     {
         m_current = m_root;
     }
+
+    public List<SkillDefinition> GetAllSkillDefinitionsFromTree()
+    {
+        List<SkillDefinition> skills = new List<SkillDefinition>();
+        SearchForSkills(m_root, skills);
+        return skills;
+    }
+
+    private void SearchForSkills(SkillLeaf leaf, List<SkillDefinition> skills)
+    {
+        for(int i=0, count=leaf.LeafConnections.Count; i<count; i++)
+        {
+            if(!leaf.LeafConnections[i].IsEmptyLeaf)
+            {
+                skills.Add(leaf.LeafConnections[i].SkillDef);
+            }
+            SearchForSkills(leaf.LeafConnections[i], skills);
+        }
+    }
 }

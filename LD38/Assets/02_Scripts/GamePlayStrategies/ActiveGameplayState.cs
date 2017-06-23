@@ -37,6 +37,8 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
             m_currentTrailRenderer = EffectsManager.Instance.RequestTrailRenderer();
             SetTrailPosition(data.InitialDrag);
         }
+
+        UIPartyManager.Instance.RequestView<DetectingView>();
         Debug.Log("Entering Active Gameplay State");
     }
 

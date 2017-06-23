@@ -34,6 +34,11 @@ public class CharacterEntity : MonoBehaviour
         PlayAnimationWithTrigger("Hit");
     }
 
+    public void PlayIdleAnimation()
+    {
+        PlayAnimationWithTrigger("Idle");
+    }
+
     public void PlayAnimationWithTrigger(string trigger)
     {
         if(m_animator != null)

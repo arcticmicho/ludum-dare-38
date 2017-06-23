@@ -18,5 +18,12 @@ public class SkillPattern : ScriptableObject
     public string PatternRecognitionId
     {
         get { return m_patternRecognitionId; }
-    }	
+    }
+
+    [SerializeField]
+    private Sprite m_skillPatternImage;
+    public Sprite SkillPatternImage
+    {
+        get { return m_skillPatternImage; }
+    }
 }
