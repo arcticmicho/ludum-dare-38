@@ -28,7 +28,7 @@ public class PartyRecognitionManagerEditor : Editor
 
     private void ReadSprites()
     {
-        StreamWriter stream = File.CreateText(m_instance.PathToFile);
+        StreamWriter stream = File.CreateText(AssetDatabase.GetAssetPath(m_instance.TextAsset));
         List<Dictionary<string, object>> definitions = new List<Dictionary<string, object>>();
         for (int i=0; i<m_instance.PatternTextures.Length; i++)
         {
@@ -41,7 +41,7 @@ public class PartyRecognitionManagerEditor : Editor
 
     private void WriteCurrentPatternsToJsonFile()
     {
-        StreamWriter stream = File.CreateText(m_instance.PathToFile);
+        StreamWriter stream = File.CreateText(AssetDatabase.GetAssetPath(m_instance.TextAsset));
         List<Dictionary<string, object>> definitions = new List<Dictionary<string, object>>();
         foreach(PRPatternDefinition pattern in m_instance.PatternDefinitionSet)
         {

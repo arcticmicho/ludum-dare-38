@@ -28,6 +28,13 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
     }
 
     [SerializeField]
+    private TextAsset m_textAsset;
+    public TextAsset TextAsset
+    {
+        get { return m_textAsset; }
+    }
+
+    [SerializeField]
     private int m_cloundPointsSampling = 32;
     public int CloudPointsSamplig
     {
@@ -51,8 +58,13 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
     }
 
     private void LoadDefinitionSet()
-    {        
-        string json = File.ReadAllText(m_pathToFile);
+    {
+#if UNITY_ANDROID
+        string json = m_textAsset.text;
+#else
+        string json = File.ReadAllText(Application.dataPath+"/"+m_pathToFile);
+#endif
+        //string json = File.ReadAllText(Application.dataPath+"/"+m_pathToFile);
         List<object> definitions = (List<object>) MiniJSON.Json.Deserialize(json);
         foreach(Dictionary<string,object> pattern in definitions)
         {
