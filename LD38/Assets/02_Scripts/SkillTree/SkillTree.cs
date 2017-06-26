@@ -74,28 +74,35 @@ public class SkillTree
             m_current = m_root;
         }
 
+        SkillLeaf searchLeaf = m_current;
+        SkillDefinition selectedSkillDef = null;
         RecognitionResult lastResult = new RecognitionResult(false, 1);
 
-        for(int i=0; i<m_current.LeafConnections.Count; i++)
+        for(int i=0; i< searchLeaf.LeafConnections.Count; i++)
         {
-            if(!m_current.LeafConnections[i].IsEmptyLeaf)
+            if(!searchLeaf.LeafConnections[i].IsEmptyLeaf)
             {
                 PRPatternDefinition pattern;
-                if(PartyRecognitionManager.Instance.TryGetPatternById(m_current.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
+                if(PartyRecognitionManager.Instance.TryGetPatternById(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
                 {
                     RecognitionResult result = PartyRecognitionManager.Instance.SimpleRecognize(patternPoints, pattern);
                     if (result.Success && result.RecognitionScore < lastResult.RecognitionScore)
                     {
                         lastResult = result;
-                        skillDef = m_current.LeafConnections[i].SkillDef;
+                        selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
                         if (moveToNext)
                         {
-                            m_current = m_current.LeafConnections[i];
+                            m_current = searchLeaf.LeafConnections[i];
                         }                        
-                        return true;
                     }
                 }
             }            
+        }
+
+        if(selectedSkillDef != null)
+        {
+            skillDef = selectedSkillDef;
+            return true;
         }
         skillDef = null;
         return false;

@@ -6,6 +6,8 @@ using System;
 
 public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
 {
+    private const float k_maxWaitingPatternTime = 2.5f;
+
     private bool m_detectingPattern;
     private float m_detectingTime;
     private bool m_finishActiveGameplay;
@@ -14,6 +16,8 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
 
     private Camera m_mainCamera;
     private Vector3 m_trailRendererDepth;
+
+    private DetectingView m_view;
 
     private List<Vector3> m_dragPositions = new List<Vector3>();
 
@@ -39,6 +43,9 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
         }
 
         UIPartyManager.Instance.RequestView<DetectingView>();
+        m_view = UIPartyManager.Instance.GetView<DetectingView>();
+        m_view.SetTimerValue(1f);
+
         Debug.Log("Entering Active Gameplay State");
     }
 
@@ -61,7 +68,8 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
         if(!m_detectingPattern)
         {
             m_detectingTime += TimeManager.Instance.DeltaTime;
-            if(m_detectingTime >= 2f)
+            m_view.SetTimerValue((k_maxWaitingPatternTime - m_detectingTime) / k_maxWaitingPatternTime);
+            if(m_detectingTime >= k_maxWaitingPatternTime)
             {
                 m_finishActiveGameplay = true;
             }
@@ -84,7 +92,6 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
                 m_detectingPattern = true;
                 m_dragPositions.Clear();
                 m_dragPositions.Add(position);
-                m_detectingTime = 0;
                 break;
             case DragStatus.Moving:
                 m_dragPositions.Add(position);
@@ -93,7 +100,10 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
             case DragStatus.End:
                 m_detectingPattern = false;
                 m_currentTrailRenderer = null;
-                ProcessPattern();
+                if(ProcessPattern())
+                {
+                    m_detectingTime = 0;
+                }
                 break;
         }
     }
@@ -104,7 +114,7 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
         m_currentTrailRenderer.transform.position = worldPosition;
     }
 
-    private void ProcessPattern()
+    private bool ProcessPattern()
     {
         SkillDefinition newDef;
         if(m_character.TryProcessPattern(ConvertList(m_dragPositions), out newDef))
@@ -113,7 +123,9 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
             m_skillToCast = newDef;
             m_character.Entity.PlayCastAnimation();
             m_character.Entity.CharacterCanvas.ShowBubbleText(newDef.SkillName + "!!", 3);
+            return true;
         }
+        return false;
     }
 
     private Vector2[] ConvertList(List<Vector3> points)
