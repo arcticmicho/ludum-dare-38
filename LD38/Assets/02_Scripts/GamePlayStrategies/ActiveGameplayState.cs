@@ -65,15 +65,15 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
 
     public override void UpdateState()
     {
-        if(!m_detectingPattern)
-        {
+        //if(!m_detectingPattern)
+        //{
             m_detectingTime += TimeManager.Instance.DeltaTime;
             m_view.SetTimerValue((k_maxWaitingPatternTime - m_detectingTime) / k_maxWaitingPatternTime);
             if(m_detectingTime >= k_maxWaitingPatternTime)
             {
                 m_finishActiveGameplay = true;
             }
-        }
+        //}
     }
 
     public override void OnExtit()
