@@ -34,4 +34,10 @@ public class Wizard : Character
     {
         m_skillTree.ResetSearch();
     }
+
+    public override void KillCharacter()
+    {
+        base.KillCharacter();
+        GameManager.Instance.ActiveGameSession.NotifyMainCharacterDeath(this);
+    }
 }

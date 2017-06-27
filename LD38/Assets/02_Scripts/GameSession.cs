@@ -7,7 +7,7 @@ public class GameSession
 {
     private bool m_sessionFinished;
 
-    private GameplayPSM m_mainCharacterStateMachine;
+    private GenericStateMachine<Wizard,TransitionData> m_mainCharacterStateMachine;
 
     private RoomSessionData m_sessionData;
     private RoomSessionView m_sessionView;
@@ -35,7 +35,16 @@ public class GameSession
         get { return m_actions; }
     }
 
+    public Character MainCharacter
+    {
+        get
+        {
+            return m_mainCharacter;
+        }
+    }
+
     private float m_timeSession;
+    private bool m_gameOver;
 
     public GameSession(RoomSessionData data)
     {
@@ -45,12 +54,13 @@ public class GameSession
 
 	public void StartSession()
     {
+        m_gameOver = false;
         m_actions.Initialize();
         InstantiateRoomView();
         InstantiateCharacter();        
 
-        m_mainCharacterStateMachine = new GameplayPSM(m_mainCharacter);
-        m_mainCharacterStateMachine.StartGameplayStateMachine();
+        m_mainCharacterStateMachine = new GenericStateMachine<Wizard, TransitionData>(m_mainCharacter);
+        m_mainCharacterStateMachine.StartGameplayStateMachine<IdleGameplayState>();
 
         GenerateSpawnEnemyAction();
 
@@ -88,14 +98,19 @@ public class GameSession
 
     public bool ProcessSession(float deltaTime)
     {
-        m_mainCharacterStateMachine.UpdatePSM();
+        m_mainCharacterStateMachine.UpdateSM();
         m_actions.UpdateActions();
         if(m_currentTarget == null)
         {
             FindNewTarget();
         }
 
-        if(m_defeatedEnemies >= m_totalEnemies)
+        for (int i = 0, count = m_enemies.Count; i < count; i++)
+        {
+            m_enemies[i].UpdateEnemy();
+        }
+
+        if (m_defeatedEnemies >= m_totalEnemies || m_gameOver)
         {
             return true;
         }
@@ -128,15 +143,25 @@ public class GameSession
         }
     }
 
+    public void NotifyMainCharacterDeath(Wizard mainCharacter)
+    {
+        //lets check if its true
+        if(m_mainCharacter == mainCharacter)
+        {
+            m_gameOver = true;
+        }
+    }
+
     public void SpawnEnemy(CharacterTemplate enemyTemplate)
     {
         BaseRoomPoint spawnPoint = m_sessionView.GetRandomAvailableEnemyPoint();
 
         EnemyCharacter enemy = CharactersManager.Instance.GetEnemy();
         spawnPoint.AssignCharacter(enemy);
-        enemy.Entity.TranslateEntity(spawnPoint.transform.position);
+        enemy.Entity.TranslateEntity(m_sessionView.GetNearestSpawnPoint(spawnPoint.transform.position));
         enemy.Entity.SetDirection(spawnPoint.Direction);
         m_enemies.Add(enemy);
+        enemy.EnemySpawned();
     }
 }
 

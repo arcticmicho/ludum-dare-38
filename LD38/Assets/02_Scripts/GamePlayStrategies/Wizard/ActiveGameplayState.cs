@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
+public class ActiveGameplayState : GenericState<Wizard, TransitionData>
 {
     private const float k_maxWaitingPatternTime = 2.5f;
 
@@ -49,18 +49,18 @@ public class ActiveGameplayState : GameplayState<Wizard, TransitionData>
         Debug.Log("Entering Active Gameplay State");
     }
 
-    public override GameplayTransition EvaluateTransition()
+    public override StateTransition<TransitionData> EvaluateTransition()
     {
         if(m_finishActiveGameplay)
         {
             if(m_skillToCast != null)
             {
                 TransitionData data = new TransitionData(m_skillToCast);
-                return new GameplayTransition(typeof(CastingGameplayState), false, data);
+                return new StateTransition<TransitionData>(typeof(CastingGameplayState), false, data);
             }
-            return new GameplayTransition(typeof(IdleGameplayState), false, null);
+            return new StateTransition<TransitionData>(typeof(IdleGameplayState), false, null);
         }
-        return GameplayTransition.None;
+        return StateTransition<TransitionData>.None;
     }
 
     public override void UpdateState()

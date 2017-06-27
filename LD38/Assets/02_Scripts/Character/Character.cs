@@ -33,6 +33,11 @@ public class Character
         }
     }
 
+    public float MovementSpeed
+    {
+        get { return m_template.MovementSpeed; }
+    }
+
     public BaseRoomPoint CurrentPoint
     {
         get { return m_currentPoint; }
@@ -71,6 +76,11 @@ public class Character
 
         m_entity.CharacterCanvas.AddFlotingText("-" + damage);
         m_entity.PlayHitAnimation();
+    }
+
+    public SkillDefinition GetRandomAbility()
+    {
+        return m_template.Skills[UnityEngine.Random.Range(0, m_template.Skills.Count)];
     }
 
     public virtual void KillCharacter()

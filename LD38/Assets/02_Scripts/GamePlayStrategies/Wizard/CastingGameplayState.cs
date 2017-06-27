@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CastingGameplayState : GameplayState<Wizard, TransitionData>
+public class CastingGameplayState : GenericState<Wizard, TransitionData>
 {
     private bool m_finishCasting;
 
@@ -16,13 +16,13 @@ public class CastingGameplayState : GameplayState<Wizard, TransitionData>
         UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillName);
     }
 
-    public override GameplayTransition EvaluateTransition()
+    public override StateTransition<TransitionData> EvaluateTransition()
     {
         if(m_finishCasting)
         {
-            return GameplayTransition.Transition<IdleGameplayState>();
+            return StateTransition<TransitionData>.Transition<IdleGameplayState,Wizard>();
         }
-        return GameplayTransition.None;
+        return StateTransition<TransitionData>.None;
     }
 
     private void OnFinishCasting()

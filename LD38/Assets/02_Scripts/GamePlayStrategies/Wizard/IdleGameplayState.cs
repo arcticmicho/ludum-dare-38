@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleGameplayState : GameplayState<Wizard, TransitionData>
+public class IdleGameplayState : GenericState<Wizard, TransitionData>
 {
     private bool m_transitionToActiveState;
     private Vector3 m_initialDragPosition;
@@ -24,17 +24,17 @@ public class IdleGameplayState : GameplayState<Wizard, TransitionData>
         base.UpdateState();
     }
 
-    public override GameplayTransition EvaluateTransition()
+    public override StateTransition<TransitionData> EvaluateTransition()
     {
         if(!GameManager.Instance.ActiveGameSession.HasTarget)
         {
-            return GameplayTransition.None;
+            return StateTransition<TransitionData>.None;
         }
 
         if(m_transitionToActiveState)
         {
             TransitionData data = new TransitionData(m_initialDragPosition);
-            return new GameplayTransition(typeof(ActiveGameplayState), false, data);
+            return new StateTransition<TransitionData>(typeof(ActiveGameplayState), false, data);
         }
         return base.EvaluateTransition();
     }

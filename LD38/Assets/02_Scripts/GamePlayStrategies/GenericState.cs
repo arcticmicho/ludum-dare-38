@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameplayState<Actor, Data> 
+public class GenericState<Actor, Data> where Data : class
 {
     protected Actor m_character;
     public Actor Character
@@ -16,9 +16,9 @@ public class GameplayState<Actor, Data>
         m_data = data;
     }
 
-    public virtual GameplayTransition EvaluateTransition()
+    public virtual StateTransition<Data> EvaluateTransition()
     {
-        return GameplayTransition.None;
+        return StateTransition<Data>.None;
     }
 
     public virtual void UpdateState()

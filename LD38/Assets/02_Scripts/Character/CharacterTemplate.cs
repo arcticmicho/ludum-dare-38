@@ -24,4 +24,11 @@ public class CharacterTemplate : ScriptableObject
     {
         get { return m_skills; }
     }
+
+    [SerializeField]
+    private float m_movementSpeed = 5f;
+    public float MovementSpeed
+    {
+        get { return m_movementSpeed; }
+    }
 }

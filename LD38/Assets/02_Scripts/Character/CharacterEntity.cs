@@ -48,6 +48,11 @@ public class CharacterEntity : MonoBehaviour
         PlayAnimationWithTrigger("Idle");
     }
 
+    public void PlayWalkAnimation()
+    {
+        PlayAnimationWithTrigger("Walk");
+    }
+
     public void PlayAnimationWithTrigger(string trigger)
     {
         if(m_animator != null)
