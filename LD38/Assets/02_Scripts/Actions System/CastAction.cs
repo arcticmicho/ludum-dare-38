@@ -15,15 +15,15 @@ public class CastAction : IAction
 
     private ECastStep m_currentStep;
     private SkillDefinition m_skillDef;
-    private ICharacter m_owner;
+    private Character m_owner;
 
-    private ICharacter[] m_targets;
+    private Character[] m_targets;
 
     private float m_elapsedCastingTime;
     private float m_castingTime;
 
     private GameObject m_projectile;
-    private ICharacter m_projectileTarget;
+    private Character m_projectileTarget;
 
     private float m_hitWaitTime = 1f;
     private float m_elapsedHitTime = 0f;
@@ -38,7 +38,7 @@ public class CastAction : IAction
         }
     }
 
-    public CastAction(SkillDefinition skillDef, ICharacter owner,  ICharacter[] targets)
+    public CastAction(SkillDefinition skillDef, Character owner, Character[] targets)
     {
         m_skillDef = skillDef;
         m_targets = targets;

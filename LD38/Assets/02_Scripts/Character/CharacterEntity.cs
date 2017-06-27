@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class CharacterEntity : MonoBehaviour
 {
+    protected EDirection m_currentDirection;
+    public EDirection CurrentDirection
+    {
+        get { return m_currentDirection; }
+    }
+
     [SerializeField]
     private Animator m_animator;
 
@@ -45,5 +51,19 @@ public class CharacterEntity : MonoBehaviour
         {
             m_animator.SetTrigger(trigger);
         }
+    }
+
+    public void SetDirection(EDirection direction)
+    {
+        if (m_currentDirection != direction)
+        {
+            m_currentDirection = direction;
+            transform.localScale = transform.localScale * -1;
+        }
+    }
+
+    public void TranslateEntity(Vector3 position)
+    {
+        transform.position = position;
     }
 }

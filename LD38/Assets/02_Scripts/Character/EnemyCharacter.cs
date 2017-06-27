@@ -2,73 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyCharacter : ICharacter
-{
-    private float m_healthPoints;
-    private bool m_isDead;
-    private CharacterTemplate m_characterTemplate;
+public class EnemyCharacter : Character
+{    
 
-    private CharacterEntity m_entity;
-    public CharacterEntity Entity
+    public EnemyCharacter(CharacterTemplate template) : base(template)
     {
-        get { return m_entity; }
+                
     }
 
-    private CharacterTemplate m_template;
-
-    public EnemyCharacter(CharacterTemplate template)
+    public override void KillCharacter()
     {
-        SetTemplateData(template);
-        InstantiateCharacterEntity();
-    }
-
-    private void SetTemplateData(CharacterTemplate template)
-    {
-        m_template = template;
-        m_characterTemplate = template;
-        m_healthPoints = template.HealthPoints;
-    }
-
-    public void InstantiateCharacterEntity(bool force = false)
-    {
-        if(m_entity == null || force)
-        {
-            m_entity = GameObject.Instantiate<CharacterEntity>(m_characterTemplate.Prefab);
-            m_entity.transform.SetParent(CharactersManager.Instance.transform);
-        }
-    }
-
-    public void ApplyDamage(float damage)
-    {
-        m_healthPoints -= damage;
-        if(m_healthPoints <= 0f)
-        {
-            KillCharacter();
-        }
-        m_entity.CharacterCanvas.AddFlotingText("-" + damage);
-        m_entity.PlayHitAnimation();
-    }
-
-    public void KillCharacter()
-    {
-        m_isDead = true;
-        m_entity.PlayDeadAnimation();
+        base.KillCharacter();
         GameManager.Instance.ActiveGameSession.NotifyEnemyDeath(this);
-    }
-
-    public float HealthPoints
-    {
-        get
-        {
-            return HealthPoints;
-        }
-    }
-
-    public bool IsDeath
-    {
-        get
-        {
-            return m_isDead;
-        }
     }
 }

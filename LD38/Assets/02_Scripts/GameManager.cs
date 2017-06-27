@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
-    private GameSession _currentGameSession;
+    private GameSession m_currentGameSession;
     public GameSession ActiveGameSession
     {
-        get { return _currentGameSession; }
+        get { return m_currentGameSession; }
     }
 
     #region Test
@@ -17,15 +17,15 @@ public class GameManager : MonoSingleton<GameManager>
 
     public GameSession StartGameSession(RoomSessionData data)
     {
-        if(_currentGameSession != null)
+        if(m_currentGameSession != null)
         {
             Debug.LogError("Cannot start a gamession with another active");
             return null;
         }
 
-        _currentGameSession = new GameSession(data);
-        _currentGameSession.StartSession();
-        return _currentGameSession;
+        m_currentGameSession = new GameSession(data);
+        m_currentGameSession.StartSession();
+        return m_currentGameSession;
     }
 
     private void Start()
@@ -35,9 +35,13 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Update()
     {
-        if(_currentGameSession != null)
+        if(m_currentGameSession != null)
         {
-            _currentGameSession.UpdateSession(TimeManager.Instance.DeltaTime);
+            if(m_currentGameSession.ProcessSession(TimeManager.Instance.DeltaTime))
+            {
+                m_currentGameSession.EndSession();
+                m_currentGameSession = null;
+            }
         }
-    }
+    }    
 }

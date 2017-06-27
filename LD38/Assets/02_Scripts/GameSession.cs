@@ -13,12 +13,20 @@ public class GameSession
     private RoomSessionView m_sessionView;
 
     private Wizard m_mainCharacter;
-    private EnemyCharacter m_enemy;
+
+    private List<EnemyCharacter> m_enemies;
+    private int m_totalEnemies;
+    private int m_defeatedEnemies;
 
     private EnemyCharacter m_currentTarget;
     public EnemyCharacter CurrentTarget
     {
         get { return m_currentTarget; }
+    }
+
+    public bool HasTarget
+    {
+        get { return m_currentTarget != null; }
     }
 
     private ActionsManager m_actions;
@@ -39,21 +47,31 @@ public class GameSession
     {
         m_actions.Initialize();
         InstantiateRoomView();
-        InstantiateCharacters();        
+        InstantiateCharacter();        
 
         m_mainCharacterStateMachine = new GameplayPSM(m_mainCharacter);
         m_mainCharacterStateMachine.StartGameplayStateMachine();
 
-        m_currentTarget = m_enemy;
+        GenerateSpawnEnemyAction();
+
+        m_currentTarget = null;
     }
 
-    private void InstantiateCharacters()
+    private void InstantiateCharacter()
     {
         m_mainCharacter = CharactersManager.Instance.GetSelectedWizard();
-        m_mainCharacter.Entity.transform.position = m_sessionView.CharacterPosition;
+        m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
+        m_mainCharacter.Entity.TranslateEntity(m_sessionView.MainCharacterPoint.transform.position);
+    }
 
-        m_enemy = CharactersManager.Instance.GetEnemy();
-        m_enemy.Entity.transform.position = m_sessionView.EnemyPosition;
+    private void GenerateSpawnEnemyAction()
+    {        
+        for(int i=0, count=m_sessionData.EnemiesSpawnData.Count; i<count; i++)
+        {
+            m_actions.EnqueueAction(new SpawnEnemyAction(m_sessionData.EnemiesSpawnData[i].EnemyTemplate, TimeManager.Instance.CurrentTime.AddSeconds(m_sessionData.EnemiesSpawnData[i].SpawnTime)));
+        }
+        m_totalEnemies = m_sessionData.EnemiesSpawnData.Count;
+        m_defeatedEnemies = 0;
     }
 
     private void InstantiateRoomView()
@@ -67,18 +85,57 @@ public class GameSession
 
     }
 
-    public void UpdateSession(float deltaTime)
+    public bool ProcessSession(float deltaTime)
     {
         m_mainCharacterStateMachine.UpdatePSM();
         m_actions.UpdateActions();
+        if(m_currentTarget == null)
+        {
+            FindNewTarget();
+        }
+
+        if(m_defeatedEnemies >= m_totalEnemies)
+        {
+            return true;
+        }
+        return false;
     }
 
-    internal void NotifyEnemyDeath(EnemyCharacter enemyCharacter)
+    private void FindNewTarget()
     {
-        if(enemyCharacter == m_currentTarget)
+        if(m_enemies.Count > 0)
         {
-            //Change Target;
-            //For now show Restart state;
+            EnemyCharacter enemy = m_enemies[UnityEngine.Random.Range(0, m_enemies.Count)];
+            m_mainCharacter.Entity.SetDirection(((m_mainCharacter.Entity.transform.position - enemy.Entity.transform.position).x > 0 ? EDirection.Left : EDirection.Right));
+            m_currentTarget = enemy;
         }
     }
+
+    public void NotifyEnemyDeath(EnemyCharacter enemyCharacter)
+    {
+        if(m_enemies.Contains(enemyCharacter))
+        {
+            m_enemies.Remove(enemyCharacter);
+            m_defeatedEnemies++;
+            if(enemyCharacter == m_currentTarget)
+            {
+                m_currentTarget = null;
+            }
+        }else
+        {
+            Debug.LogError("Trying to Remove a not valid enemy");
+        }
+    }
+
+    public void SpawnEnemy(CharacterTemplate enemyTemplate)
+    {
+        BaseRoomPoint spawnPoint = m_sessionView.GetRandomAvailableEnemyPoint();
+
+        EnemyCharacter enemy = CharactersManager.Instance.GetEnemy();
+        spawnPoint.AssignCharacter(enemy);
+        enemy.Entity.TranslateEntity(spawnPoint.transform.position);
+        enemy.Entity.SetDirection(spawnPoint.Direction);
+        m_enemies.Add(enemy);
+    }
 }
+

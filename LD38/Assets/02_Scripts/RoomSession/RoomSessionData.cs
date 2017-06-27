@@ -1,9 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomSessionData : ScriptableObject
 {
+    [SerializeField]
+    private List<EnemySpawnData> m_enemiesSpawnData;
+    public List<EnemySpawnData> EnemiesSpawnData
+    {
+        get { return m_enemiesSpawnData; }
+    }
+
+    [SerializeField]
+    private CharacterTemplate m_bossTemplate;
+
     [SerializeField]
     private RoomSessionView m_viewTemplate;
     public RoomSessionView RoomViewTemplate
@@ -13,4 +24,22 @@ public class RoomSessionData : ScriptableObject
             return m_viewTemplate;
         }
     }   	
+}
+
+[Serializable]
+public class EnemySpawnData
+{
+    [SerializeField]
+    private CharacterTemplate m_enemyTemplate;
+    public CharacterTemplate EnemyTemplate
+    {
+        get { return m_enemyTemplate; }
+    }
+
+    [SerializeField]
+    private float m_spawnTime;
+    public float SpawnTime
+    {
+        get { return m_spawnTime; }
+    }
 }

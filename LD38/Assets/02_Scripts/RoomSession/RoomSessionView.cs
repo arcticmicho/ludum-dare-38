@@ -5,27 +5,18 @@ using UnityEngine;
 public class RoomSessionView : MonoBehaviour
 {
     [SerializeField]
-    private Transform m_characterPosition;
-    public Vector3 CharacterPosition
-    {
-        get { return m_characterPosition.position; }
-    }
+    private List<BaseRoomPoint> m_enemyPoints;
 
     [SerializeField]
-    private Transform m_enemyPosition;
-    public Vector3 EnemyPosition
+    private BaseRoomPoint m_mainCharacterPoint;
+    public BaseRoomPoint MainCharacterPoint
     {
-        get
-        {
-            return m_enemyPosition.position;
-        }
+        get { return m_mainCharacterPoint; }
     }
 
-    [SerializeField]
-    private Transform m_enemy2Position;
-    public Vector3 Enemy2Position
+    public BaseRoomPoint GetRandomAvailableEnemyPoint()
     {
-        get { return m_enemy2Position.position; }
+        List<BaseRoomPoint> filteredList = m_enemyPoints.FindAll((x) => x.IsAvailable);
+        return filteredList[UnityEngine.Random.Range(0, filteredList.Count)];
     }
-	
 }

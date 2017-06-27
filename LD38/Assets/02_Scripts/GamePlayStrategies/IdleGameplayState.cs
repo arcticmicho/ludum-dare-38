@@ -26,6 +26,11 @@ public class IdleGameplayState : GameplayState<Wizard, TransitionData>
 
     public override GameplayTransition EvaluateTransition()
     {
+        if(!GameManager.Instance.ActiveGameSession.HasTarget)
+        {
+            return GameplayTransition.None;
+        }
+
         if(m_transitionToActiveState)
         {
             TransitionData data = new TransitionData(m_initialDragPosition);
