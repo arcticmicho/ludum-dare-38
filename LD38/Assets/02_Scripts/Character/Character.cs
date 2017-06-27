@@ -66,6 +66,7 @@ public class Character
         if (m_healthPoints <= 0)
         {
             m_isDead = true;
+            KillCharacter();
         }
 
         m_entity.CharacterCanvas.AddFlotingText("-" + damage);
@@ -74,6 +75,6 @@ public class Character
 
     public virtual void KillCharacter()
     {
-        
+        m_entity.PlayDeadAnimation();
     }
 }

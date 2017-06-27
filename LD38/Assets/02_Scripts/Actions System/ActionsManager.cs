@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ActionsManager
 {
-    private PriorityQueue<float,IAction> m_actions;
+    private PriorityQueue<long,IAction> m_actions;
     private List<IAction> m_activeActions;
 
 	public void Initialize()
     {
-        m_actions = new PriorityQueue<float,IAction>(new MinComparer());
+        m_actions = new PriorityQueue<long, IAction>(new MinComparer());
         m_activeActions = new List<IAction>();
 	}
 	
@@ -36,6 +36,6 @@ public class ActionsManager
 
     public void EnqueueAction(IAction newAction)
     {
-        m_actions.Enqueue((float) newAction.ActionTime.Ticks, newAction);
+        m_actions.Enqueue(newAction.ActionTime.Ticks, newAction);
     }
 }

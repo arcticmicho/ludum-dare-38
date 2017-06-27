@@ -11,6 +11,9 @@ public class CharacterEntity : MonoBehaviour
     }
 
     [SerializeField]
+    private GameObject m_doll;
+
+    [SerializeField]
     private Animator m_animator;
 
     [SerializeField]
@@ -55,11 +58,8 @@ public class CharacterEntity : MonoBehaviour
 
     public void SetDirection(EDirection direction)
     {
-        if (m_currentDirection != direction)
-        {
-            m_currentDirection = direction;
-            transform.localScale = transform.localScale * -1;
-        }
+        m_currentDirection = direction;
+        m_doll.transform.localScale = new Vector3(Mathf.Abs(m_doll.transform.localScale.x) * (direction == EDirection.Right ? 1 : -1), m_doll.transform.localScale.y, m_doll.transform.localScale.z);
     }
 
     public void TranslateEntity(Vector3 position)

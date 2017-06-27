@@ -59,6 +59,7 @@ public class GameSession
 
     private void InstantiateCharacter()
     {
+        m_enemies = new List<EnemyCharacter>();
         m_mainCharacter = CharactersManager.Instance.GetSelectedWizard();
         m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
         m_mainCharacter.Entity.TranslateEntity(m_sessionView.MainCharacterPoint.transform.position);

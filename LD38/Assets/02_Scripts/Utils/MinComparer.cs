@@ -3,11 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MinComparer : Comparer<float>
+public class MinComparer : Comparer<long>
 {
-    public override int Compare(float x, float y)
+    public override int Compare(long x, long y)
     {
-        return (int) (x - y);
+        if(x>y)
+        {
+            return 1;
+        }else if(x<y)
+        {
+            return -1;
+        }else
+        {
+            return 0;
+        }
     }
     
 }
