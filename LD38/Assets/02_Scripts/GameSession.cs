@@ -43,7 +43,13 @@ public class GameSession
         }
     }
 
+    public bool SessionFinished
+    {
+        get { return m_sessionFinished; }
+    }
+
     private float m_timeSession;
+
     private bool m_gameOver;
 
     public GameSession(RoomSessionData data)
@@ -112,9 +118,27 @@ public class GameSession
 
         if (m_defeatedEnemies >= m_totalEnemies || m_gameOver)
         {
+            WinSession();
+            m_sessionFinished = true;
+            return true;
+        }else if(m_gameOver)
+        {
+            GameOver();
+            m_sessionFinished = true;
             return true;
         }
         return false;
+    }
+
+    private void GameOver()
+    {
+        UIPartyManager.Instance.RequestView<EndView>();
+        UIPartyManager.Instance.GetView<EndView>().SetEndText("You Lose!");
+    }
+    private void WinSession()
+    {
+        UIPartyManager.Instance.RequestView<EndView>();
+        UIPartyManager.Instance.GetView<EndView>().SetEndText("You Win!");
     }
 
     private void FindNewTarget()
@@ -162,6 +186,21 @@ public class GameSession
         enemy.Entity.SetDirection(spawnPoint.Direction);
         m_enemies.Add(enemy);
         enemy.EnemySpawned();
+    }
+
+
+    internal void UnloadSession()
+    {
+        GameObject.Destroy(m_mainCharacter.Entity.gameObject);
+        m_mainCharacter = null;
+        for(int i=0, count=m_enemies.Count; i<count; i++)
+        {
+            GameObject.Destroy(m_enemies[i].Entity.gameObject);
+            m_enemies[i] = null;
+        }
+        GameObject.Destroy(m_sessionView.gameObject);
+        m_actions.ClearAction();
+
     }
 }
 

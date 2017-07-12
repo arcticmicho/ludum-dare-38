@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -37,5 +38,11 @@ public class ActionsManager
     public void EnqueueAction(IAction newAction)
     {
         m_actions.Enqueue(newAction.ActionTime.Ticks, newAction);
+    }
+
+    public void ClearAction()
+    {
+        m_actions.Clear();
+        m_activeActions.Clear();
     }
 }

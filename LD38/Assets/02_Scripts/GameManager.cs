@@ -33,14 +33,26 @@ public class GameManager : MonoSingleton<GameManager>
         StartGameSession(m_testData);
     }
 
+    public void RequestGameSession()
+    {
+        if(m_currentGameSession == null || m_currentGameSession.SessionFinished)
+        {
+            if(m_currentGameSession != null)
+            {
+                m_currentGameSession.UnloadSession();
+                m_currentGameSession = null;
+            }
+            StartGameSession(m_testData);
+        }
+    }
+
     private void Update()
     {
-        if(m_currentGameSession != null)
+        if(m_currentGameSession != null && !m_currentGameSession.SessionFinished)
         {
             if(m_currentGameSession.ProcessSession(TimeManager.Instance.DeltaTime))
             {
                 m_currentGameSession.EndSession();
-                m_currentGameSession = null;
             }
         }
     }    
