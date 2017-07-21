@@ -19,12 +19,9 @@ public class Wizard : Character
 
     public bool TryProcessPattern(Vector2[] patternPoints, out SkillDefinition skillDef)
     {
-        if(m_skillTree != null)
+        if(m_skillTree != null && m_skillTree.SearchForPattern(patternPoints, out skillDef, true))
         {
-            if(m_skillTree.SearchForPattern(patternPoints, out skillDef, true))
-            {
-                return true;
-            }
+            return true;           
         }
         skillDef = null;
         return false;

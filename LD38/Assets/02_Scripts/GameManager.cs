@@ -10,6 +10,17 @@ public class GameManager : MonoSingleton<GameManager>
         get { return m_currentGameSession; }
     }
 
+    [SerializeField]
+    private bool m_isFinishPatternActive;
+    public bool IsFinishPatternActive { get { return m_isFinishPatternActive; } }
+
+    [SerializeField]
+    private SkillPattern m_finishPattern;
+    public SkillPattern FinishPattern
+    {
+        get { return m_finishPattern; }
+    }
+
     #region Test
     [SerializeField]
     private RoomSessionData m_testData;

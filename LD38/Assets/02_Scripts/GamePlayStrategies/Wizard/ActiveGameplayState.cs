@@ -11,6 +11,7 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
     private bool m_detectingPattern;
     private float m_detectingTime;
     private bool m_finishActiveGameplay;
+    private bool m_forceFinish;
     private SkillDefinition m_skillToCast;
     private TrailRenderer m_currentTrailRenderer;
 
@@ -31,6 +32,7 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
         InputManager.Instance.OnDragEvent += OnDrag;
         m_detectingPattern = false;
         m_finishActiveGameplay = false;
+        m_forceFinish = false;
         m_detectingTime = 0f;
         m_character.ResetSkillTree();
 
@@ -51,7 +53,7 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
 
     public override StateTransition<TransitionData> EvaluateTransition()
     {
-        if(m_finishActiveGameplay)
+        if (m_finishActiveGameplay || m_forceFinish)
         {
             if(m_skillToCast != null)
             {
@@ -116,16 +118,28 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
 
     private bool ProcessPattern()
     {
+        //First we check if is a FinishPattern;
+        if(GameManager.Instance.IsFinishPatternActive && IsFinishPattern(ConvertList(m_dragPositions)))
+        {
+            return true;
+        }
+
         SkillDefinition newDef;
         if(m_character.TryProcessPattern(ConvertList(m_dragPositions), out newDef))
         {
-            Debug.Log("Ability Found!: " + newDef.SkillName);
+            Debug.Log("Ability Found!: " + newDef.SkillName);            
             m_skillToCast = newDef;
             m_character.Entity.PlayCastAnimation();
             m_character.Entity.CharacterCanvas.ShowBubbleText(newDef.SkillName + "!!", 3);
             return true;
         }
         return false;
+    }
+
+    private bool IsFinishPattern(Vector2[] vector2)
+    {
+        RecognitionResult result;
+        return m_forceFinish = PatternManager.Instance.ProcessSkillPattern(vector2, GameManager.Instance.FinishPattern, out result);
     }
 
     private Vector2[] ConvertList(List<Vector3> points)

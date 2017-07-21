@@ -82,20 +82,33 @@ public class SkillTree
         {
             if(!searchLeaf.LeafConnections[i].IsEmptyLeaf)
             {
-                PRPatternDefinition pattern;
-                if(PartyRecognitionManager.Instance.TryGetPatternById(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
+                RecognitionResult result = null;
+                if(PatternManager.Instance.ProcessSkillPattern(patternPoints, searchLeaf.LeafConnections[i].Pattern, out result))
                 {
-                    RecognitionResult result = PartyRecognitionManager.Instance.SimpleRecognize(patternPoints, pattern);
-                    if (result.Success && result.RecognitionScore < lastResult.RecognitionScore)
+                    if (result.RecognitionScore < lastResult.RecognitionScore)
                     {
                         lastResult = result;
                         selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
                         if (moveToNext)
                         {
                             m_current = searchLeaf.LeafConnections[i];
-                        }                        
+                        }
                     }
                 }
+                //PRPatternDefinition pattern;
+                //if(PartyRecognitionManager.Instance.TryGetPatternById(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
+                //{
+                //    RecognitionResult result = PartyRecognitionManager.Instance.SimpleRecognize(patternPoints, pattern);
+                //    if (result.Success && result.RecognitionScore < lastResult.RecognitionScore)
+                //    {
+                //        lastResult = result;
+                //        selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
+                //        if (moveToNext)
+                //        {
+                //            m_current = searchLeaf.LeafConnections[i];
+                //        }                        
+                //    }
+                //}
             }            
         }
 
@@ -105,6 +118,12 @@ public class SkillTree
             return true;
         }
         skillDef = null;
+        return false;
+    }
+
+    public bool CheckFinishPattern(Vector2[] patternPoints)
+    {
+        //RecognitionResult result = PartyRecognitionManager.Instance.SimpleRecognize(patternPoints, pattern);
         return false;
     }
 

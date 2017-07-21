@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public struct RecognitionResult
+public class RecognitionResult
 {
     private bool m_success;
     public bool Success
@@ -52,7 +52,7 @@ public class RecognitionProcess
         get { return m_heuristic; }
     }
 
-    private RecognitionResult? m_lastRecognitionResult;
+    private RecognitionResult m_lastRecognitionResult;
 
     private float m_successThreshold;
 
@@ -88,7 +88,7 @@ public class RecognitionProcess
         }
         m_lastRecognitionResult = new RecognitionResult(scorePercent >= m_successThreshold, score, m_pattern2.PatternName);
 
-        return m_lastRecognitionResult.Value;
+        return m_lastRecognitionResult;
     }
     
 
