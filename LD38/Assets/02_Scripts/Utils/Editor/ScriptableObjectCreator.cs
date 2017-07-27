@@ -39,7 +39,7 @@ public static class ScriptableObjectCreator
         return false;
     }
 
-    private static void CreateAsset(System.Type type)
+    public static void CreateAsset(System.Type type)
     {
         var asset = ScriptableObject.CreateInstance(type);
         string path = AssetDatabase.GetAssetPath(Selection.activeObject);
