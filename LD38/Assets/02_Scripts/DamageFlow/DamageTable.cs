@@ -113,6 +113,29 @@ public class DamageTable
         return false;
     }
 
+    public float GetTotalDamage(out DamageType prominentType)
+    {
+        float totalDamage = 0;
+        DamageTypeValue damageTypeValue = null;
+        for (int i = 0, count = m_damage.Count; i < count; i++)
+        {
+            if(damageTypeValue == null)
+            {
+                damageTypeValue = m_damage[i];
+            }else
+            {
+                if(damageTypeValue.DamageValue < m_damage[i].DamageValue)
+                {
+                    damageTypeValue = m_damage[i];
+                }
+            }
+
+            totalDamage += m_damage[i].DamageValue;
+        }
+        prominentType = damageTypeValue != null ? damageTypeValue.DamageType : null;
+        return totalDamage;
+    }
+
     public DamageTable Clone()
     {
         return new DamageTable(m_damage);

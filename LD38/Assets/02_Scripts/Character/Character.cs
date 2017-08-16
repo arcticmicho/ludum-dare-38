@@ -38,6 +38,11 @@ public class Character
         get { return m_template.MovementSpeed; }
     }
 
+    public DamageTable ResistanceTable
+    {
+        get { return m_template.ResistanceTable; }
+    }
+
     public BaseRoomPoint CurrentPoint
     {
         get { return m_currentPoint; }
@@ -65,16 +70,18 @@ public class Character
         }
     }
 
-    public virtual void ApplyDamage(float damage)
+    public virtual void ApplyDamage(DamageTable damageTable)
     {
-        m_healthPoints -= damage;
+        DamageType prominentType;
+        float damageValue = damageTable.GetTotalDamage(out prominentType);
+        m_healthPoints -= damageValue;
         if (m_healthPoints <= 0)
         {
             m_isDead = true;
             KillCharacter();
         }
 
-        m_entity.CharacterCanvas.AddFlotingText("-" + damage);
+        m_entity.CharacterCanvas.AddFlotingText("-" + damageValue);
         m_entity.PlayHitAnimation();
     }
 
