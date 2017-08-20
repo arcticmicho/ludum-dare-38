@@ -121,10 +121,16 @@ public class CastAction : IAction
                 GameObject particle = GameObject.Instantiate(m_skillDef.ImpactPrefab);
                 particle.transform.position = m_projectileTarget.Entity.transform.position;
                 m_elapsedCastingTime = 0f;
-                m_projectileTarget.ApplyDamage(m_skillDef.Damage);
+                ApplyDamage();
                 break;
             case ECastStep.Ending:
                 break;
         }
+    }
+
+    private void ApplyDamage()
+    {
+        DamageFlow flow = new DamageFlow(m_owner, m_projectileTarget, m_skillDef);
+        m_projectileTarget.ApplyDamage(flow.ExecuteFlow());
     }
 }

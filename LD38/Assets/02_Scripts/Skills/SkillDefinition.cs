@@ -26,6 +26,27 @@ public class SkillDefinition : ScriptableObject
     }
 
     [SerializeField]
+    private DamageTable m_spellDamage;
+    public DamageTable SpellDamage
+    {
+        get { return m_spellDamage; }
+    }
+
+    [SerializeField, Range(0f,1f)]
+    private float m_criticalChance;
+    public float CriticalChange
+    {
+        get { return m_criticalChance; }
+    }
+
+    [SerializeField]
+    private float m_critialMultiplier;
+    public float CriticalMultiplier
+    {
+        get { return m_critialMultiplier; }
+    }
+
+    [SerializeField]
     private float m_castingTime;
     public float CastingTime
     {

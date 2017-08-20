@@ -19,6 +19,13 @@ public class CharacterTemplate : ScriptableObject
     }
 
     [SerializeField]
+    private DamageTable m_resistanceTable;
+    public DamageTable ResistanceTable
+    {
+        get { return m_resistanceTable; }
+    }
+
+    [SerializeField]
     private List<SkillDefinition> m_skills;
     public List<SkillDefinition> Skills
     {
