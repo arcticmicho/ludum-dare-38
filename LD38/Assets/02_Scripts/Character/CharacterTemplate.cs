@@ -5,6 +5,13 @@ using UnityEngine;
 public class CharacterTemplate : ScriptableObject
 {
     [SerializeField]
+    private string m_templateId;
+    public string TemplateId
+    {
+        get { return m_templateId; }
+    }
+
+    [SerializeField]
     private CharacterEntity m_prefab;
     public CharacterEntity Prefab
     {

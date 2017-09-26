@@ -19,13 +19,6 @@ public class SkillDefinition : ScriptableObject
     }
 
     [SerializeField]
-    private float m_damage;
-    public float Damage
-    {
-        get { return m_damage; }
-    }
-
-    [SerializeField]
     private DamageTable m_spellDamage;
     public DamageTable SpellDamage
     {

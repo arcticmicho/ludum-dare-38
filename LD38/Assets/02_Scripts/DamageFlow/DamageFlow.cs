@@ -79,7 +79,7 @@ public class DamageFlow
 
     private DamageTable ResistanceStep(DamageTable totalDamage)
     {
-        return totalDamage * m_flowInfo.ResistanceTable;
+        return totalDamage - (totalDamage * m_flowInfo.ResistanceTable);
     }
     #endregion
 }
