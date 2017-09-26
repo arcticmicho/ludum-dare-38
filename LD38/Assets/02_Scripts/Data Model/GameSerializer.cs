@@ -83,7 +83,7 @@ public partial class GameSerializer
         string decodedData = encodedString;
         if(m_encryptData)
         {
-            decodedData = SerializeUtils.RSADecryptString(System.Text.Encoding.UTF8.GetBytes(decodedData));
+            decodedData = SerializeUtils.RSADecryptString(Convert.FromBase64String(decodedData));
         }
 
         if(m_shiftData)

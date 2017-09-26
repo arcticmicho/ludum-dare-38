@@ -14,7 +14,7 @@ public class PlayerCurrency : SerializableObject
 
     public override void DeserializeObject(Dictionary<string, object> dict)
     {
-        throw new NotImplementedException();
+        
     }
 
     public override Dictionary<string, object> SerializeObject()

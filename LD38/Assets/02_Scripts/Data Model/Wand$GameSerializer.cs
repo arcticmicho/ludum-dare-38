@@ -29,4 +29,23 @@ public partial class GameSerializer
             Debug.LogError(error.ToString());
         }
     }
+
+    public void DeserializeData()
+    {
+        Dictionary<string, object> gameData;
+        SerializeUtils.ESerializeError error;
+        if (LoadGame("Save1", out gameData, out error))
+        {
+            LoadData(gameData);
+        }
+        else
+        {
+            Debug.LogError(error.ToString());
+        }
+    }
+
+    private void LoadData(Dictionary<string,object> data)
+    {
+
+    }
 }

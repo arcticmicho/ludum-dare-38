@@ -19,13 +19,18 @@ public class SerializeTest : MonoBehaviour
 		if(Input.GetKeyUp(KeyCode.A))
         {
             //Serialize
-            m_serializer.PlayerData.PlayerLevel = (int) Time.deltaTime;
+            m_serializer.PlayerData.PlayerLevel = (int) Time.time;
+            Debug.Log("Player Level pre Serialize: " + m_serializer.PlayerData.PlayerLevel);
             m_serializer.ShiftData = true;
             m_serializer.EncrypData = true;
             m_serializer.SerializeData();
         }else if(Input.GetKeyUp(KeyCode.S))
         {
             //Deserialize
+            m_serializer.ShiftData = true;
+            m_serializer.EncrypData = true;
+            m_serializer.DeserializeData();
+            Debug.Log("Player Level post Deserialize: " + m_serializer.PlayerData.PlayerLevel);
         }
 	}
 }

@@ -24,7 +24,15 @@ public class PlayerData : SerializableObject
 
     public override void DeserializeObject(Dictionary<string, object> dict)
     {
-        throw new NotImplementedException();
+        if (dict.ContainsKey("PlayerLevel"))
+        {
+            m_playerLevel = new SerializableProperty<int>(m_serializer, int.Parse(dict["PlayerLevel"] as string));
+        }
+        if(dict.ContainsKey("Currency"))
+        {
+            m_currency = new SerializableProperty<PlayerCurrency>(m_serializer, new PlayerCurrency(m_serializer));
+            m_currency.Property.DeserializeObject(dict["Currency"] as Dictionary<string, object>);
+        }
     }
 
     public override Dictionary<string, object> SerializeObject()
