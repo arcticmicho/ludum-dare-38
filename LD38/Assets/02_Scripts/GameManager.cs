@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+    [SerializeField]
+    private GameSerializer m_serializer;
+    public GameSerializer Serializer
+    {
+        get { return m_serializer; }
+    }
+
     private GameSession m_currentGameSession;
     public GameSession ActiveGameSession
     {
@@ -25,6 +32,13 @@ public class GameManager : MonoSingleton<GameManager>
     [SerializeField]
     private RoomSessionData m_testData;
     #endregion
+
+    public void Init()
+    {
+        m_serializer = new GameSerializer();
+        m_serializer.ShiftData = true;
+        m_serializer.EncrypData = true;
+    }
 
     public GameSession StartGameSession(RoomSessionData data)
     {
