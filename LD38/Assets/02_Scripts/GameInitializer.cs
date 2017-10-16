@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class GameInitializer : MonoSingleton<GameInitializer>
 {
+    [SerializeField]
+    private ViewContainer m_initContainer;
+
 	void Start ()
     {
 		
@@ -23,6 +26,6 @@ public class GameInitializer : MonoSingleton<GameInitializer>
         UIPartyManager.Instance.Init();
         
         GameManager.Instance.Serializer.DeserializeData();
-        UIPartyManager.Instance.RequestView<MainMenu>();
+        UIPartyManager.Instance.RequestView<MainMenuView>();
     }
 }

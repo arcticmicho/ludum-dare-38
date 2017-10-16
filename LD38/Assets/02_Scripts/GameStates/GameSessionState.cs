@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenu : UIView
+public class GameSessionState : GenericState<GameStateManager, GameStateData>
 {
 
 	// Use this for initialization

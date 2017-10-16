@@ -5,6 +5,10 @@ using System;
 public class ViewRequest
 {
     private UIView m_targetView;
+    public UIView TargetView
+    {
+        get { return m_targetView; }
+    }
     private UIView m_currentView;
 
     private bool m_isFinished;

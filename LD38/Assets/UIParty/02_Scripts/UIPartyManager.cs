@@ -10,10 +10,21 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
     private ViewRequest m_currentRequest;
 
     [SerializeField]
-    private List<UIView> m_views;
+    private Transform m_viewParent;
+
+    [SerializeField]
+    private Transform m_elementParent;
+
+    [SerializeField]
+    private List<ViewContainer> m_initialContainers;
+
+    //[SerializeField]
+    //private List<UIView> m_views;
 
     [SerializeField]
     private List<UIElement> m_elements;
+
+    private Dictionary<Type, UIView> m_cachedViews;
 
     public UIView ActiveView
     {
@@ -33,15 +44,11 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
         base.Init();
         m_viewStack = new Stack<UIView>();
         m_requests = new Queue<ViewRequest>();
+        m_cachedViews = new Dictionary<Type, UIView>();
 
-        foreach(UIView view in GetComponentsInChildren<UIView>(true))
+        for(int i=0, count=m_initialContainers.Count; i<count; i++)
         {
-            if(!m_views.Contains(view))
-            {
-                m_views.Add(view);
-                view.Initialize();
-                view.gameObject.SetActive(false);
-            }
+            LoadViews(m_initialContainers[i]);
         }
 
         foreach(UIElement element in GetComponentsInChildren<UIElement>(true))
@@ -50,6 +57,72 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
             {
                 m_elements.Add(element);
                 element.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    public void LoadViews(ViewContainer container)
+    {
+        List<UIView> views = container.Views;
+        for(int i=0, count=container.Containers.Count; i<count; i++)
+        {
+            if(!m_cachedViews.ContainsKey(views[i].GetType()))
+            {
+                CreateView(views[i]);
+            }
+        }
+    }
+
+    private IEnumerator LoadViewsAsync(ViewContainer container)
+    {
+        List<UIView> views = container.Views;
+        for (int i = 0, count = container.Containers.Count; i < count; i++)
+        {
+            if (!m_cachedViews.ContainsKey(views[i].GetType()))
+            {
+                CreateView(views[i]);
+                yield return null;
+            }
+        }
+    }
+
+    private UIView CreateView(UIView view)
+    {
+        UIView newView = Instantiate<UIView>(view);
+        newView.transform.SetParent(m_viewParent, false);
+        newView.Initialize();
+        m_cachedViews.Add(view.GetType(), newView);
+        return newView;
+    }
+
+    public void UnloadViews(ViewContainer container)
+    {
+        List<UIView> views = container.Views;
+        for (int i = 0, count = container.Containers.Count; i < count; i++)
+        {
+            if (m_viewStack.Peek() != null && m_viewStack.Peek() != views[i] && m_currentRequest.TargetView != views[i] && m_cachedViews.ContainsKey(views[i].GetType()))
+            {
+                Destroy(m_cachedViews[views[i].GetType()].gameObject);
+            }else
+            {
+                Debug.LogError("trying to Unload a used View: " + views[i].gameObject.name);
+            }
+        }
+    }
+
+    private IEnumerator UnloadViewsAsync(ViewContainer container)
+    {
+        List<UIView> views = container.Views;
+        for (int i = 0, count = container.Containers.Count; i < count; i++)
+        {
+            if (m_viewStack.Peek() != null && m_viewStack.Peek() != views[i] && m_currentRequest.TargetView != views[i] && m_cachedViews.ContainsKey(views[i].GetType()))
+            {
+                Destroy(m_cachedViews[views[i].GetType()].gameObject);
+                yield return null;
+            }
+            else
+            {
+                Debug.LogError("trying to Unload a used View: " + views[i].gameObject.name);
             }
         }
     }
@@ -111,12 +184,9 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
 
     public T GetView<T>() where T : UIView
     {
-        for(int i=0; i<m_views.Count; i++)
+        if (m_cachedViews.ContainsKey(typeof(T)))
         {
-            if(m_views[i] is T)
-            {
-                return m_views[i] as T;
-            }
+            return m_cachedViews[typeof(T)] as T;
         }
         return null;
     }
