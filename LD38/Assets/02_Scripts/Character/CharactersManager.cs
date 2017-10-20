@@ -10,13 +10,13 @@ public class CharactersManager : MonoSingleton<CharactersManager>
     [SerializeField]
     private CharacterTemplate m_enemyCharacter;
     
-    public Wizard GetSelectedWizard()
+    public Wizard GetSelectedWizard(GameSession currentSession)
     {
-        return new Wizard(m_mainCharacter);
+        return new Wizard(currentSession, m_mainCharacter);
     }
     	
-    public EnemyCharacter GetEnemy()
+    public EnemyCharacter GetEnemy(GameSession currentSession)
     {
-        return new EnemyCharacter(m_enemyCharacter);
+        return new EnemyCharacter(currentSession, m_enemyCharacter);
     }
 }

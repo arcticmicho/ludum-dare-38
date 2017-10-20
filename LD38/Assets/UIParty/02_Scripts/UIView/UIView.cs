@@ -31,7 +31,7 @@ public class UIView : MonoBehaviour
     }
 
 
-    public void OpenView(Action onAnimationFinish)
+    public void OpenView(System.Action onAnimationFinish)
     {
         gameObject.SetActive(true);
         GetChilds();
@@ -39,7 +39,7 @@ public class UIView : MonoBehaviour
         OnViewOpen();
     }
 
-    private void PlayOpenTransitionAnimation(Action onAnimationFinish)
+    private void PlayOpenTransitionAnimation(System.Action onAnimationFinish)
     {
         UIAnimationSync.UIAnimationTask task;
         if(!m_animationConfig.TryPlayOpenAnimation(out task, onAnimationFinish))
@@ -74,7 +74,7 @@ public class UIView : MonoBehaviour
         OnViewOpened();
     }    
 
-    public void CloseView(Action onAnimationFinish)
+    public void CloseView(System.Action onAnimationFinish)
     {
         OnViewClose();
         PlayCloseTransitionAnimation(onAnimationFinish);
@@ -93,7 +93,7 @@ public class UIView : MonoBehaviour
         OnViewClosed();
     }
 
-    private void PlayCloseTransitionAnimation(Action onAnimationFinish)
+    private void PlayCloseTransitionAnimation(System.Action onAnimationFinish)
     {
         UIAnimationSync.UIAnimationTask task;
         if (!m_animationConfig.TryPlayCloseAnimation(out task, onAnimationFinish))

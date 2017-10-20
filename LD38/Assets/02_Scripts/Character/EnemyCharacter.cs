@@ -7,7 +7,7 @@ public class EnemyCharacter : Character
 {
     private GenericStateMachine<EnemyCharacter, EnemyTransitionData> m_enemySM;
 
-    public EnemyCharacter(CharacterTemplate template) : base(template)
+    public EnemyCharacter(GameSession session, CharacterTemplate template) : base(session, template)
     {
         m_enemySM = new GenericStateMachine<EnemyCharacter, EnemyTransitionData>(this);                               
     }    
@@ -15,7 +15,7 @@ public class EnemyCharacter : Character
     public override void KillCharacter()
     {
         base.KillCharacter();
-        GameManager.Instance.ActiveGameSession.NotifyEnemyDeath(this);
+        m_contextSession.NotifyEnemyDeath(this);
     }
 
     public void EnemySpawned()

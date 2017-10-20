@@ -19,10 +19,9 @@ public class EnemyIdleState : GenericState<EnemyCharacter, EnemyTransitionData>
         m_elapsedIdleTime += TimeManager.Instance.DeltaTime;
         if (m_elapsedIdleTime >= m_idleTime)
         {
-            GameSession session = GameManager.Instance.ActiveGameSession;
             SetIdleTime();
             SkillDefinition skillDef = m_character.GetRandomAbility();
-            session.ActionManager.EnqueueAction(new CastAction(skillDef, m_character, new Character[] {session.MainCharacter}));
+            m_character.Session.ActionManager.EnqueueAction(new CastAction(m_character.Session, skillDef, m_character, new Character[] { m_character.Session.MainCharacter}));
         }
     }
 

@@ -26,7 +26,7 @@ public class IdleGameplayState : GenericState<Wizard, TransitionData>
 
     public override StateTransition<TransitionData> EvaluateTransition()
     {
-        if(!GameManager.Instance.ActiveGameSession.HasTarget)
+        if(!m_character.Session.HasTarget)
         {
             return StateTransition<TransitionData>.None;
         }

@@ -18,7 +18,7 @@ public class UIElement : MonoBehaviour
         }
     }
 
-    public void ElementRequested(UIView newOwner, Action callback = null, bool playAnimation = false)
+    public void ElementRequested(UIView newOwner, System.Action callback = null, bool playAnimation = false)
     {
         m_currentOwner = newOwner;
         if(playAnimation && m_animationSync != null)
@@ -31,7 +31,7 @@ public class UIElement : MonoBehaviour
         }
     }
 
-    public void PlayCloseAnimation(Action callback = null)
+    public void PlayCloseAnimation(System.Action callback = null)
     {
         if(m_animationSync != null)
         {

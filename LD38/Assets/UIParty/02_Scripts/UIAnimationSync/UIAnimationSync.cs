@@ -15,7 +15,7 @@ public class UIAnimationSync
 
     private Animation m_animations;
 
-    public Action OnAnimationFinished;
+    public System.Action OnAnimationFinished;
 
     public bool HasActiveAnimations
     {
@@ -42,7 +42,7 @@ public class UIAnimationSync
         }
     }
 
-    public UIAnimationTask PlayAnimation(string clipName, Action callback = null)
+    public UIAnimationTask PlayAnimation(string clipName, System.Action callback = null)
     {
         AnimationClip clip = m_animations.GetClip(clipName);
         UIAnimationTask newTask = null;
@@ -55,17 +55,17 @@ public class UIAnimationSync
         return newTask;
     }
 
-    public bool TryPlayOpenAnimation(out UIAnimationTask task, Action callback = null)
+    public bool TryPlayOpenAnimation(out UIAnimationTask task, System.Action callback = null)
     {
         return TryPlayAnimation(m_openAnimation, out task, callback);        
     }
 
-    public bool TryPlayCloseAnimation(out UIAnimationTask task, Action callback = null)
+    public bool TryPlayCloseAnimation(out UIAnimationTask task, System.Action callback = null)
     {
         return TryPlayAnimation(m_closeAnimation, out task, callback);        
     }
 
-    public bool TryPlayAnimation(string clipName, out UIAnimationTask task, Action callback = null)
+    public bool TryPlayAnimation(string clipName, out UIAnimationTask task, System.Action callback = null)
     {
         UIAnimationTask newTask = PlayAnimation(clipName, callback);
         if(newTask != null)
@@ -88,9 +88,9 @@ public class UIAnimationSync
         private float m_animDuration;
         private float m_elapsedTime;
 
-        public Action OnAnimationFinished;
+        public System.Action OnAnimationFinished;
 
-        public UIAnimationTask(AnimationClip animation, Action callback = null)
+        public UIAnimationTask(AnimationClip animation, System.Action callback = null)
         {
             m_playedAnimation = animation;
             m_animDuration = m_playedAnimation.length;

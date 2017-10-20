@@ -9,9 +9,9 @@ public class CastingGameplayState : GenericState<Wizard, TransitionData>
     public override void OnEnter(TransitionData data)
     {
         base.OnEnter(data);
-        CastAction action = new CastAction(data.SelectedSkill, m_character, new Character[]{ GameManager.Instance.ActiveGameSession.CurrentTarget });
+        CastAction action = new CastAction(m_character.Session, data.SelectedSkill, m_character, new Character[]{ m_character.Session.CurrentTarget });
         action.OnActionEnds += OnFinishCasting;
-        GameManager.Instance.ActiveGameSession.ActionManager.EnqueueAction(action);
+        m_character.Session.ActionManager.EnqueueAction(action);
         UIPartyManager.Instance.RequestView<CastingView>();
         UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillName);
     }

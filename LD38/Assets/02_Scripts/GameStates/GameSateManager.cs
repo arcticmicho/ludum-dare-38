@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameStateManager : MonoSingleton<GameStateManager>
 {
-    private GameIdleState m_idleState;
-    private GameSessionState m_sessionState;
 
     private GenericStateMachine<GameStateManager, GameStateData> m_stateMachine;
 

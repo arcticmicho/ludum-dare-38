@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnEnemyAction : IAction
+public class SpawnEnemyAction : GameAction
 {
     private DateTime m_spawnDate;
     private CharacterTemplate m_enemyTemplate;
 
-    public SpawnEnemyAction(CharacterTemplate template, DateTime spawnDate)
+    public SpawnEnemyAction(GameSession session, CharacterTemplate template, DateTime spawnDate) : base(session)
     {
         m_spawnDate = spawnDate;
         m_enemyTemplate = template;
     }
 
-    public DateTime ActionTime
+    public override DateTime ActionTime
     {
         get
         {
@@ -22,18 +22,18 @@ public class SpawnEnemyAction : IAction
         }
     }
 
-    public void EndAction()
+    public override void EndAction()
     {
 
     }
 
-    public bool ProcessAction(float deltaTime)
+    public override bool ProcessAction(float deltaTime)
     {
-        GameManager.Instance.ActiveGameSession.SpawnEnemy(m_enemyTemplate);
+        m_contextSession.SpawnEnemy(m_enemyTemplate);
         return true;
     }
 
-    public void StartAction()
+    public override void StartAction()
     {
         
     }

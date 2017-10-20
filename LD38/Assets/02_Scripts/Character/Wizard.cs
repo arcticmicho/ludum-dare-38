@@ -11,7 +11,7 @@ public class Wizard : Character
         get { return m_skillTree; }
     }    
 
-    public Wizard(CharacterTemplate template) : base(template)
+    public Wizard(GameSession session, CharacterTemplate template) : base(session, template)
     {
         m_skillTree = new SkillTree(template.Skills);
         m_skillTree.InitializeSkillTree(template.Skills);
@@ -35,6 +35,6 @@ public class Wizard : Character
     public override void KillCharacter()
     {
         base.KillCharacter();
-        GameManager.Instance.ActiveGameSession.NotifyMainCharacterDeath(this);
+        m_contextSession.NotifyMainCharacterDeath(this);
     }
 }

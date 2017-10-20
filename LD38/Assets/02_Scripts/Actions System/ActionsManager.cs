@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class ActionsManager
 {
-    private PriorityQueue<long,IAction> m_actions;
-    private List<IAction> m_activeActions;
+    private PriorityQueue<long,GameAction> m_actions;
+    private List<GameAction> m_activeActions;
 
 	public void Initialize()
     {
-        m_actions = new PriorityQueue<long, IAction>(new MinComparer());
-        m_activeActions = new List<IAction>();
+        m_actions = new PriorityQueue<long, GameAction>(new MinComparer());
+        m_activeActions = new List<GameAction>();
 	}
 	
 	public void UpdateActions()
@@ -19,7 +19,7 @@ public class ActionsManager
         //One action per frame?
 		/*while*/if(!m_actions.IsEmpty && m_actions.Peek().Value.ActionTime <= TimeManager.Instance.CurrentTime)
         {
-            IAction newAction = m_actions.Dequeue().Value;
+            GameAction newAction = m_actions.Dequeue().Value;
             newAction.StartAction();
             m_activeActions.Add(newAction);
         }
@@ -35,7 +35,7 @@ public class ActionsManager
         }
 	}
 
-    public void EnqueueAction(IAction newAction)
+    public void EnqueueAction(GameAction newAction)
     {
         m_actions.Enqueue(newAction.ActionTime.Ticks, newAction);
     }

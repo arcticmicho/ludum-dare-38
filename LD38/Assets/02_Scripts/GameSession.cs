@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameSession
 {
     private bool m_sessionFinished;
+    private bool m_sessionClosed;
 
     private GenericStateMachine<Wizard,TransitionData> m_mainCharacterStateMachine;
 
@@ -48,6 +49,11 @@ public class GameSession
         get { return m_sessionFinished; }
     }
 
+    public bool SessionClosed
+    {
+        get { return m_sessionClosed; }
+    }
+
     private float m_timeSession;
 
     private bool m_gameOver;
@@ -76,7 +82,7 @@ public class GameSession
     private void InstantiateCharacter()
     {
         m_enemies = new List<EnemyCharacter>();
-        m_mainCharacter = CharactersManager.Instance.GetSelectedWizard();
+        m_mainCharacter = CharactersManager.Instance.GetSelectedWizard(this);
         m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
         m_mainCharacter.Entity.TranslateEntity(m_sessionView.MainCharacterPoint.transform.position);
     }
@@ -85,7 +91,7 @@ public class GameSession
     {        
         for(int i=0, count=m_sessionData.EnemiesSpawnData.Count; i<count; i++)
         {
-            m_actions.EnqueueAction(new SpawnEnemyAction(m_sessionData.EnemiesSpawnData[i].EnemyTemplate, TimeManager.Instance.CurrentTime.AddSeconds(m_sessionData.EnemiesSpawnData[i].SpawnTime)));
+            m_actions.EnqueueAction(new SpawnEnemyAction(this, m_sessionData.EnemiesSpawnData[i].EnemyTemplate, TimeManager.Instance.CurrentTime.AddSeconds(m_sessionData.EnemiesSpawnData[i].SpawnTime)));
         }
         m_totalEnemies = m_sessionData.EnemiesSpawnData.Count;
         m_defeatedEnemies = 0;
@@ -132,13 +138,18 @@ public class GameSession
 
     private void GameOver()
     {
-        UIPartyManager.Instance.RequestView<EndView>();
+        EndView.RequestEndView(OnEndViewFinished);
         UIPartyManager.Instance.GetView<EndView>().SetEndText("You Lose!");
     }
     private void WinSession()
     {
-        UIPartyManager.Instance.RequestView<EndView>();
+        EndView.RequestEndView(OnEndViewFinished);
         UIPartyManager.Instance.GetView<EndView>().SetEndText("You Win!");
+    }
+
+    private void OnEndViewFinished()
+    {
+        m_sessionClosed = true;
     }
 
     private void FindNewTarget()
@@ -180,7 +191,7 @@ public class GameSession
     {
         BaseRoomPoint spawnPoint = m_sessionView.GetRandomAvailableEnemyPoint();
 
-        EnemyCharacter enemy = CharactersManager.Instance.GetEnemy();
+        EnemyCharacter enemy = CharactersManager.Instance.GetEnemy(this);
         spawnPoint.AssignCharacter(enemy);
         enemy.Entity.TranslateEntity(m_sessionView.GetNearestSpawnPoint(spawnPoint.transform.position));
         enemy.Entity.SetDirection(spawnPoint.Direction);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CastAction : IAction
+public class CastAction : GameAction
 {
     public enum ECastStep
     {
@@ -28,9 +28,9 @@ public class CastAction : IAction
     private float m_hitWaitTime = 1f;
     private float m_elapsedHitTime = 0f;
 
-    public Action OnActionEnds;
+    public System.Action OnActionEnds;
 
-    public DateTime ActionTime
+    public override DateTime ActionTime
     {
         get
         {
@@ -38,19 +38,19 @@ public class CastAction : IAction
         }
     }
 
-    public CastAction(SkillDefinition skillDef, Character owner, Character[] targets)
+    public CastAction(GameSession session, SkillDefinition skillDef, Character owner, Character[] targets) : base(session)
     {
         m_skillDef = skillDef;
         m_targets = targets;
         m_owner = owner;
     }
 
-    public void StartAction()
+    public override void StartAction()
     {
         ChangeStep(ECastStep.Casting);
     }
 
-    public void EndAction()
+    public override void EndAction()
     {
         if(OnActionEnds != null)
         {
@@ -58,7 +58,7 @@ public class CastAction : IAction
         }
     }
 
-    public bool ProcessAction(float deltaTime)
+    public override bool ProcessAction(float deltaTime)
     {
         UpdateStep();
         return m_currentStep == ECastStep.Ending;

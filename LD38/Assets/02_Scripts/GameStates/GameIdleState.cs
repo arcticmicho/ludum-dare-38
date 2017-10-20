@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameIdleState : GenericState<GameStateManager, GameStateData>
 {
-
     public override void OnEnter(GameStateData data)
     {
         base.OnEnter(data);

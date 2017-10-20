@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Character
 {
+    protected GameSession m_contextSession;
+
     private CharacterTemplate m_template;
     private bool m_isDead;
     private float m_healthPoints;
@@ -15,6 +17,11 @@ public class Character
     public CharacterEntity Entity
     {
         get { return m_entity; }
+    }
+
+    public GameSession Session
+    {
+        get { return m_contextSession; }
     }
 
     public float HealthPoints
@@ -49,8 +56,9 @@ public class Character
         set { m_currentPoint = value; }
     }
 
-    public Character(CharacterTemplate template)
+    public Character(GameSession session, CharacterTemplate template)
     {
+        m_contextSession = session;
         SetTemplateData(template);
         InstantiateCharacterEntity();
     }
