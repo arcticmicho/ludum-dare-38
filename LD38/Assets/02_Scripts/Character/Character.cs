@@ -7,7 +7,7 @@ public class Character
 {
     protected GameSession m_contextSession;
 
-    private CharacterTemplate m_template;
+    private ICharacterData m_template;
     private bool m_isDead;
     private float m_healthPoints;
 
@@ -56,11 +56,11 @@ public class Character
         set { m_currentPoint = value; }
     }
 
-    public Character(GameSession session, CharacterTemplate template)
+    public Character(GameSession session, CharacterTemplate template, CharacterEntity entityTemplate)
     {
         m_contextSession = session;
         SetTemplateData(template);
-        InstantiateCharacterEntity();
+        InstantiateCharacterEntity(entityTemplate);
     }
 
     protected virtual void SetTemplateData(CharacterTemplate template)
@@ -69,11 +69,11 @@ public class Character
         m_healthPoints = template.HealthPoints;
     }
 
-    public virtual void InstantiateCharacterEntity(bool force = false)
+    public virtual void InstantiateCharacterEntity(CharacterEntity entityTemplate, bool force = false)
     {
         if (m_entity == null || force)
         {
-            m_entity = GameObject.Instantiate<CharacterEntity>(m_template.Prefab);
+            m_entity = GameObject.Instantiate<CharacterEntity>(entityTemplate);
             m_entity.transform.SetParent(CharactersManager.Instance.transform);
         }
     }

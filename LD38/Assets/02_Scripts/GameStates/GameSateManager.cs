@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GameStateManager : MonoSingleton<GameStateManager>
 {
-
     private GenericStateMachine<GameStateManager, GameStateData> m_stateMachine;
 
     public void Initialize()
@@ -13,6 +12,13 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         m_stateMachine.StartGameplayStateMachine<GameIdleState>();
     }
 
+    public void RequestGameSession(GameStateData data)
+    {
+        
+    }
 
+    public void RequestGameSessionTest()
+    {
 
+    }
 }

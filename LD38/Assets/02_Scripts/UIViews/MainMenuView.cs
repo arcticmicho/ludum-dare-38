@@ -4,5 +4,8 @@ using UnityEngine;
 
 public class MainMenuView : UIView
 {
-    	
+    public void OnOkButtonPressed()
+    {
+
+    }	
 }

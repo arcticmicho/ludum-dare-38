@@ -10,5 +10,19 @@ public class ResourceManager : MonoSingleton<ResourceManager>
     {
         get { return m_uiResources; }
     }
-	
+
+    [SerializeField]
+    private SkillResources m_skillResources;
+    public SkillResources SkillRecources
+    {
+        get { return m_skillResources; }
+    }
+
+    [SerializeField]
+    private DamageTypeResources m_damageTypeResources;
+    public DamageTypeResources DamageTypeResources
+    {
+        get { return m_damageTypeResources; }
+    }
+
 }

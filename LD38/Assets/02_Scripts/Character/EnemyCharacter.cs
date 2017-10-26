@@ -7,7 +7,7 @@ public class EnemyCharacter : Character
 {
     private GenericStateMachine<EnemyCharacter, EnemyTransitionData> m_enemySM;
 
-    public EnemyCharacter(GameSession session, CharacterTemplate template) : base(session, template)
+    public EnemyCharacter(GameSession session, CharacterTemplate template, CharacterEntity entity) : base(session, template, entity)
     {
         m_enemySM = new GenericStateMachine<EnemyCharacter, EnemyTransitionData>(this);                               
     }    

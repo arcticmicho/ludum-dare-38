@@ -33,4 +33,9 @@ public class SerializableProperty<T>
             m_contextSerializer.SetDirty();
         }
     }
+
+    public static implicit operator T(SerializableProperty<T> property)
+    {
+        return property.Property;
+    }
 }

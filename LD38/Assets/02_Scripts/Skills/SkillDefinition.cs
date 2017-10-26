@@ -5,6 +5,13 @@ using UnityEngine;
 public class SkillDefinition : ScriptableObject
 {
     [SerializeField]
+    private string m_skillId;
+    public string SkillId
+    {
+        get { return m_skillId; }
+    }
+
+    [SerializeField]
     private string m_skillName;
     public string SkillName
     {

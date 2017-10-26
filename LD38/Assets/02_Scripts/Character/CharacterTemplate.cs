@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterTemplate : ScriptableObject
+public class CharacterTemplate : ScriptableObject, ICharacterData
 {
     [SerializeField]
     private string m_templateId;
@@ -44,5 +45,15 @@ public class CharacterTemplate : ScriptableObject
     public float MovementSpeed
     {
         get { return m_movementSpeed; }
+    }
+
+    [SerializeField]
+    private string m_name;
+    public string Name
+    {
+        get
+        {
+            return m_name;
+        }
     }
 }
