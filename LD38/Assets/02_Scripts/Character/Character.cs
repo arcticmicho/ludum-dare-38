@@ -7,7 +7,11 @@ public class Character
 {
     protected GameSession m_contextSession;
 
-    private ICharacterData m_template;
+    protected ICharacterData m_data;
+    public ICharacterData Data
+    {
+        get { return m_data; }
+    }
     private bool m_isDead;
     private float m_healthPoints;
 
@@ -42,12 +46,12 @@ public class Character
 
     public float MovementSpeed
     {
-        get { return m_template.MovementSpeed; }
+        get { return m_data.MovementSpeed; }
     }
 
     public DamageTable ResistanceTable
     {
-        get { return m_template.ResistanceTable; }
+        get { return m_data.ResistanceTable; }
     }
 
     public BaseRoomPoint CurrentPoint
@@ -56,17 +60,17 @@ public class Character
         set { m_currentPoint = value; }
     }
 
-    public Character(GameSession session, CharacterTemplate template, CharacterEntity entityTemplate)
+    public Character(GameSession session, ICharacterData data, CharacterEntity entityTemplate)
     {
         m_contextSession = session;
-        SetTemplateData(template);
+        SetTemplateData(data);
         InstantiateCharacterEntity(entityTemplate);
     }
 
-    protected virtual void SetTemplateData(CharacterTemplate template)
+    protected virtual void SetTemplateData(ICharacterData data)
     {
-        m_template = template;
-        m_healthPoints = template.HealthPoints;
+        m_data = data;
+        m_healthPoints = data.HealthPoints;
     }
 
     public virtual void InstantiateCharacterEntity(CharacterEntity entityTemplate, bool force = false)
@@ -95,7 +99,7 @@ public class Character
 
     public SkillDefinition GetRandomAbility()
     {
-        return m_template.Skills[UnityEngine.Random.Range(0, m_template.Skills.Count)];
+        return m_data.Skills[UnityEngine.Random.Range(0, m_data.Skills.Count)];
     }
 
     public virtual void KillCharacter()

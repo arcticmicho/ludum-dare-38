@@ -10,6 +10,15 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     public string TemplateId
     {
         get { return m_templateId; }
+        set { }
+    }
+
+    [SerializeField]
+    private int m_level;
+    public int Level
+    {
+        get { return m_level; }
+        set { }
     }
 
     [SerializeField]
@@ -17,6 +26,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     public CharacterEntity Prefab
     {
         get { return m_prefab; }
+        set { }
     }
 
     [SerializeField]
@@ -24,6 +34,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     public float HealthPoints
     {
         get { return m_hp; }
+        set { }
     }
 
     [SerializeField]
@@ -31,6 +42,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     public DamageTable ResistanceTable
     {
         get { return m_resistanceTable; }
+        set { }
     }
 
     [SerializeField]
@@ -38,6 +50,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     public List<SkillDefinition> Skills
     {
         get { return m_skills; }
+        set { }
     }
 
     [SerializeField]
@@ -45,6 +58,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     public float MovementSpeed
     {
         get { return m_movementSpeed; }
+        set { }
     }
 
     [SerializeField]
@@ -54,6 +68,22 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
         get
         {
             return m_name;
+        }
+        set { }
+    }
+
+    [SerializeField]
+    private string m_entityTemplateId;
+    public string EntityTemplateId
+    {
+        get
+        {
+            return m_entityTemplateId;
+        }
+
+        set
+        {
+           
         }
     }
 }

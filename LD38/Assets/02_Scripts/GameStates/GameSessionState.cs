@@ -14,8 +14,9 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
     public override void OnEnter(GameStateData data)
     {
         base.OnEnter(data);
-        m_currentGameSession = new GameSession(data.SessionData);
+        m_currentGameSession = new GameSession(data);
         LoadResources();
+        m_currentGameSession.StartSession();
     }
 
     public override void UpdateState()

@@ -23,7 +23,7 @@ public static class DictionaryUtils
                 
             }catch(Exception e)
             {
-                Debug.LogError("Couldn't parse with key: " + key);
+                Debug.LogError("Couldn't parse with key: " + key + " With Exception: "+e.ToString());
                 return defaultValue;
             }
         }else

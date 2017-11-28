@@ -105,6 +105,7 @@ public static class SerializeUtils
             StreamReader stream = File.OpenText(string.Format(c_saveFormat, Application.persistentDataPath, saveName));
             savedData = stream.ReadToEnd();
             error = ESerializeError.None;
+            stream.Close();
             return true;
         }
         catch (UnauthorizedAccessException e)

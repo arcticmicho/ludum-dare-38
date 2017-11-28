@@ -64,7 +64,7 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
     public void LoadViews(ViewContainer container)
     {
         List<UIView> views = container.Views;
-        for(int i=0, count=container.Containers.Count; i<count; i++)
+        for(int i=0, count= views.Count; i<count; i++)
         {
             if(!m_cachedViews.ContainsKey(views[i].GetType()))
             {

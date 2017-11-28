@@ -13,9 +13,16 @@ public class GameStateData
         }
     }
 
-    public GameStateData(RoomSessionData sessionData)
+    private WizardData m_wizardData;
+    public WizardData WizardData
+    {
+        get { return m_wizardData; }
+    }
+
+    public GameStateData(RoomSessionData sessionData, WizardData wizardData)
     {
         m_roomData = sessionData;
+        m_wizardData = wizardData;
     }
     
 }

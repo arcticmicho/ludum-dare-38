@@ -10,22 +10,21 @@ public class GameInitializer : MonoSingleton<GameInitializer>
 
 	void Start ()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
+        UIPartyManager.Instance.Init();
+        UIPartyManager.Instance.LoadViews(m_initContainer);
+        UIPartyManager.Instance.RequestView<LoadingView>();
+        StartCoroutine(InitGame());
+    }
 
     private IEnumerator InitGame()
     {
-        yield return SceneManager.LoadSceneAsync("Main");
+        yield return SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
+
         GameManager.Instance.Init();
-        UIPartyManager.Instance.Init();
-        
+        ResourceManager.Instance.Initialize();
         GameManager.Instance.Serializer.DeserializeData();
-        UIPartyManager.Instance.RequestView<MainMenuView>();
+        GameStateManager.Instance.Initialize();
+        GameManager.Instance.PostLoad();
+        //UIPartyManager.Instance.RequestView<MainMenuView>();
     }
 }

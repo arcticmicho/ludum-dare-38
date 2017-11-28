@@ -6,7 +6,6 @@ using UnityEngine;
 [Serializable]
 public class UIResources
 {
-
     [SerializeField]
     private ViewContainer m_mainMenuViewContainer;
     public ViewContainer MainMenuViewContainer

@@ -14,6 +14,10 @@ public class PlayerData : SerializableObject
 
     private SerializableProperty<PlayerCurrency> m_currency;
     private SerializableProperty<List<WizardData>> m_wizardData;
+    public List<WizardData> WizardsData
+    {
+        get { return m_wizardData; }
+    }
 
     public PlayerData(GameSerializer serializer) : base(serializer)
     {
@@ -26,12 +30,24 @@ public class PlayerData : SerializableObject
     {
         if (dict.ContainsKey("PlayerLevel"))
         {
-            m_playerLevel = new SerializableProperty<int>(m_serializer, int.Parse(dict["PlayerLevel"] as string));
+            m_playerLevel = new SerializableProperty<int>(m_serializer, int.Parse(dict["PlayerLevel"].ToString()));
         }
         if(dict.ContainsKey("Currency"))
         {
             m_currency = new SerializableProperty<PlayerCurrency>(m_serializer, new PlayerCurrency(m_serializer));
             m_currency.Property.DeserializeObject(dict["Currency"] as Dictionary<string, object>);
+        }
+
+        if(dict.ContainsKey("Wizards"))
+        {
+            List<object> wizardsData = dict["Wizards"] as List<object>;
+            m_wizardData = new SerializableProperty<List<WizardData>>(m_serializer, new List<WizardData>());
+            for(int i=0, count = wizardsData.Count; i<count;i++)
+            {
+                WizardData newWizardData = new WizardData(m_serializer);
+                newWizardData.DeserializeObject(wizardsData[i] as Dictionary<string, object>);
+                m_wizardData.Property.Add(newWizardData);
+            }
         }
     }
 

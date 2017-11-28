@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,11 +23,49 @@ public class GameManager : MonoSingleton<GameManager>
         get { return m_finishPattern; }
     }
 
+    private GameData m_gameData;
+
     public override void Init()
     {
         m_serializer = new GameSerializer();
         m_serializer.ShiftData = true;
-        m_serializer.EncrypData = true;
+        m_serializer.EncrypData = false;
+    }
+
+    public void PostLoad()
+    {
+        m_gameData = m_serializer.GameData;
+    }
+
+    public void SetSelectedWizard(WizardData newWizard)
+    {
+        if(newWizard != null)
+        {
+            m_gameData.SelectedWizardId = newWizard.WizardID;
+        }
+    }
+
+    public void SetRoomId(RoomSessionData newRoom)
+    {
+        if(newRoom != null)
+        {
+            m_gameData.SelectRoomId = newRoom.RoomSessionId;
+        }
+    }
+
+    public WizardData GetSelectedWizard()
+    {
+        WizardData wizardData = CharactersManager.Instance.UnlockedWizards.Find((w) => string.Equals(w.WizardID, m_gameData.SelectedWizardId));
+        if(wizardData == null)
+        {
+            wizardData = CharactersManager.Instance.UnlockedWizards[0];
+        }
+        return wizardData;
+    }
+
+    public RoomSessionData GetSelectedRoomData()
+    {
+        return ResourceManager.Instance.RoomTemplateResources.GetRoomSessionTemplateById(m_gameData.SelectRoomId);
     }
 
     private void Start()
@@ -41,6 +80,9 @@ public class GameManager : MonoSingleton<GameManager>
 
     private void Update()
     {
-
+        if(m_serializer.IsDirty)
+        {
+            m_serializer.SerializeData();
+        }
     }    
 }

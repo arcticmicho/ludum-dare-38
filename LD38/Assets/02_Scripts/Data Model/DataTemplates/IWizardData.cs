@@ -4,9 +4,7 @@ using UnityEngine;
 
 public interface IWizardData : ICharacterData
 {
-    string WizardID { get; }
-    
-    int Level { get; }
+    string WizardID { get; set; }
 
-    int Exp { get; }    	
+    int Exp { get; set; }    	
 }

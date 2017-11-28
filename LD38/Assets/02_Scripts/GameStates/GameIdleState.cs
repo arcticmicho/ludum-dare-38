@@ -4,16 +4,28 @@ using UnityEngine;
 
 public class GameIdleState : GenericState<GameStateManager, GameStateData>
 {
+    private GameStateData m_sessionData;
+
     public override void OnEnter(GameStateData data)
     {
         base.OnEnter(data);
+        m_sessionData = null;
         LoadResources();
         UIPartyManager.Instance.RequestView<MainMenuView>();
     }
 
     public override StateTransition<GameStateData> EvaluateTransition()
     {
+        if(m_sessionData != null)
+        {
+            return new StateTransition<GameStateData>(typeof(GameSessionState), false, m_sessionData);
+        }
         return base.EvaluateTransition();
+    }
+
+    public void StartGameSession(GameStateData data)
+    {
+        m_sessionData = data;
     }
 
     public override void UpdateState()

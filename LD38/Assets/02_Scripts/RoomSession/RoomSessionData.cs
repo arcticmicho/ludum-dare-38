@@ -6,6 +6,20 @@ using UnityEngine;
 public class RoomSessionData : ScriptableObject
 {
     [SerializeField]
+    private string m_roomSessionId;
+    public string RoomSessionId
+    {
+        get { return m_roomSessionId; }
+    }
+
+    [SerializeField]
+    private string m_roomName;
+    public string RoomName
+    {
+        get { return m_roomName; }
+    }
+
+    [SerializeField]
     private List<EnemySpawnData> m_enemiesSpawnData;
     public List<EnemySpawnData> EnemiesSpawnData
     {

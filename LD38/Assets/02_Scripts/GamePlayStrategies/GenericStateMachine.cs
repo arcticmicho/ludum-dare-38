@@ -10,6 +10,11 @@ public class GenericStateMachine<OwnerType, Data> where Data : class
 
     private OwnerType m_psmOwner;
 
+    public GenericState<OwnerType,Data> CurrentState
+    {
+        get { return m_currentState; }
+    }
+
     public GenericStateMachine(OwnerType owner)
     {
         m_psmOwner = owner;

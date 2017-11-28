@@ -5,14 +5,27 @@ using UnityEngine;
 public class CharactersManager : MonoSingleton<CharactersManager>
 {
     [SerializeField]
-    private CharacterTemplate m_mainCharacter;
+    private WizardDataTemplate m_mainCharacter;
+
     [SerializeField]
     private CharacterEntity m_mainCharacterEntity;
+    public CharacterEntity MainCharacterEntity
+    {
+        get { return m_mainCharacterEntity; }
+    }
 
     [SerializeField]
     private CharacterTemplate m_enemyCharacter;
     [SerializeField]
     private CharacterEntity m_enemyEntity;
+
+    public List<WizardData> UnlockedWizards
+    {
+        get
+        {
+            return GameManager.Instance.Serializer.PlayerData.WizardsData;
+        }
+    }
     
     public Wizard GetSelectedWizard(GameSession currentSession)
     {

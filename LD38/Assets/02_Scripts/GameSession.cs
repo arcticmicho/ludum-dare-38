@@ -8,6 +8,8 @@ public class GameSession
     private bool m_sessionFinished;
     private bool m_sessionClosed;
 
+    private GameStateData m_gameStateData;
+
     private GenericStateMachine<Wizard,TransitionData> m_mainCharacterStateMachine;
 
     private RoomSessionData m_sessionData;
@@ -58,10 +60,11 @@ public class GameSession
 
     private bool m_gameOver;
 
-    public GameSession(RoomSessionData data)
+    public GameSession(GameStateData data)
     {
-        m_sessionData = data;
+        m_sessionData = data.SessionData;
         m_actions = new ActionsManager();
+        m_gameStateData = data;
     }
 
 	public void StartSession()
@@ -82,7 +85,7 @@ public class GameSession
     private void InstantiateCharacter()
     {
         m_enemies = new List<EnemyCharacter>();
-        m_mainCharacter = CharactersManager.Instance.GetSelectedWizard(this);
+        m_mainCharacter = new Wizard(this, m_gameStateData.WizardData, CharactersManager.Instance.MainCharacterEntity);
         m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
         m_mainCharacter.Entity.TranslateEntity(m_sessionView.MainCharacterPoint.transform.position);
     }

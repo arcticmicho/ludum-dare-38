@@ -11,7 +11,12 @@ public class Wizard : Character
         get { return m_skillTree; }
     }    
 
-    public Wizard(GameSession session, CharacterTemplate template, CharacterEntity entity) : base(session, template, entity)
+    public IWizardData WizardData
+    {
+        get { return m_data as IWizardData; }
+    }
+
+    public Wizard(GameSession session, IWizardData template, CharacterEntity entity) : base(session, template, entity)
     {
         m_skillTree = new SkillTree(template.Skills);
         m_skillTree.InitializeSkillTree(template.Skills);
