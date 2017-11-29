@@ -18,8 +18,11 @@ public class EndView : UIView
     }
 
     public void OnRestartButtonPressed()
-    {
-        GameManager.Instance.RequestGameSession();
+    {        
+        if(OnOkPressed != null)
+        {
+            OnOkPressed();
+        }
     }
 
     public static void RequestEndView(System.Action onOkPressed)

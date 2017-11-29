@@ -153,6 +153,7 @@ public class GameSession
     private void OnEndViewFinished()
     {
         m_sessionClosed = true;
+        UnloadSession();
     }
 
     private void FindNewTarget()
@@ -171,6 +172,7 @@ public class GameSession
         {
             m_enemies.Remove(enemyCharacter);
             m_defeatedEnemies++;
+            enemyCharacter.CurrentPoint.ReleasePoint();
             if(enemyCharacter == m_currentTarget)
             {
                 m_currentTarget = null;

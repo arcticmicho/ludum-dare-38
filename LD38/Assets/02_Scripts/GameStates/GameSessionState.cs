@@ -34,7 +34,7 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
     {
         if(m_currentGameSession.SessionClosed)
         {
-            return new StateTransition<GameStateData>(typeof(IdleGameplayState), false, null);
+            return new StateTransition<GameStateData>(typeof(GameIdleState), false, null);
         }
         return base.EvaluateTransition();
     }

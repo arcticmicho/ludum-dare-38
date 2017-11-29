@@ -68,11 +68,11 @@ public class MainMenuView : UIView
         base.OnViewClosed();
         for(int i=0, count=m_activeRoomWidgets.Count; i<count; i++)
         {
-            Destroy(m_activeRoomWidgets[i]);
+            Destroy(m_activeRoomWidgets[i].gameObject);
         }
         for(int i=0, count=m_activeWizardWidgets.Count; i<count; i++)
         {
-            Destroy(m_activeWizardWidgets[i]);
+            Destroy(m_activeWizardWidgets[i].gameObject);
         }
     }
 
