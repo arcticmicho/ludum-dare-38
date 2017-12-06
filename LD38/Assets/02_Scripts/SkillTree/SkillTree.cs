@@ -84,43 +84,16 @@ public class SkillTree
         {
             if(!searchLeaf.LeafConnections[i].IsEmptyLeaf)
             {
-                if(propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId) >= lastScore)
+                float score = propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId);
+                if (score >= searchLeaf.LeafConnections[i].Pattern.PatternThreshold && score >= lastScore)
                 {
-                    lastScore = propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId);
+                    lastScore = score;
                     selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
                     if (moveToNext)
                     {
                         m_current = searchLeaf.LeafConnections[i];
                     }
                 }
-
-                //RecognitionResult result = null;
-                //if(PatternManager.Instance.ProcessSkillPattern(patternPoints, searchLeaf.LeafConnections[i].Pattern, out result))
-                //{
-                //    if (result.RecognitionScore < lastResult.RecognitionScore)
-                //    {
-                //        lastResult = result;
-                //        selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
-                //        if (moveToNext)
-                //        {
-                //            m_current = searchLeaf.LeafConnections[i];
-                //        }
-                //    }
-                //}
-                //PRPatternDefinition pattern;
-                //if(PartyRecognitionManager.Instance.TryGetPatternById(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
-                //{
-                //    RecognitionResult result = PartyRecognitionManager.Instance.SimpleRecognize(patternPoints, pattern);
-                //    if (result.Success && result.RecognitionScore < lastResult.RecognitionScore)
-                //    {
-                //        lastResult = result;
-                //        selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
-                //        if (moveToNext)
-                //        {
-                //            m_current = searchLeaf.LeafConnections[i];
-                //        }                        
-                //    }
-                //}
             }            
         }
 

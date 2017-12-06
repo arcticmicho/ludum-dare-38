@@ -125,7 +125,7 @@ public class GameSession
             m_enemies[i].UpdateEnemy();
         }
 
-        if (m_defeatedEnemies >= m_totalEnemies || m_gameOver)
+        if (m_defeatedEnemies >= m_totalEnemies)
         {
             WinSession();
             m_sessionFinished = true;
