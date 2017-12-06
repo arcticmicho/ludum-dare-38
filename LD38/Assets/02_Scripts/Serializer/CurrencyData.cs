@@ -16,6 +16,7 @@ public class CurrencyData : SerializableObject
 
     public CurrencyData(GameSerializer serializer) : base(serializer)
     {
+
     }
 
     public override void DeserializeObject(Dictionary<string, object> dict)
