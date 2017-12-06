@@ -76,25 +76,37 @@ public class SkillTree
 
         SkillLeaf searchLeaf = m_current;
         SkillDefinition selectedSkillDef = null;
+        float lastScore = -1f;
         RecognitionResult lastResult = new RecognitionResult(false, 1);
+        PropagateResult propagateResult = PartyRecognitionManager.Instance.Recognize(patternPoints);
 
         for(int i=0; i< searchLeaf.LeafConnections.Count; i++)
         {
             if(!searchLeaf.LeafConnections[i].IsEmptyLeaf)
             {
-                RecognitionResult result = null;
-                if(PatternManager.Instance.ProcessSkillPattern(patternPoints, searchLeaf.LeafConnections[i].Pattern, out result))
+                if(propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId) >= lastScore)
                 {
-                    if (result.RecognitionScore < lastResult.RecognitionScore)
+                    lastScore = propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId);
+                    selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
+                    if (moveToNext)
                     {
-                        lastResult = result;
-                        selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
-                        if (moveToNext)
-                        {
-                            m_current = searchLeaf.LeafConnections[i];
-                        }
+                        m_current = searchLeaf.LeafConnections[i];
                     }
                 }
+
+                //RecognitionResult result = null;
+                //if(PatternManager.Instance.ProcessSkillPattern(patternPoints, searchLeaf.LeafConnections[i].Pattern, out result))
+                //{
+                //    if (result.RecognitionScore < lastResult.RecognitionScore)
+                //    {
+                //        lastResult = result;
+                //        selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
+                //        if (moveToNext)
+                //        {
+                //            m_current = searchLeaf.LeafConnections[i];
+                //        }
+                //    }
+                //}
                 //PRPatternDefinition pattern;
                 //if(PartyRecognitionManager.Instance.TryGetPatternById(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId, out pattern))
                 //{

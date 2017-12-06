@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable]
+[Serializable, CreateAssetMenu(fileName = "SkillPattern", menuName ="GamePlay/SkillPattern")]
 public class SkillPattern : ScriptableObject
 {
     [SerializeField]
@@ -25,5 +25,12 @@ public class SkillPattern : ScriptableObject
     public Sprite SkillPatternImage
     {
         get { return m_skillPatternImage; }
+    }
+
+    [SerializeField]
+    private float m_patternThreshold;
+    public float PatternThreshold
+    {
+        get { return m_patternThreshold; }
     }
 }

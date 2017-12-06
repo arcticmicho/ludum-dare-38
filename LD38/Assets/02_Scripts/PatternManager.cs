@@ -7,21 +7,16 @@ public class PatternManager : MonoSingleton<PatternManager>
     	
     public bool ProcessSkillPattern(Vector2[] points, SkillPattern pattern, out RecognitionResult result)
     {
-        PRPatternDefinition prPattern;
-        if (PartyRecognitionManager.Instance.TryGetPatternById(pattern.PatternRecognitionId, out prPattern))
-        {
-            result = PartyRecognitionManager.Instance.SimpleRecognize(points, prPattern);
-            return result.Success;
-        }
-        result = null;
-        return false;
+        float score;
+        bool propagateResult = PartyRecognitionManager.Instance.Recognize(points, pattern.PatternRecognitionId, pattern.PatternThreshold, out score);
+        result = new RecognitionResult(propagateResult, score, pattern.PatternRecognitionId);
+        return propagateResult;
     }
 
     public bool ProcessSkillPattern(List<Vector3> points, SkillPattern pattern, out RecognitionResult result)
     {
         return ProcessSkillPattern(ConvertList(points), pattern, out result);
     }
-
 
     private Vector2[] ConvertList(List<Vector3> points)
     {

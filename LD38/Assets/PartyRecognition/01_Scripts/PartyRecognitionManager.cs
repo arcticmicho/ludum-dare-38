@@ -69,6 +69,10 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
 
     [SerializeField]
     private float m_successThresholdPercent = 0.95f;
+    public float SuccessThresholdPercent
+    {
+        get { return m_successThresholdPercent; }
+    }
 
     private PartyBPN m_neuronalNetwork;
     public PartyBPN NeuronalNetwork
@@ -168,15 +172,22 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
     }
 
     /// <summary>
-    /// Initalize a Recognition process
+    /// Initalize a Recognition process using the Greedy5 Strategy as default Heuristic Strategy
     /// </summary>
     /// <param name="points"></param>
-    public RecognitionResult Recognize(Vector2[] points)
+    public PropagateResult Recognize(Vector2[] points)
     {
         //return Recognize(points, new Greedy5RecognitionStrategy(0.5f, true));
         PRPatternDefinition pattern = new PRPatternDefinition(new List<Vector2>(points), (int)DefaultNeuronNumberInput);
         pattern.NormalizePoints();
         return m_neuronalNetwork.Propagate(pattern.GetAngles(), 0.8f);
+    }  
+
+    public bool Recognize(Vector2[] points, string patternId, float threshold, out float score)
+    {
+        PropagateResult result = Recognize(points);
+        score = result.GetScore(patternId);
+        return result.GetScore(patternId) >= threshold;
     }
 
 #if UNITY_EDITOR
