@@ -116,8 +116,9 @@ public class Example : MonoBehaviour
                 Debug.Log("Result: " + result.Success + "Score: " + result.RecognitionScore + " ScorePercent: "+ result.RecognitionScoreAsPercent + " PatternName: "+ result.PatternName);
                 break;
             case ExampleMode.SavePattern:
-                Vector2[] normalizedPoints = PartyRecognitionManager.Instance.NormalizePoints(m_points.ToArray());
-                PRPatternDefinition newPattern = new PRPatternDefinition(normalizedPoints, m_patternName);
+                //Vector2[] normalizedPoints = PartyRecognitionManager.Instance.NormalizePoints(m_points.ToArray());
+                PRPatternDefinition newPattern = new PRPatternDefinition(m_points, (int)PartyRecognitionManager.Instance.DefaultNeuronNumberInput, m_patternName);
+                newPattern.NormalizePoints();
                 PartyRecognitionManager.Instance.AddPattern(newPattern);
                 break;
         }

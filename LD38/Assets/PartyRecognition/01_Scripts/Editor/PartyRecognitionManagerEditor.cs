@@ -9,6 +9,10 @@ using System.Text;
 public class PartyRecognitionManagerEditor : Editor
 {
     PartyRecognitionManager m_instance;
+    private int m_selectedPatternIndex = 0;
+    private int m_numberOfEpochs = 2000;
+
+    private IEnumerator m_trainingProcess;
 
     public override void OnInspectorGUI()
     {
@@ -24,6 +28,81 @@ public class PartyRecognitionManagerEditor : Editor
         {
             WriteCurrentPatternsToJsonFile();
         }
+        int numberOfEpochs = EditorGUILayout.IntField(m_numberOfEpochs);
+        if(numberOfEpochs != m_numberOfEpochs)
+        {
+            m_numberOfEpochs = numberOfEpochs;
+        }
+        if(GUILayout.Button("Train NeuronalNet"))
+        {           
+            EditorApplication.update += Update;
+        }
+        if(GUILayout.Button("Write NeuronalNet"))
+        {            
+            if(m_instance.NeuronalNetwork != null)
+            {
+                WriteCurrentNeuronalNetwork();
+            }else
+            {
+                Debug.LogError("There is not NeuronalNetwork initialized");
+            }
+        }
+
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+
+        GUILayout.Label("Selected Patterns:");
+
+        for(int i=0, count=m_instance.SelectedPatterns.Count; i<count;i++)
+        {
+            GUILayout.Label(m_instance.SelectedPatterns[i].PatternName);            
+        }
+
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+
+        int selectedPatternIndex = EditorGUILayout.Popup(m_selectedPatternIndex, CurrentPatternsList());
+        if(selectedPatternIndex != m_selectedPatternIndex)
+        {
+            m_selectedPatternIndex = selectedPatternIndex;
+        }
+        if(GUILayout.Button("Add Pattern To Selected List"))
+        {
+            m_instance.AddSelectedPattern(m_instance.PatternDefinitionSet[m_selectedPatternIndex]);
+        }
+    }
+
+    private void Update()
+    {
+        try
+        {
+            if(m_trainingProcess == null)
+            {
+                m_trainingProcess = m_instance.StartBPNTraining(m_instance.SelectedPatterns, m_numberOfEpochs);
+            }
+
+            if (!m_trainingProcess.MoveNext())
+            {
+                m_trainingProcess = null;
+                EditorApplication.update -= Update;
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError(e.ToString());
+            EditorApplication.update -= Update;            
+        }
+    }
+
+    private string[] CurrentPatternsList()
+    {
+        string[] names = new string[m_instance.PatternDefinitionSet.Count];
+        for(int i=0,count= m_instance.PatternDefinitionSet.Count; i<count;i++)
+        {
+            names[i] = m_instance.PatternDefinitionSet[i].PatternName;
+        }
+        return names;
     }
 
     private void ReadSprites()
@@ -36,6 +115,14 @@ public class PartyRecognitionManagerEditor : Editor
             definitions.Add(def.Serialize());
         }
         stream.WriteLine(MiniJSON.Json.Serialize(definitions));
+        stream.Close();
+    }
+
+    private void WriteCurrentNeuronalNetwork()
+    {
+        StreamWriter stream = File.CreateText(AssetDatabase.GetAssetPath(m_instance.NeuronalNetworkTextAsset));
+        Dictionary<string, object> neuronalNetworkData = m_instance.NeuronalNetwork.Serialize();
+        stream.WriteLine(MiniJSON.Json.Serialize(neuronalNetworkData));
         stream.Close();
     }
 
@@ -70,13 +157,13 @@ public class PartyRecognitionManagerEditor : Editor
                 }
             }
         }
-        Vector2[] arrayPoints = OrderPoints(points);
-        arrayPoints = m_instance.NormalizePoints(arrayPoints);
-        PRPatternDefinition def = new PRPatternDefinition(arrayPoints, tex.name);
+        List<Vector2> arrayPoints = OrderPoints(points);
+        PRPatternDefinition def = new PRPatternDefinition(arrayPoints, (int)PartyRecognitionManager.Instance.DefaultNeuronNumberInput, tex.name);
+        def.NormalizePoints();
         return def;
     }
 
-    public Vector2[] OrderPoints(List<Vector2> points)
+    public List<Vector2> OrderPoints(List<Vector2> points)
     {
         List<Vector2> pointsSet = new List<Vector2>(points);
         List<Vector2> orderedPoints = new List<Vector2>();
@@ -98,6 +185,6 @@ public class PartyRecognitionManagerEditor : Editor
             currentPoint = nearestPoint;
             pointsSet.Remove(nearestPoint);
         }
-        return orderedPoints.ToArray();
+        return orderedPoints;
     }
 }
