@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class SkillLeaf
 {
-    private SkillDefinition m_skill;
-    public SkillDefinition SkillDef
+    private SkillData m_skill;
+    public SkillData SkillData
     {
         get { return m_skill; }
     }
@@ -27,14 +27,14 @@ public class SkillLeaf
         get { return m_skill == null; }
     }
 
-    public SkillLeaf(SkillDefinition skillDef, SkillPattern pattern)
+    public SkillLeaf(SkillData skillData, SkillPattern pattern)
     {
-        m_skill = skillDef;
+        m_skill = skillData;
         m_associatedPattern = pattern;
         m_leafConnections = new List<SkillLeaf>();
     }
 
-    public bool TryGetLeaf(SkillDefinition skillDef, out SkillLeaf childLeaf)
+    public bool TryGetLeaf(SkillData skillDef, out SkillLeaf childLeaf)
     {
         for(int i=0; i<m_leafConnections.Count; i++)
         {
@@ -81,9 +81,9 @@ public class SkillLeaf
         return true;
     }
 
-    public void SetLeaf(SkillDefinition skillDef, SkillPattern pattern)
+    public void SetLeaf(SkillData skillData, SkillPattern pattern)
     {
-        m_skill = skillDef;
+        m_skill = skillData;
         m_associatedPattern = pattern;
     }
 }

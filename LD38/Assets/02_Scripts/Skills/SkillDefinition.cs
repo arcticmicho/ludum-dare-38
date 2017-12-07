@@ -32,6 +32,13 @@ public class SkillDefinition : ScriptableObject
         get { return m_spellDamage; }
     }
 
+    [SerializeField, Range(0f, 1f)]
+    private float m_damageIncrease;
+    public float DamageIncrease
+    {
+        get { return m_damageIncrease; }
+    }
+
     [SerializeField, Range(0f,1f)]
     private float m_criticalChance;
     public float CriticalChange

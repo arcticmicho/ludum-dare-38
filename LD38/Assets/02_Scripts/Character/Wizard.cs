@@ -18,17 +18,17 @@ public class Wizard : Character
 
     public Wizard(GameSession session, IWizardData template, CharacterEntity entity) : base(session, template, entity)
     {
-        m_skillTree = new SkillTree(template.Skills);
+        m_skillTree = new SkillTree();
         m_skillTree.InitializeSkillTree(template.Skills);
     }  
 
-    public bool TryProcessPattern(Vector2[] patternPoints, out SkillDefinition skillDef)
+    public bool TryProcessPattern(Vector2[] patternPoints, out SkillData skillData)
     {
-        if(m_skillTree != null && m_skillTree.SearchForPattern(patternPoints, out skillDef, true))
+        if(m_skillTree != null && m_skillTree.SearchForPattern(patternPoints, out skillData, true))
         {
             return true;           
         }
-        skillDef = null;
+        skillData = null;
         return false;
     }
 

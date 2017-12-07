@@ -20,10 +20,10 @@ public class SkillsBook : MonoBehaviour
             Destroy(m_skillsViewGrid.GetChild(i).gameObject);
         }
 
-        foreach (SkillDefinition skillDef in skillTree.GetAllSkillDefinitionsFromTree())
+        foreach (SkillData skillDef in skillTree.GetAllSkillFromTree())
         {
             SkillView newView = GameObject.Instantiate(m_skillViewPrefab);
-            newView.InitializeSkillView(skillDef);
+            newView.InitializeSkillView(skillDef.SkillDefinition);
             newView.transform.SetParent(m_skillsViewGrid);
         }
     }

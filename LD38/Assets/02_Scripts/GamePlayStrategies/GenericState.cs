@@ -46,8 +46,8 @@ public class TransitionData
         get { return m_initDrag; }
     }
 
-    private SkillDefinition m_selectedSkill;
-    public SkillDefinition SelectedSkill
+    private SkillData m_selectedSkill;
+    public SkillData SelectedSkill
     {
         get { return m_selectedSkill; }
     }
@@ -63,7 +63,7 @@ public class TransitionData
         m_initDrag = initialDrag;
     }
 
-    public TransitionData(SkillDefinition skillDef)
+    public TransitionData(SkillData skillDef)
     {
         m_hasInputData = false;
         m_selectedSkill = skillDef;

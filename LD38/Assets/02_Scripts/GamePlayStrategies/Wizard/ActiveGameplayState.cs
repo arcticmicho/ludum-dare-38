@@ -12,7 +12,7 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
     private float m_detectingTime;
     private bool m_finishActiveGameplay;
     private bool m_forceFinish;
-    private SkillDefinition m_skillToCast;
+    private SkillData m_skillToCast;
     private TrailRenderer m_currentTrailRenderer;
 
     private Camera m_mainCamera;
@@ -124,13 +124,13 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
             return true;
         }
 
-        SkillDefinition newDef;
-        if(m_character.TryProcessPattern(ConvertList(m_dragPositions), out newDef))
+        SkillData newSkillData;
+        if(m_character.TryProcessPattern(ConvertList(m_dragPositions), out newSkillData))
         {
-            Debug.Log("Ability Found!: " + newDef.SkillName);            
-            m_skillToCast = newDef;
+            Debug.Log("Ability Found!: " + newSkillData.SkillDefinition.SkillName);            
+            m_skillToCast = newSkillData;
             m_character.Entity.PlayCastAnimation();
-            m_character.Entity.CharacterCanvas.ShowBubbleText(newDef.SkillName + "!!", 3);
+            m_character.Entity.CharacterCanvas.ShowBubbleText(newSkillData.SkillDefinition.SkillName + "!!", 3);
             return true;
         }
         return false;

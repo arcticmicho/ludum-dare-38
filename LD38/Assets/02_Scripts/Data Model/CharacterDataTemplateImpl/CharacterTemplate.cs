@@ -46,8 +46,8 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     }
 
     [SerializeField]
-    private List<SkillDefinition> m_skills;
-    public List<SkillDefinition> Skills
+    private List<SkillData> m_skills;
+    public List<SkillData> Skills
     {
         get { return m_skills; }
         set { }

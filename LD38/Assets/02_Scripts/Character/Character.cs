@@ -97,7 +97,7 @@ public class Character
         m_entity.PlayHitAnimation();
     }
 
-    public SkillDefinition GetRandomAbility()
+    public SkillData GetRandomAbility()
     {
         return m_data.Skills[UnityEngine.Random.Range(0, m_data.Skills.Count)];
     }

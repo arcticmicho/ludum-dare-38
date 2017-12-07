@@ -8,12 +8,12 @@ public class SkillTree
     private SkillLeaf m_root;
     private SkillLeaf m_current;
 
-    public SkillTree(List<SkillDefinition> skills)
+    public SkillTree()
     {
         m_root = new SkillLeaf(null, null);
     }
 
-    public void InitializeSkillTree(List<SkillDefinition> skills)
+    public void InitializeSkillTree(List<SkillData> skills)
     {
         for(int i=0; i<skills.Count; i++)
         {
@@ -21,53 +21,53 @@ public class SkillTree
         }
     }
 
-    private void AddSkill(SkillDefinition skillDefinition)
+    private void AddSkill(SkillData skillData)
     {
         SkillLeaf currentLeaf = null;
         SkillLeaf lastLeaf = null;
 
-        for(int i=0; i<skillDefinition.SkillPatterns.Length; i++)
+        for(int i=0; i<skillData.SkillDefinition.SkillPatterns.Length; i++)
         {
             if(currentLeaf == null)
             {
-                if(!m_root.TryGetLeaf(skillDefinition.SkillPatterns[i], out currentLeaf))
+                if(!m_root.TryGetLeaf(skillData.SkillDefinition.SkillPatterns[i], out currentLeaf))
                 {
-                    if (skillDefinition.SkillPatterns.Length - 1 == i)
+                    if (skillData.SkillDefinition.SkillPatterns.Length - 1 == i)
                     {
-                        m_root.AddLeaf(new SkillLeaf(skillDefinition, skillDefinition.SkillPatterns[i]));
+                        m_root.AddLeaf(new SkillLeaf(skillData, skillData.SkillDefinition.SkillPatterns[i]));
                     }
                     else
                     {
-                        m_root.AddLeaf(new SkillLeaf(null, skillDefinition.SkillPatterns[i]));
+                        m_root.AddLeaf(new SkillLeaf(null, skillData.SkillDefinition.SkillPatterns[i]));
                     }
                         
                 }
             }else
             {
                 lastLeaf = currentLeaf;
-                if (!currentLeaf.TryGetLeaf(skillDefinition.SkillPatterns[i], out currentLeaf))
+                if (!currentLeaf.TryGetLeaf(skillData.SkillDefinition.SkillPatterns[i], out currentLeaf))
                 {
-                    if (skillDefinition.SkillPatterns.Length - 1 == i)
+                    if (skillData.SkillDefinition.SkillPatterns.Length - 1 == i)
                     {
-                        lastLeaf.AddLeaf(new SkillLeaf(skillDefinition, skillDefinition.SkillPatterns[i]));
+                        lastLeaf.AddLeaf(new SkillLeaf(skillData, skillData.SkillDefinition.SkillPatterns[i]));
                     }
                     else
                     {
-                        lastLeaf.AddLeaf(new SkillLeaf(null, skillDefinition.SkillPatterns[i]));
+                        lastLeaf.AddLeaf(new SkillLeaf(null, skillData.SkillDefinition.SkillPatterns[i]));
                     }
                 }
                 else
                 {
-                    if (skillDefinition.SkillPatterns.Length - 1 == i)
+                    if (skillData.SkillDefinition.SkillPatterns.Length - 1 == i)
                     {
-                        currentLeaf.SetLeaf(skillDefinition, skillDefinition.SkillPatterns[i]);
+                        currentLeaf.SetLeaf(skillData, skillData.SkillDefinition.SkillPatterns[i]);
                     }
                 }
             }
         }
     }
 
-    internal bool SearchForPattern(Vector2[] patternPoints, out SkillDefinition skillDef, bool moveToNext = false)
+    internal bool SearchForPattern(Vector2[] patternPoints, out SkillData skillData, bool moveToNext = false)
     {
         if(m_current == null)
         {
@@ -75,7 +75,7 @@ public class SkillTree
         }
 
         SkillLeaf searchLeaf = m_current;
-        SkillDefinition selectedSkillDef = null;
+        SkillData selectedSkill = null;
         float lastScore = -1f;
         RecognitionResult lastResult = new RecognitionResult(false, 1);
         PropagateResult propagateResult = PartyRecognitionManager.Instance.Recognize(patternPoints);
@@ -88,7 +88,7 @@ public class SkillTree
                 if (score >= searchLeaf.LeafConnections[i].Pattern.PatternThreshold && score >= lastScore)
                 {
                     lastScore = score;
-                    selectedSkillDef = searchLeaf.LeafConnections[i].SkillDef;
+                    selectedSkill = searchLeaf.LeafConnections[i].SkillData;
                     if (moveToNext)
                     {
                         m_current = searchLeaf.LeafConnections[i];
@@ -97,12 +97,12 @@ public class SkillTree
             }            
         }
 
-        if(selectedSkillDef != null)
+        if(selectedSkill != null)
         {
-            skillDef = selectedSkillDef;
+            skillData = selectedSkill;
             return true;
         }
-        skillDef = null;
+        skillData = null;
         return false;
     }
 
@@ -117,20 +117,20 @@ public class SkillTree
         m_current = m_root;
     }
 
-    public List<SkillDefinition> GetAllSkillDefinitionsFromTree()
+    public List<SkillData> GetAllSkillFromTree()
     {
-        List<SkillDefinition> skills = new List<SkillDefinition>();
+        List<SkillData> skills = new List<SkillData>();
         SearchForSkills(m_root, skills);
         return skills;
     }
 
-    private void SearchForSkills(SkillLeaf leaf, List<SkillDefinition> skills)
+    private void SearchForSkills(SkillLeaf leaf, List<SkillData> skills)
     {
         for(int i=0, count=leaf.LeafConnections.Count; i<count; i++)
         {
             if(!leaf.LeafConnections[i].IsEmptyLeaf)
             {
-                skills.Add(leaf.LeafConnections[i].SkillDef);
+                skills.Add(leaf.LeafConnections[i].SkillData);
             }
             SearchForSkills(leaf.LeafConnections[i], skills);
         }

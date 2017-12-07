@@ -13,7 +13,7 @@ public class CastingGameplayState : GenericState<Wizard, TransitionData>
         action.OnActionEnds += OnFinishCasting;
         m_character.Session.ActionManager.EnqueueAction(action);
         UIPartyManager.Instance.RequestView<CastingView>();
-        UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillName);
+        UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
     }
 
     public override StateTransition<TransitionData> EvaluateTransition()

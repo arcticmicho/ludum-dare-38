@@ -14,7 +14,7 @@ public class CastAction : GameAction
     }
 
     private ECastStep m_currentStep;
-    private SkillDefinition m_skillDef;
+    private SkillData m_skillData;
     private Character m_owner;
 
     private Character[] m_targets;
@@ -38,9 +38,9 @@ public class CastAction : GameAction
         }
     }
 
-    public CastAction(GameSession session, SkillDefinition skillDef, Character owner, Character[] targets) : base(session)
+    public CastAction(GameSession session, SkillData skillData, Character owner, Character[] targets) : base(session)
     {
-        m_skillDef = skillDef;
+        m_skillData = skillData;
         m_targets = targets;
         m_owner = owner;
     }
@@ -80,7 +80,7 @@ public class CastAction : GameAction
                 float magn = dir.sqrMagnitude;
                 if(magn > 0.1f)
                 {
-                    m_projectile.transform.position += dir.normalized * (m_skillDef.SpellSpeed * TimeManager.Instance.DeltaTime);
+                    m_projectile.transform.position += dir.normalized * (m_skillData.SkillDefinition.SpellSpeed * TimeManager.Instance.DeltaTime);
                 }
                 else
                 {
@@ -106,19 +106,19 @@ public class CastAction : GameAction
         switch (newStep)
         {
             case ECastStep.Casting:
-                m_castingTime = m_skillDef.CastingTime;
+                m_castingTime = m_skillData.SkillDefinition.CastingTime;
                 m_elapsedCastingTime = 0f;
                 m_owner.Entity.PlayCastAnimation();
                 break;
             case ECastStep.Throwing:
-                m_projectile = GameObject.Instantiate<GameObject>(m_skillDef.SpellPrefab);
+                m_projectile = GameObject.Instantiate<GameObject>(m_skillData.SkillDefinition.SpellPrefab);
                 m_projectileTarget = m_targets[0];
                 m_projectile.transform.position = m_owner.Entity.transform.position + new Vector3(0.5f * Mathf.Sign((m_projectileTarget.Entity.transform.position - m_owner.Entity.transform.position).x), 0f, 0f);
                 m_owner.Entity.PlayThrowAbilityAnimation();
                 break;
             case ECastStep.Hitting:
                 GameObject.Destroy(m_projectile.gameObject);
-                GameObject particle = GameObject.Instantiate(m_skillDef.ImpactPrefab);
+                GameObject particle = GameObject.Instantiate(m_skillData.SkillDefinition.ImpactPrefab);
                 particle.transform.position = m_projectileTarget.Entity.transform.position;
                 m_elapsedCastingTime = 0f;
                 ApplyDamage();
@@ -130,7 +130,7 @@ public class CastAction : GameAction
 
     private void ApplyDamage()
     {
-        DamageFlow flow = new DamageFlow(m_owner, m_projectileTarget, m_skillDef);
+        DamageFlow flow = new DamageFlow(m_owner, m_projectileTarget, m_skillData);
         m_projectileTarget.ApplyDamage(flow.ExecuteFlow());
     }
 }

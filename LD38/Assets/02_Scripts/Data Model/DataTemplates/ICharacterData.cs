@@ -12,7 +12,7 @@ public interface ICharacterData
 
     DamageTable ResistanceTable { get; set; }
 
-    List<SkillDefinition> Skills { get; set; }
+    List<SkillData> Skills { get; set; }
 
     float MovementSpeed { get; set; }
 

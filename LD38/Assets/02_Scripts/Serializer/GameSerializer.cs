@@ -5,6 +5,8 @@ using UnityEngine;
 
 public partial class GameSerializer
 {
+    public const string kDefaultSaveName = "Save1";
+
     private bool m_shiftData;
     public bool ShiftData
     {
@@ -97,4 +99,5 @@ public partial class GameSerializer
         Dictionary<string, object> dataDict = (Dictionary<string,object>) MiniJSON.Json.Deserialize(decodedData);
         return dataDict;
     }
+
 }

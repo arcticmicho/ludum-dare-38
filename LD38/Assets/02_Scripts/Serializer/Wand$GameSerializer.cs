@@ -28,7 +28,7 @@ public partial class GameSerializer
         gameData.Add("PlayerData", m_playerData.SerializeObject());
         gameData.Add("GameData", m_gameData.SerializeObject());
         SerializeUtils.ESerializeError error;
-        if(SaveGame(gameData, "Save1", out error))
+        if(SaveGame(gameData, kDefaultSaveName, out error))
         {
             Debug.Log("SerialiazeSuccess");
             m_isDirty = false;
@@ -42,7 +42,7 @@ public partial class GameSerializer
     {
         Dictionary<string, object> gameData;
         SerializeUtils.ESerializeError error;
-        if (LoadGame("Save1", out gameData, out error))
+        if (LoadGame(kDefaultSaveName, out gameData, out error))
         {
             LoadData(gameData);
         }

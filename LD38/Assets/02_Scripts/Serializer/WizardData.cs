@@ -13,7 +13,7 @@ public class WizardData : SerializableObject, IWizardData
     private SerializableProperty<float> m_healthPoints;
     private SerializableProperty<float> m_movementSpeed;
     private SerializableProperty<string> m_entityTemplateId;
-    private List<SkillDefinition> m_skills;
+    private List<SkillData> m_skills;
     private DamageTable m_resistanceTable; 
 
     public string WizardTemplateId
@@ -104,7 +104,7 @@ public class WizardData : SerializableObject, IWizardData
         }
     }
 
-    public List<SkillDefinition> Skills
+    public List<SkillData> Skills
     {
         get
         {
@@ -158,7 +158,7 @@ public class WizardData : SerializableObject, IWizardData
         m_wizardId = new SerializableProperty<string>(m_serializer, template.WizardID);
         m_healthPoints = new SerializableProperty<float>(m_serializer, template.HealthPoints);
         m_movementSpeed = new SerializableProperty<float>(m_serializer, template.MovementSpeed);
-        m_skills = new List<SkillDefinition>(template.Skills);
+        m_skills = new List<SkillData>(template.Skills);
         m_resistanceTable = new DamageTable(template.ResistanceTable.DamageInfo);
     }
 
@@ -194,16 +194,13 @@ public class WizardData : SerializableObject, IWizardData
         return newDict;
     }
 
-    private List<SkillDefinition> DeserializeSkills(List<object> skillIDs)
+    private List<SkillData> DeserializeSkills(List<object> skillIDs)
     {
-        List<SkillDefinition> skillsDef = new List<SkillDefinition>();
+        List<SkillData> skillsDef = new List<SkillData>();
         for(int i=0, count= skillIDs.Count; i<count; i++)
         {
-            SkillDefinition skill = ResourceManager.Instance.SkillRecources.GetSkillsById(skillIDs[i].ToString());
-            if(skill != null)
-            {
-                skillsDef.Add(skill);
-            }
+            Dictionary<string, object> skillData = skillIDs[i] as Dictionary<string, object>;
+            skillsDef.Add(new SkillData(int.Parse(skillData["SkillLevel"].ToString()), skillData["SkillDefId"].ToString()));
         }
         return skillsDef;
     }
@@ -244,14 +241,17 @@ public class WizardData : SerializableObject, IWizardData
     }
 
 
-    private List<string> SerializeSkills(List<SkillDefinition> skills)
+    private List<Dictionary<string,object>> SerializeSkills(List<SkillData> skills)
     {
-        List<string> skillsId = new List<string>();
+        List<Dictionary<string, object>> skillsData = new List<Dictionary<string, object>>();
         for(int i=0, count=skills.Count; i<count; i++)
         {
-            skillsId.Add(skills[i].SkillId);
+            Dictionary<string, object> skillData = new Dictionary<string, object>();
+            skillData.Add("SkillLevel", skills[i].SkillLevel);
+            skillData.Add("SkillDefId", skills[i].SkillDefinition.SkillId);
+            skillsData.Add(skillData);
         }
-        return skillsId;
+        return skillsData;
     }
 
     private Dictionary<string, object> SeralizeResistanceTable(DamageTable m_resistanceTable)

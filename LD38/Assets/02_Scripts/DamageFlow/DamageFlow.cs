@@ -20,9 +20,9 @@ public class DamageFlow
     private List<DamageTable> m_extaDamages;
     private DamageTable m_totalDamage;
 
-    public DamageFlow(Character owner, Character target, SkillDefinition skillDef, DamageTable resistanceTable = null)
+    public DamageFlow(Character owner, Character target, SkillData skillData, DamageTable resistanceTable = null)
     {        
-        m_flowInfo = new DamageFlowData(owner, target, skillDef, resistanceTable);
+        m_flowInfo = new DamageFlowData(owner, target, skillData, resistanceTable);
     }
 
     public DamageTable ExecuteFlow()
@@ -46,9 +46,9 @@ public class DamageFlow
     private void CriticalModStep()
     {
         float dice = RandomUtils.Random01();
-        if(dice < m_flowInfo.SkillDefinition.CriticalChange)
+        if(dice < m_flowInfo.SkillData.SkillDefinition.CriticalChange)
         {
-            m_extaDamages.Add(m_flowInfo.SpellDamage * m_flowInfo.SkillDefinition.CriticalMultiplier);
+            m_extaDamages.Add(m_flowInfo.SpellDamage * m_flowInfo.SkillData.SkillDefinition.CriticalMultiplier);
         }
     }
 

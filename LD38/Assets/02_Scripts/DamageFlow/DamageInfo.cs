@@ -16,10 +16,10 @@ public class DamageFlowData
         get { return m_target; }
     }
 
-    private SkillDefinition m_skillDef;
-    public SkillDefinition SkillDefinition
+    private SkillData m_skillData;
+    public SkillData SkillData
     {
-        get { return m_skillDef; }
+        get { return m_skillData; }
     }
 
     private DamageTable m_spellDamage;
@@ -34,12 +34,12 @@ public class DamageFlowData
         get { return m_resitanceTable; }
     }
 
-    public DamageFlowData(Character owner, Character target, SkillDefinition skillDef, DamageTable resistanceTable = null)
+    public DamageFlowData(Character owner, Character target, SkillData skillData, DamageTable resistanceTable = null)
     {
         m_owner = owner;
         m_target = target;
-        m_skillDef = skillDef;
-        m_spellDamage = skillDef.SpellDamage.Clone();
+        m_skillData = skillData;
+        m_spellDamage = skillData.SkillDefinition.SpellDamage.Clone();
         if(resistanceTable ==  null)
         {
             m_resitanceTable = m_target.ResistanceTable;   
