@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "RoomDataTemplate", menuName = "GamePlay/Rooms/RoomData")]
 public class RoomSessionData : ScriptableObject
 {
     [SerializeField]

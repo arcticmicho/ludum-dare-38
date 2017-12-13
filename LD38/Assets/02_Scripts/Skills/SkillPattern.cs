@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable, CreateAssetMenu(fileName = "SkillPattern", menuName ="GamePlay/SkillPattern")]
+[Serializable, CreateAssetMenu(fileName = "SkillPattern", menuName ="GamePlay/Skills/SkillPattern")]
 public class SkillPattern : ScriptableObject
 {
     [SerializeField]

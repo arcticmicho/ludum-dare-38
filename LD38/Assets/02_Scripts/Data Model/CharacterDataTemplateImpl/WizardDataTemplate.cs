@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Wizard Data Template", menuName = "Data/Characters")]
+[CreateAssetMenu(fileName = "Wizard Data Template", menuName = "GamePlay/Characters/Wizard")]
 public class WizardDataTemplate : CharacterTemplate, IWizardData
 {
     [SerializeField]

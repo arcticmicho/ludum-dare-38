@@ -10,6 +10,7 @@ public enum ECharacterStat
     CastingTime = 8
 }
 
+[CreateAssetMenu(fileName = "EquippableItem", menuName = "GamePlay/Items/ConsumableItem")]
 public class ConsumableItemTemplate : ItemTemplate
 {
     [SerializeField]

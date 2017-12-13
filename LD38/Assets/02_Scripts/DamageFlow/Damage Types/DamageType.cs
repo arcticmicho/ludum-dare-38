@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "DamageType", menuName = "GamePlay/DamageType/DamageType")]
 public class DamageType : ScriptableObject
 {
     [SerializeField]
