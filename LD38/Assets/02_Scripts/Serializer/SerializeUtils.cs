@@ -125,7 +125,13 @@ public static class SerializeUtils
             savedData = string.Empty;
             error = ESerializeError.UnauthorizedAccess;
             return false;
-        }               
+        }     
+        catch (Exception e)
+        {
+            savedData = string.Empty;
+            error = ESerializeError.FileNotFound;
+            return false;
+        }          
     }
 
     public enum ESerializeError
