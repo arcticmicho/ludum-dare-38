@@ -72,10 +72,25 @@ public partial class GameSerializer
         
         foreach(WizardDataTemplate template in ResourceManager.Instance.CharacterTemplates.InitialWizard)
         {
-            m_playerData.WizardsData.Add(new WizardData(this, template));
+            WizardData newWizardData = new WizardData(this, template);
+            m_playerData.WizardsData.Add(newWizardData);
+            if(template.WeaponTemplate != null)
+            {
+                EquippableItemInstance newWeapon = new EquippableItemInstance(this, template.WeaponTemplate);
+                newWizardData.EquipWeapon(newWeapon);
+                newWeapon.Equip(newWizardData);
+                m_playerData.EquippableItems.Add(newWeapon);
+            }
+        }
+
+        foreach(ConsumableItemTemplate template in ResourceManager.Instance.InventoryResources.InitialConsumables)
+        {
+            m_playerData.ConsumableItems.Add(new ConsumableItemInstance(this, template));
         }
 
         m_gameData = new GameData(this);
         m_gameData.SelectedWizardId = m_playerData.WizardsData[0].WizardID;
+
+        m_gameData.SelectRoomId = ResourceManager.Instance.RoomTemplateResources.RoomSessionTemplates[0].RoomSessionId;
     }
 }

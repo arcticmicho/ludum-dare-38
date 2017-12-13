@@ -11,6 +11,14 @@ public class InventoryResources
     [SerializeField]
     private List<ConsumableItemTemplate> m_consumableItems;
 
+
+    [SerializeField]
+    private List<ConsumableItemTemplate> m_initialConsumableItems;
+    public List<ConsumableItemTemplate> InitialConsumables
+    {
+        get { return m_initialConsumableItems; }
+    }
+
     private Dictionary<string, EquippableItemTemplate> m_equippableItemsDict;
     private Dictionary<string, ConsumableItemTemplate> m_consumableItemsDict;
 

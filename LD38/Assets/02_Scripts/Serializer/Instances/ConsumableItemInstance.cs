@@ -9,7 +9,7 @@ public class ConsumableItemInstance : ItemInstance
 
     }
 
-    public ConsumableItemInstance(GameSerializer serializer, ConsumableItemTemplate itemDefId) : base(serializer, itemDefId.ItemTemplateId)
+    public ConsumableItemInstance(GameSerializer serializer, ConsumableItemTemplate itemTemplate) : base(serializer, itemTemplate.ItemTemplateId)
     {
 
     }

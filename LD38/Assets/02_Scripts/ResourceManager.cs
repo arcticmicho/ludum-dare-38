@@ -53,6 +53,7 @@ public class ResourceManager : MonoSingleton<ResourceManager>
         m_templateResources.Initialize();
         m_roomTemplates.Initialize();
         m_inventoryResources.Initialize();
+        m_inventoryResources.Initialize();
     }
 
 }

@@ -23,6 +23,8 @@ public class GameInitializer : MonoSingleton<GameInitializer>
         GameManager.Instance.Init();
         ResourceManager.Instance.Initialize();
         GameManager.Instance.Serializer.DeserializeData();
+        InventoryManager.Instance.Initialize();
+        CharactersManager.Instance.Initialize();
         GameStateManager.Instance.Initialize();
         GameManager.Instance.PostLoad();
         //UIPartyManager.Instance.RequestView<MainMenuView>();

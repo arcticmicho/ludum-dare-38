@@ -54,7 +54,10 @@ public class DamageFlow
 
     private void WandModStep()
     {
-        //TODO: Generate Equip
+        if(m_flowInfo.Owner.Data.WeaponTemplate != null)
+        {
+            m_extaDamages.Add(m_flowInfo.SpellDamage * m_flowInfo.Owner.Data.WeaponTemplate.ItemDamageSpellIncrease);
+        }
     }
 
     private void ComboModStep()

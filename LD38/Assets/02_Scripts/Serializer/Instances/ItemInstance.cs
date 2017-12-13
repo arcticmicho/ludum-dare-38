@@ -6,9 +6,25 @@ using UnityEngine;
 public abstract class ItemInstance : SerializableObject
 {
     protected Guid m_instanceIdGuid;
+    public Guid InstanceGuid
+    {
+        get
+        {
+            return m_instanceIdGuid;
+        }
+    }
 
     protected SerializableProperty<string> m_instanceId;
+    public string InstanceId
+    {
+        get { return m_instanceId; }
+    }
+
     protected SerializableProperty<string> m_itemTemplateId;
+    public string ItemTemplateId
+    {
+        get { return m_itemTemplateId; }
+    }
 
     public ItemInstance(GameSerializer serializer) : base(serializer)
     {

@@ -187,6 +187,29 @@ public class WizardData : SerializableObject, IWizardData
         m_movementSpeed = new SerializableProperty<float>(m_serializer, template.MovementSpeed);
         m_skills = new List<SkillData>(template.Skills);
         m_resistanceTable = new DamageTable(template.ResistanceTable.DamageInfo);
+        m_weaponInstanceId = new SerializableProperty<string>(m_serializer, string.Empty);
+    }
+
+    public void EquipWeapon(EquippableItemInstance newWeapon)
+    {
+        if(!string.IsNullOrEmpty(m_weaponInstanceId))
+        {
+            InventoryManager.Instance.GetEquippableItemInstance(m_weaponInstanceId).Unequip();
+        }
+
+        m_weaponInstanceId.Property = newWeapon.InstanceId;
+        m_weapon = InventoryManager.Instance.GetEquippableItemInstance(m_weaponInstanceId);
+    }
+
+    public void UnequipWeapon()
+    {
+        if (!string.IsNullOrEmpty(m_weaponInstanceId))
+        {
+            InventoryManager.Instance.GetEquippableItemInstance(m_weaponInstanceId).Unequip();
+        }
+
+        m_weaponInstanceId.Property = string.Empty;
+        m_weapon = null;
     }
 
     public override void DeserializeObject(Dictionary<string, object> dict)
@@ -203,6 +226,7 @@ public class WizardData : SerializableObject, IWizardData
         m_movementSpeed = new SerializableProperty<float>(m_serializer, dict.TryParseValue<float>("WizardMovementSpeed", 1f, parserFloat));
         m_skills = DeserializeSkills(dict["WizardSkills"] as List<object>);
         m_resistanceTable = DeserializeResistanceTable(dict["WizardResistanceTable"] as Dictionary<string,object>);
+        m_weaponInstanceId = new SerializableProperty<string>(m_serializer, dict.TryParseValue<string>("WeaponId", string.Empty));
     }
 
     public override Dictionary<string, object> SerializeObject()
@@ -218,6 +242,7 @@ public class WizardData : SerializableObject, IWizardData
         newDict.Add("WizardMovementSpeed", m_movementSpeed.Property);
         newDict.Add("WizardSkills", SerializeSkills(m_skills));
         newDict.Add("WizardResistanceTable", SeralizeResistanceTable(m_resistanceTable));
+        newDict.Add("WeaponId", m_weaponInstanceId.Property);
         return newDict;
     }
 

@@ -34,6 +34,19 @@ public class EquippableItemInstance : ItemInstance
 
     }
 
+    public void Unequip()
+    {
+        if(!string.IsNullOrEmpty(m_characterOwnerId))
+        {
+            m_characterOwnerId.Property = string.Empty;
+        }
+    }
+
+    public void Equip(WizardData wizard)
+    {
+        m_characterOwnerId.Property = wizard.WizardID;
+    }
+
     public override Dictionary<string, object> SerializeObject()
     {
         Dictionary<string, object> dict = base.SerializeObject();

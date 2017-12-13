@@ -50,4 +50,14 @@ public class InventoryManager : MonoSingleton<InventoryManager>
     {
         return m_playerData.ConsumableItems.Find(x => string.Equals(x, instanceId));
     }
+
+    public List<EquippableItemInstance> GetAllEquippableItems()
+    {
+        return m_playerData.EquippableItems;
+    }
+
+    public List<ConsumableItemInstance> GetAllConsumableItems()
+    {
+        return m_playerData.ConsumableItems;
+    }
 }
