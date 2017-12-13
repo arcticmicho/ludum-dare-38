@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CharactersManager : MonoSingleton<CharactersManager>
 {
+    private PlayerData m_playerData;
+
     [SerializeField]
     private WizardDataTemplate m_mainCharacter;
 
@@ -27,13 +29,19 @@ public class CharactersManager : MonoSingleton<CharactersManager>
         }
     }
     
-    public Wizard GetSelectedWizard(GameSession currentSession)
+    public void Initialize()
     {
-        return new Wizard(currentSession, m_mainCharacter, m_mainCharacterEntity);
+        m_playerData = GameManager.Instance.Serializer.PlayerData;
     }
     	
     public EnemyCharacter GetEnemy(GameSession currentSession)
     {
         return new EnemyCharacter(currentSession, m_enemyCharacter, m_enemyEntity);
+    }
+
+    public WizardData GetWizardWithId(string wizardId)
+    {
+        WizardData wData = m_playerData.WizardsData.Find(x => string.Equals(x, wizardId));
+        return wData;
     }
 }

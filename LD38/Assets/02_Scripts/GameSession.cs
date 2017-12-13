@@ -17,6 +17,7 @@ public class GameSession
 
     private Wizard m_mainCharacter;
 
+    private List<EnemyCharacter> m_activeEnemies;
     private List<EnemyCharacter> m_enemies;
     private int m_totalEnemies;
     private int m_defeatedEnemies;
@@ -84,6 +85,7 @@ public class GameSession
 
     private void InstantiateCharacter()
     {
+        m_activeEnemies = new List<EnemyCharacter>();
         m_enemies = new List<EnemyCharacter>();
         m_mainCharacter = new Wizard(this, m_gameStateData.WizardData, CharactersManager.Instance.MainCharacterEntity);
         m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
@@ -120,9 +122,9 @@ public class GameSession
             FindNewTarget();
         }
 
-        for (int i = 0, count = m_enemies.Count; i < count; i++)
+        for (int i = 0, count = m_activeEnemies.Count; i < count; i++)
         {
-            m_enemies[i].UpdateEnemy();
+            m_activeEnemies[i].UpdateEnemy();
         }
 
         if (m_defeatedEnemies >= m_totalEnemies)
@@ -158,9 +160,9 @@ public class GameSession
 
     private void FindNewTarget()
     {
-        if(m_enemies.Count > 0)
+        if(m_activeEnemies.Count > 0)
         {
-            EnemyCharacter enemy = m_enemies[UnityEngine.Random.Range(0, m_enemies.Count)];
+            EnemyCharacter enemy = m_activeEnemies[UnityEngine.Random.Range(0, m_activeEnemies.Count)];
             m_mainCharacter.Entity.SetDirection(((m_mainCharacter.Entity.transform.position - enemy.Entity.transform.position).x > 0 ? EDirection.Left : EDirection.Right));
             m_currentTarget = enemy;
         }
@@ -168,9 +170,9 @@ public class GameSession
 
     public void NotifyEnemyDeath(EnemyCharacter enemyCharacter)
     {
-        if(m_enemies.Contains(enemyCharacter))
+        if(m_activeEnemies.Contains(enemyCharacter))
         {
-            m_enemies.Remove(enemyCharacter);
+            m_activeEnemies.Remove(enemyCharacter);
             m_defeatedEnemies++;
             enemyCharacter.CurrentPoint.ReleasePoint();
             if(enemyCharacter == m_currentTarget)
@@ -200,6 +202,7 @@ public class GameSession
         spawnPoint.AssignCharacter(enemy);
         enemy.Entity.TranslateEntity(m_sessionView.GetNearestSpawnPoint(spawnPoint.transform.position));
         enemy.Entity.SetDirection(spawnPoint.Direction);
+        m_activeEnemies.Add(enemy);
         m_enemies.Add(enemy);
         enemy.EnemySpawned();
     }
@@ -209,14 +212,13 @@ public class GameSession
     {
         GameObject.Destroy(m_mainCharacter.Entity.gameObject);
         m_mainCharacter = null;
-        for(int i=0, count=m_enemies.Count; i<count; i++)
+        for(int i=0, count= m_enemies.Count; i<count; i++)
         {
             GameObject.Destroy(m_enemies[i].Entity.gameObject);
             m_enemies[i] = null;
         }
         GameObject.Destroy(m_sessionView.gameObject);
         m_actions.ClearAction();
-
     }
 }
 

@@ -39,12 +39,20 @@ public class ResourceManager : MonoSingleton<ResourceManager>
         get { return m_roomTemplates; }
     }
 
+    [SerializeField]
+    private InventoryResources m_inventoryResources;
+    public InventoryResources InventoryResources
+    {
+        get { return m_inventoryResources; }
+    }
+
     public void Initialize()
     {
         m_skillResources.Initialize();
         m_damageTypeResources.Initialize();
         m_templateResources.Initialize();
         m_roomTemplates.Initialize();
+        m_inventoryResources.Initialize();
     }
 
 }

@@ -38,8 +38,8 @@ public class GameData : SerializableObject
     public override Dictionary<string, object> SerializeObject()
     {
         Dictionary<string, object> dict = new Dictionary<string, object>();
-        dict.Add("selectedWizardId", m_selectedWizardId);
-        dict.Add("selectedRoomId", m_selectedRoomId);
+        dict.Add("selectedWizardId", m_selectedWizardId.Property);
+        dict.Add("selectedRoomId", m_selectedRoomId.Property);
         return dict;
     }
 

@@ -18,5 +18,7 @@ public interface ICharacterData
 
     string EntityTemplateId { get; set; }
 
+    EquippableItemTemplate WeaponTemplate { get; set; }
+
 
 }

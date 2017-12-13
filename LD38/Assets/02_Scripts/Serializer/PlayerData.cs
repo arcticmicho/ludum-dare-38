@@ -13,17 +13,33 @@ public class PlayerData : SerializableObject
     }
 
     private SerializableProperty<PlayerCurrency> m_currency;
+
     private SerializableProperty<List<WizardData>> m_wizardData;
     public List<WizardData> WizardsData
     {
         get { return m_wizardData; }
     }
 
+    private SerializableProperty<List<EquippableItemInstance>> m_equippableItems;
+    public List<EquippableItemInstance> EquippableItems
+    {
+        get { return m_equippableItems; }
+    }
+
+    private SerializableProperty<List<ConsumableItemInstance>> m_consumableItems;
+    public List<ConsumableItemInstance> ConsumableItems
+    {
+        get { return m_consumableItems; }
+    }
+
+
     public PlayerData(GameSerializer serializer) : base(serializer)
     {
         m_currency = new SerializableProperty<PlayerCurrency>(serializer, new PlayerCurrency(m_serializer));
         m_playerLevel = new SerializableProperty<int>(serializer, 0);
         m_wizardData = new SerializableProperty<List<WizardData>>(serializer, new List<WizardData>());
+        m_consumableItems = new SerializableProperty<List<ConsumableItemInstance>>(serializer, new List<ConsumableItemInstance>());
+        m_equippableItems = new SerializableProperty<List<EquippableItemInstance>>(serializer, new List<EquippableItemInstance>());
     }
 
     public override void DeserializeObject(Dictionary<string, object> dict)
@@ -59,11 +75,29 @@ public class PlayerData : SerializableObject
 
         List<Dictionary<string, object>> wizardData = new List<Dictionary<string, object>>();
 
-        for(int i=0,count = m_wizardData.Property.Count; i<count; i++)
-        {
-            wizardData.Add(m_wizardData.Property[i].SerializeObject());
-        }
-        newDict.Add("Wizards", wizardData);
+        //for(int i=0,count = m_wizardData.Property.Count; i<count; i++)
+        //{
+        //    wizardData.Add(m_wizardData.Property[i].SerializeObject());
+        //}
+        newDict.Add("Wizards", SerializeList<WizardData>(m_wizardData));
+        newDict.Add("EquippableItems", SerializeList<EquippableItemInstance>(m_equippableItems));
+        newDict.Add("ConsumableItems", SerializeList<ConsumableItemInstance>(m_consumableItems));
+
         return newDict;
     }
+
+    private List<Dictionary<string, object>> SerializeList<T>(SerializableProperty<List<T>> dataList) where T : SerializableObject
+    {
+        List<Dictionary<string, object>> data = new List<Dictionary<string, object>>();
+        for(int i=0, count=dataList.Property.Count; i<count; i++)
+        {
+            data.Add(dataList.Property[i].SerializeObject());
+        }
+        return data;
+    }
+
+   //public SerializableProperty<List<T>> DeserializeList<T>(List<object> rawData) where T: SerializableObject
+   //{
+   //
+   //}
 }

@@ -86,4 +86,15 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
            
         }
     }
+
+    [SerializeField]
+    private EquippableItemTemplate m_weaponTemplate;
+    public EquippableItemTemplate WeaponTemplate
+    {
+        get
+        {
+            return m_weaponTemplate;
+        }
+        set { }
+    }
 }

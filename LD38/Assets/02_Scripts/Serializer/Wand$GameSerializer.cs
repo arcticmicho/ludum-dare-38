@@ -76,5 +76,6 @@ public partial class GameSerializer
         }
 
         m_gameData = new GameData(this);
+        m_gameData.SelectedWizardId = m_playerData.WizardsData[0].WizardID;
     }
 }

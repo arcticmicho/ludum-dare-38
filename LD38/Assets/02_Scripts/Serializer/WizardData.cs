@@ -14,7 +14,9 @@ public class WizardData : SerializableObject, IWizardData
     private SerializableProperty<float> m_movementSpeed;
     private SerializableProperty<string> m_entityTemplateId;
     private List<SkillData> m_skills;
-    private DamageTable m_resistanceTable; 
+    private DamageTable m_resistanceTable;
+    private SerializableProperty<string> m_weaponInstanceId;
+    private EquippableItemInstance m_weapon;
 
     public string WizardTemplateId
     {
@@ -142,6 +144,31 @@ public class WizardData : SerializableObject, IWizardData
             if (m_entityTemplateId == value) return;
             m_entityTemplateId.Property = value;
         }
+    }
+
+    public EquippableItemTemplate WeaponTemplate
+    {
+        get
+        {
+            if(!string.IsNullOrEmpty(m_weaponInstanceId))
+            {
+                return GetWeaponTemplate();
+            }else
+            {
+                return null;
+            }
+        }
+
+        set { }
+    }
+
+    private EquippableItemTemplate GetWeaponTemplate()
+    {
+        if (m_weapon != null)
+            return m_weapon.Template;
+
+        m_weapon = InventoryManager.Instance.GetEquippableItemInstance(m_weaponInstanceId);
+        return m_weapon.Template;
     }
 
     public WizardData(GameSerializer serializer) : base(serializer)
