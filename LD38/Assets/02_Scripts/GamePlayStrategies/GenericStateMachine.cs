@@ -35,7 +35,10 @@ public class GenericStateMachine<OwnerType, Data> where Data : class
             {
                 ChangeState(transition);
             }
-            m_currentState.UpdateState();
+            if(m_currentState.CanUpdate())
+            {
+                m_currentState.UpdateState();
+            }            
         }
     }
 

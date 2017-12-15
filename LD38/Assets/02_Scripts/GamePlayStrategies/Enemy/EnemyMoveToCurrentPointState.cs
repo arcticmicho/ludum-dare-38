@@ -40,6 +40,11 @@ public class EnemyMoveToCurrentPointState : GenericState<EnemyCharacter, EnemyTr
         }
     }
 
+    public override bool CanUpdate()
+    {
+        return !m_character.IsStunned || !m_character.IsDeath;
+    }
+
     public override void OnExtit()
     {
         base.OnExtit();

@@ -30,6 +30,11 @@ public class GenericState<Actor, Data> where Data : class
     {
 
     }
+
+    public virtual bool CanUpdate()
+    {
+        return true;
+    }
 }
 
 public class TransitionData

@@ -19,10 +19,12 @@ public class DamageFlow
     private DamageFlowData m_flowInfo;
     private List<DamageTable> m_extaDamages;
     private DamageTable m_totalDamage;
+    private GameSession m_session;
 
-    public DamageFlow(Character owner, Character target, SkillData skillData, DamageTable resistanceTable = null)
+    public DamageFlow(Character owner, Character target, SkillData skillData, GameSession session, DamageTable resistanceTable = null)
     {        
         m_flowInfo = new DamageFlowData(owner, target, skillData, resistanceTable);
+        m_session = session;
     }
 
     public DamageTable ExecuteFlow()
@@ -54,9 +56,9 @@ public class DamageFlow
 
     private void WandModStep()
     {
-        if(m_flowInfo.Owner.Data.WeaponTemplate != null)
+        if(m_flowInfo.Owner.Weapon != null)
         {
-            m_extaDamages.Add(m_flowInfo.SpellDamage * m_flowInfo.Owner.Data.WeaponTemplate.ItemDamageSpellIncrease);
+            m_extaDamages.Add(m_flowInfo.SpellDamage * m_flowInfo.Owner.Weapon.ItemDamageSpellIncrease);
         }
     }
 
@@ -67,7 +69,13 @@ public class DamageFlow
 
     private void SideEffectStep()
     {
-        //TODO: Create side effects
+        if(m_flowInfo.SkillData.SkillDefinition.SkillEffects.Count > 0)
+        {
+            for(int i=0, count = m_flowInfo.SkillData.SkillDefinition.SkillEffects.Count; i<count; i++)
+            {
+                m_session.ActionManager.EnqueueAction(new SkillEffectAction(m_flowInfo.SkillData.SkillDefinition.SkillEffects[0], m_flowInfo.Target, m_flowInfo.Owner, m_session));
+            }            
+        }
     }
 
     private DamageTable TotalDamageStep()

@@ -8,10 +8,7 @@ public class Character
     protected GameSession m_contextSession;
 
     protected ICharacterData m_data;
-    public ICharacterData Data
-    {
-        get { return m_data; }
-    }
+
     private bool m_isDead;
     private float m_healthPoints;
 
@@ -44,9 +41,32 @@ public class Character
         }
     }
 
+    public bool IsStunned
+    {
+        get
+        {
+            return (((int)ECharacterStatus.Stunned & GetAllStatus()) > 0);
+        }
+    }
+
+    private List<CharacterStatus> m_status = new List<CharacterStatus>();
+    
+
+    public EquippableItemTemplate Weapon
+    {
+        get { return m_data.WeaponTemplate; }
+    }
+
+    protected StatModifier<float> m_movementSpeedModifier;
+    public StatModifier<float> MovementSpeedModifier
+    {
+        set { m_movementSpeedModifier = value; }
+        get { return m_movementSpeedModifier; }
+    }
+
     public float MovementSpeed
     {
-        get { return m_data.MovementSpeed; }
+        get { return m_data.MovementSpeed * (m_movementSpeedModifier.HasModifiers ? m_movementSpeedModifier.TotalModifier : 1); }
     }
 
     public DamageTable ResistanceTable
@@ -65,12 +85,18 @@ public class Character
         m_contextSession = session;
         SetTemplateData(data);
         InstantiateCharacterEntity(entityTemplate);
+        InitializeModifiers();
     }
 
     protected virtual void SetTemplateData(ICharacterData data)
     {
         m_data = data;
         m_healthPoints = data.HealthPoints;
+    }
+
+    private void InitializeModifiers()
+    {
+        m_movementSpeedModifier = new StatModifier<float>((mod1, mod2) => { return mod1 + mod2; });
     }
 
     public virtual void InstantiateCharacterEntity(CharacterEntity entityTemplate, bool force = false)
@@ -93,8 +119,14 @@ public class Character
             KillCharacter();
         }
 
-        m_entity.CharacterCanvas.AddFlotingText("-" + damageValue);
+        m_entity.CharacterCanvas.RequestFlotingText("-" + damageValue);
         m_entity.PlayHitAnimation();
+    }
+
+    public virtual void ApplyHeal(float healAmount)
+    {
+        m_healthPoints = Mathf.Min(m_data.HealthPoints, m_healthPoints + healAmount);
+        m_entity.CharacterCanvas.RequestFlotingText(healAmount.ToString());
     }
 
     public SkillData GetRandomAbility()
@@ -105,5 +137,49 @@ public class Character
     public virtual void KillCharacter()
     {
         m_entity.PlayDeadAnimation();
+    }
+
+    public bool AddStatus(CharacterStatus newStatus)
+    {
+        CharacterStatus currentStatus = m_status.Find((x) => x.GetStatusType() == newStatus.GetStatusType());
+        //replace the currentStatus with the old one.
+        if(currentStatus !=  null)
+        {
+            if(newStatus.CompareStatus(currentStatus))
+            {
+                currentStatus.Invalidate();
+                m_status.Remove(currentStatus);
+                m_status.Add(newStatus);
+                return true;
+            }
+            return false;           
+        }else
+        {
+            m_status.Add(newStatus);
+            return true;
+        }
+    }
+
+    public void RemoveStatus(CharacterStatus status)
+    {
+        if(m_status.Contains(status))
+        {
+            m_status.Remove(status);
+        }
+    }
+
+    public bool HasStatus(ECharacterStatus status)
+    {
+        return m_status.Find((x) => x.GetStatusType() == status) != null;
+    }
+
+    private int GetAllStatus()
+    {
+        int status = 0;
+        for(int i=0, count=m_status.Count; i<count; i++)
+        {
+            status += (int)m_status[i].GetStatusType();
+        }
+        return status;
     }
 }

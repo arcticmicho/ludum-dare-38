@@ -63,6 +63,13 @@ public class SkillDefinition : ScriptableObject
     }
 
     [SerializeField]
+    private List<SkillEffect> m_skillEffects;
+    public List<SkillEffect> SkillEffects
+    {
+        get { return m_skillEffects; }
+    }
+
+    [SerializeField]
     private GameObject m_spellPrefab;
     public GameObject SpellPrefab
     {

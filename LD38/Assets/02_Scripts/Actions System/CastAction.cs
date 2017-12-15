@@ -130,7 +130,7 @@ public class CastAction : GameAction
 
     private void ApplyDamage()
     {
-        DamageFlow flow = new DamageFlow(m_owner, m_projectileTarget, m_skillData);
+        DamageFlow flow = new DamageFlow(m_owner, m_projectileTarget, m_skillData, m_contextSession);
         m_projectileTarget.ApplyDamage(flow.ExecuteFlow());
     }
 }

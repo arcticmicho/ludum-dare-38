@@ -71,4 +71,15 @@ public class CharacterEntity : MonoBehaviour
     {
         transform.position = position;
     }
+
+    public void SetAnimatorTimeScale(float timeScale)
+    {
+        float normalizedValue = Mathf.Clamp01(timeScale);
+        m_animator.speed = timeScale;
+    }
+
+    public void ResetAnimatorTimeScale()
+    {
+        SetAnimatorTimeScale(1f);
+    }
 }

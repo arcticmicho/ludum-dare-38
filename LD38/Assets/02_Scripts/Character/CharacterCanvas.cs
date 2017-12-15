@@ -9,8 +9,18 @@ public class CharacterCanvas : MonoBehaviour
     private FloatingText m_floatingTextTemplate;
     [SerializeField]
     private BubbleText m_bubbleText;
+    [SerializeField]
+    private float m_floatingTextCooldown = 0.2f;
+    private float m_elapsedTime;
 
-    public void AddFlotingText(string text)
+    private Queue<FloatingTextRequest> m_requests = new Queue<FloatingTextRequest>();
+
+    public void RequestFlotingText(string text)
+    {
+        m_requests.Enqueue(new FloatingTextRequest(text));
+    }
+
+    private void GenerateFloatingText(string text)
     {
         FloatingText newFloatingText = Instantiate<FloatingText>(m_floatingTextTemplate);
         newFloatingText.transform.SetParent(transform);
@@ -36,5 +46,34 @@ public class CharacterCanvas : MonoBehaviour
     public void ShowBubbleText(string text, float timeToShow, Sprite background, Color color)
     {
         m_bubbleText.InitBubbleTextInTime(text, timeToShow, background, color);
+    }
+
+    private void Update()
+    {
+        if(m_elapsedTime >= m_floatingTextCooldown)
+        {
+            if(m_requests.Count > 0)
+            {
+                GenerateFloatingText(m_requests.Dequeue().RequestedText);
+                m_elapsedTime = 0f;
+            }
+        }else
+        {
+            m_elapsedTime += TimeManager.Instance.DeltaTime;
+        }
+    }
+
+    private class FloatingTextRequest
+    {
+        private string m_requestedText;
+        public string RequestedText
+        {
+            get { return m_requestedText; }
+        }
+
+        public FloatingTextRequest(string text)
+        {
+            m_requestedText = text;
+        }
     }
 }
