@@ -28,7 +28,8 @@ public class CastAction : GameAction
     private float m_hitWaitTime = 1f;
     private float m_elapsedHitTime = 0f;
 
-    public System.Action OnActionEnds;
+    public Action OnActionEnds;
+    public Action OnFinishCasting;
 
     public override DateTime ActionTime
     {
@@ -72,6 +73,10 @@ public class CastAction : GameAction
                 m_elapsedCastingTime += TimeManager.Instance.DeltaTime;
                 if(m_elapsedCastingTime >= m_castingTime)
                 {
+                    if(OnFinishCasting != null)
+                    {
+                        OnFinishCasting();
+                    }
                     ChangeStep(ECastStep.Throwing);
                 }
                 break;
