@@ -6,12 +6,18 @@ using UnityEngine;
 public class CharacterCanvas : MonoBehaviour
 {
     [SerializeField]
+    private CharacterStatusWidget m_statusWidgetTemplate;
+    [SerializeField]
+    private Transform m_characterStatusWidgetParent;
+    [SerializeField]
     private FloatingText m_floatingTextTemplate;
     [SerializeField]
     private BubbleText m_bubbleText;
     [SerializeField]
     private float m_floatingTextCooldown = 0.2f;
+
     private float m_elapsedTime;
+    private List<CharacterStatusWidget> m_statusWidgets = new List<CharacterStatusWidget>();
 
     private Queue<FloatingTextRequest> m_requests = new Queue<FloatingTextRequest>();
 
@@ -46,6 +52,23 @@ public class CharacterCanvas : MonoBehaviour
     public void ShowBubbleText(string text, float timeToShow, Sprite background, Color color)
     {
         m_bubbleText.InitBubbleTextInTime(text, timeToShow, background, color);
+    }
+
+    public CharacterStatusWidget CreateCharacterStatus(CharacterStatus status)
+    {
+        CharacterStatusWidget newWidget = GameObject.Instantiate<CharacterStatusWidget>(m_statusWidgetTemplate);
+        newWidget.SetupCharacterStatusWidget(status);
+        newWidget.transform.SetParent(m_characterStatusWidgetParent);
+        m_statusWidgets.Add(newWidget);
+        return newWidget;
+    }
+
+    public void RemoveCharacterStatus(CharacterStatusWidget widget)
+    {
+        if(m_statusWidgets.Remove(widget))
+        {
+            Destroy(widget.gameObject);
+        }
     }
 
     private void Update()

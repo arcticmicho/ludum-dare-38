@@ -11,6 +11,6 @@ public class HealEffect : SkillEffect
 
     public override CharacterStatus GenerateStatus(Character caster, Character target)
     {
-        return new HealingStatus(m_healAmount, m_skillNumberOfTicks, m_skillEffectDuration, target, caster);
+        return new HealingStatus(m_healAmount, m_skillNumberOfTicks, m_skillEffectDuration, target, caster, m_skillEffectName, m_skillEffectDescription, m_skillEffectImage);
     }
 }

@@ -9,31 +9,7 @@ public class FrozenStatus : CharacterStatus
     private float m_frozenModifier;
     private Modifier<float> m_modifier;
 
-    public override string Description
-    {
-        get
-        {
-            return "Reduces the movement speed of the target";
-        }
-    }
-
-    public override Image StatusImage
-    {
-        get
-        {
-            return null;
-        }
-    }
-
-    public override string StatusName
-    {
-        get
-        {
-            return "Frozen";
-        }
-    }
-
-    public FrozenStatus(float frozenModifier, float statusDuration, Character owner, Character caster) : base(statusDuration, 0, owner, caster)
+    public FrozenStatus(float frozenModifier, float statusDuration, Character owner, Character caster, string statusName, string statusDesc, Sprite statusImage) : base(statusDuration, 0, owner, caster, statusName, statusDesc, statusImage)
     {
         m_frozenModifier = frozenModifier;
     }

@@ -8,31 +8,7 @@ public class DamageOverTimeStatus : CharacterStatus
 {
     private DamageTable m_damageTable;
 
-    public override string Description
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public override Image StatusImage
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public override string StatusName
-    {
-        get
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public DamageOverTimeStatus(DamageTable damageTable, int numberOfTicks, float statusDuration, Character owner, Character caster) : base(statusDuration, numberOfTicks, owner, caster)
+    public DamageOverTimeStatus(DamageTable damageTable, int numberOfTicks, float statusDuration, Character owner, Character caster, string statusName, string statusDesc, Sprite statusImage) : base(statusDuration, numberOfTicks, owner, caster, statusName, statusDesc, statusImage)
     {
         m_damageTable = damageTable;
     }

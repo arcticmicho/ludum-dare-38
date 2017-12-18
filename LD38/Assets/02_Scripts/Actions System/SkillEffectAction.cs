@@ -13,6 +13,8 @@ public class SkillEffectAction : GameAction
 
     private CharacterStatus m_status;
 
+    private CharacterStatusWidget m_statusWidget;
+
     private bool m_cancelAction;
 
     private float m_elapsedTime;
@@ -40,6 +42,10 @@ public class SkillEffectAction : GameAction
         if(!m_cancelAction)
         {
             m_target.RemoveStatus(m_status);
+        }
+        if(m_statusWidget != null)
+        {
+            m_target.Entity.CharacterCanvas.RemoveCharacterStatus(m_statusWidget);
         }
     }
 
@@ -76,8 +82,10 @@ public class SkillEffectAction : GameAction
     public override void StartAction()
     {
         m_status = m_effect.GenerateStatus(m_caster, m_target);
-        if(!m_target.IsDeath || m_target.AddStatus(m_status))
+        if(!m_target.IsDeath && m_target.AddStatus(m_status))
         {
+            m_statusWidget = m_target.Entity.CharacterCanvas.CreateCharacterStatus(m_status);
+
             if(m_effect.ApplyEffectAtStart)
             {
                 m_status.ApplyStatus();

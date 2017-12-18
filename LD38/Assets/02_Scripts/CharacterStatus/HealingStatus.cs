@@ -7,32 +7,8 @@ using UnityEngine.UI;
 public class HealingStatus : CharacterStatus
 {
     private float m_healAmount;
-
-    public override string Description
-    {
-        get
-        {
-            return "Heal the target.";
-        }
-    }
-
-    public override Image StatusImage
-    {
-        get
-        {
-            return null;
-        }
-    }
-
-    public override string StatusName
-    {
-        get
-        {
-            return "Healing";
-        }
-    }
-
-    public HealingStatus(float healAmount, int numberOfTicks, float statusDuration, Character owner, Character caster) : base(statusDuration, numberOfTicks, owner, caster)
+    
+    public HealingStatus(float healAmount, int numberOfTicks, float statusDuration, Character owner, Character caster, string statusName, string statusDesc, Sprite statusImage) : base(statusDuration, numberOfTicks, owner, caster, statusName, statusDesc, statusImage)
     {
         m_healAmount = healAmount;
     }

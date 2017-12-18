@@ -11,6 +11,6 @@ public class FrostEffect : SkillEffect
 
     public override CharacterStatus GenerateStatus(Character caster, Character target)
     {
-        return new FrozenStatus(m_frostEffectPercent, m_skillEffectDuration, target, caster);
+        return new FrozenStatus(m_frostEffectPercent, m_skillEffectDuration, target, caster, m_skillEffectName, m_skillEffectDescription, m_skillEffectImage);
     }
 }

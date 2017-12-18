@@ -13,8 +13,15 @@ public abstract class SkillEffect : ScriptableObject
     }
 
     [SerializeField]
-    protected Image m_skillEffectImage;
-    public Image EffectImage
+    protected string m_skillEffectDescription;
+    public string SkillEffectDesc
+    {
+        get { return m_skillEffectDescription; }
+    }
+
+    [SerializeField]
+    protected Sprite m_skillEffectImage;
+    public Sprite EffectImage
     {
         get { return m_skillEffectImage; }
     }

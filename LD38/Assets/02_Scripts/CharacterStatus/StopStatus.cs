@@ -5,33 +5,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class StopStatus : CharacterStatus
-{
+{    
 
-    public override string Description
-    {
-        get
-        {
-            return "Stop all the target actions, including movements, cooldowns and Casting.";
-        }
-    }
-
-    public override Image StatusImage
-    {
-        get
-        {
-            return null;
-        }
-    }
-
-    public override string StatusName
-    {
-        get
-        {
-            return "Stop";
-        }
-    }
-
-    public StopStatus(float statusDuration, Character owner, Character caster) : base(statusDuration, 0, owner, caster)
+    public StopStatus(float statusDuration, Character owner, Character caster, string statusName, string statusDesc, Sprite statusImage) : base(statusDuration, 0, owner, caster, statusName, statusDesc, statusImage)
     {
     }
 

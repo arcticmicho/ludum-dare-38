@@ -9,6 +9,6 @@ public class StopEffect : SkillEffect
 
     public override CharacterStatus GenerateStatus(Character caster, Character target)
     {
-        return new StopStatus(m_skillEffectDuration, target, caster);
+        return new StopStatus(m_skillEffectDuration, target, caster, m_skillEffectName, m_skillEffectDescription, m_skillEffectImage);
     }    
 }

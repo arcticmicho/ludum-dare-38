@@ -21,6 +21,10 @@ public abstract class CharacterStatus
     protected float m_statusDuration;
     protected float m_numberOfTicks;
 
+    protected string m_statusName;
+    protected string m_statusDescription;
+    protected Sprite m_statusImage;
+
     protected bool m_isValid;
     /// <summary>
     /// Who is affected by the Status
@@ -32,14 +36,19 @@ public abstract class CharacterStatus
     /// </summary>
     protected Character m_caster;
     
-    public abstract string StatusName { get; }
+    public string StatusName { get { return m_statusName; } }
 
-    public abstract string Description { get; }
+    public string Description { get { return m_statusDescription; } }
 
-    public abstract Image StatusImage { get; }
+    public Sprite StatusImage { get { return m_statusImage; } }
 
-    public CharacterStatus(float statusDuration, int numberOfTicks, Character owner, Character caster)
+    public float StatusDuration { get { return m_statusDuration; } }
+
+    public CharacterStatus(float statusDuration, int numberOfTicks, Character owner, Character caster, string statusName, string statusDesc, Sprite statusImage)
     {
+        m_statusName = statusName;
+        m_statusDescription = statusDesc;
+        m_statusImage = statusImage;
         m_statusDuration = statusDuration;
         m_numberOfTicks = numberOfTicks;
         m_owner = owner;
