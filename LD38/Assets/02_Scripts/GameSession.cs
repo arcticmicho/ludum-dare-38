@@ -198,7 +198,7 @@ public class GameSession
     {
         BaseRoomPoint spawnPoint = m_sessionView.GetRandomAvailableEnemyPoint();
 
-        EnemyCharacter enemy = CharactersManager.Instance.GetEnemy(this);
+        EnemyCharacter enemy = CharactersManager.Instance.GetEnemy(this, enemyTemplate);
         spawnPoint.AssignCharacter(enemy);
         enemy.Entity.TranslateEntity(m_sessionView.GetNearestSpawnPoint(spawnPoint.transform.position));
         enemy.Entity.SetDirection(spawnPoint.Direction);

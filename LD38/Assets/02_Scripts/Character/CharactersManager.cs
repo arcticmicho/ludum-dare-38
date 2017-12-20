@@ -34,9 +34,9 @@ public class CharactersManager : MonoSingleton<CharactersManager>
         m_playerData = GameManager.Instance.Serializer.PlayerData;
     }
     	
-    public EnemyCharacter GetEnemy(GameSession currentSession)
+    public EnemyCharacter GetEnemy(GameSession currentSession, CharacterTemplate template)
     {
-        return new EnemyCharacter(currentSession, m_enemyCharacter, m_enemyEntity);
+        return new EnemyCharacter(currentSession, template, template.Prefab);
     }
 
     public WizardData GetWizardWithId(string wizardId)
