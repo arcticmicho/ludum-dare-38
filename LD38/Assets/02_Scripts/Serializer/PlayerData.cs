@@ -72,13 +72,7 @@ public class PlayerData : SerializableObject
         Dictionary<string, object> newDict = new Dictionary<string, object>();
         newDict.Add("PlayerLevel", m_playerLevel.Property);
         newDict.Add("Currency", m_currency.Property.SerializeObject());
-
-        List<Dictionary<string, object>> wizardData = new List<Dictionary<string, object>>();
-
-        //for(int i=0,count = m_wizardData.Property.Count; i<count; i++)
-        //{
-        //    wizardData.Add(m_wizardData.Property[i].SerializeObject());
-        //}
+        
         newDict.Add("Wizards", SerializeList<WizardData>(m_wizardData));
         newDict.Add("EquippableItems", SerializeList<EquippableItemInstance>(m_equippableItems));
         newDict.Add("ConsumableItems", SerializeList<ConsumableItemInstance>(m_consumableItems));

@@ -77,7 +77,6 @@ public class SkillTree
         SkillLeaf searchLeaf = m_current;
         SkillData selectedSkill = null;
         float lastScore = -1f;
-        RecognitionResult lastResult = new RecognitionResult(false, 1);
         PropagateResult propagateResult = PartyRecognitionManager.Instance.Recognize(patternPoints);
 
         for(int i=0; i< searchLeaf.LeafConnections.Count; i++)

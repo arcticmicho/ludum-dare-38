@@ -9,11 +9,19 @@ public class CastingGameplayState : GenericState<Wizard, TransitionData>
     public override void OnEnter(TransitionData data)
     {
         base.OnEnter(data);
-        CastAction action = new CastAction(m_character.Session, data.SelectedSkill, m_character, new Character[]{ m_character.Session.CurrentTarget });
-        action.OnFinishCasting += OnFinishCasting;
-        m_character.Session.ActionManager.EnqueueAction(action);
-        UIPartyManager.Instance.RequestView<CastingView>();
-        UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
+        if(m_character.Session.CurrentTarget != null)
+        {
+            CastAction action = new CastAction(m_character.Session, data.SelectedSkill, m_character, new Character[] { m_character.Session.CurrentTarget });
+            action.OnFinishCasting += OnFinishCasting;
+            m_character.Session.ActionManager.EnqueueAction(action);
+            UIPartyManager.Instance.RequestView<CastingView>();
+            UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
+        }else
+        {
+            m_finishCasting = true;
+            m_character.Entity.CharacterCanvas.ShowBubbleText("I don't have a target!!", 1f);
+        }
+        
     }
 
     public override StateTransition<TransitionData> EvaluateTransition()

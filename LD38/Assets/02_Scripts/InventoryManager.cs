@@ -33,7 +33,7 @@ public class InventoryManager : MonoSingleton<InventoryManager>
             if(instance.IsEquipped)
             {
                 WizardData wizard = CharactersManager.Instance.GetWizardWithId(instance.CharacterOwnerId);
-
+                wizard.UnequipWeapon();
             }
             m_playerData.EquippableItems.Remove(instance);
             GameManager.Instance.Serializer.SetDirty();

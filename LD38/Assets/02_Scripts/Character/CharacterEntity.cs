@@ -75,7 +75,7 @@ public class CharacterEntity : MonoBehaviour
     public void SetAnimatorTimeScale(float timeScale)
     {
         float normalizedValue = Mathf.Clamp01(timeScale);
-        m_animator.speed = timeScale;
+        m_animator.speed = normalizedValue;
     }
 
     public void ResetAnimatorTimeScale()

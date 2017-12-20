@@ -61,6 +61,10 @@ public class CastAction : GameAction
 
     public override bool ProcessAction(float deltaTime)
     {
+        if (m_owner.IsDeath && m_currentStep == ECastStep.Casting)
+        {
+            return true;
+        }
         UpdateStep();
         return m_currentStep == ECastStep.Ending;
     }    

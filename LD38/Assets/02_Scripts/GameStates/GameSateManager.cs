@@ -15,8 +15,6 @@ public class GameStateManager : MonoSingleton<GameStateManager>
 
     public void RequestGameSession()
     {
-        GameStateData newStateData = new GameStateData(GameManager.Instance.GetSelectedRoomData(), GameManager.Instance.GetSelectedWizard());
-
         if (m_stateMachine.CurrentState is GameIdleState)
         {
             GameIdleState idleState = (GameIdleState)m_stateMachine.CurrentState;

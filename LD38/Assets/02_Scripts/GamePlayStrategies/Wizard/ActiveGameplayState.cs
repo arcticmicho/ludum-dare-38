@@ -34,14 +34,13 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
         m_finishActiveGameplay = false;
         m_forceFinish = false;
         m_detectingTime = 0f;
-        m_character.ResetSkillTree();
 
-        if (data != null && data.HasInputData)
+        if (data != null && data.SelectedSkill != null)
         {
             m_detectingPattern = true;
-            m_dragPositions.Add(data.InitialDrag);
+            m_skillToCast = data.SelectedSkill;
             m_currentTrailRenderer = EffectsManager.Instance.RequestTrailRenderer();
-            SetTrailPosition(data.InitialDrag);
+            //SetTrailPosition(data.InitialDrag);
         }
 
         UIPartyManager.Instance.RequestView<DetectingView>();
@@ -119,13 +118,13 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
     private bool ProcessPattern()
     {
         //First we check if is a FinishPattern;
-        if(GameManager.Instance.IsFinishPatternActive && IsFinishPattern(ConvertList(m_dragPositions)))
+        if(GameManager.Instance.IsFinishPatternActive && IsFinishPattern(MathUtils.ConvertList(m_dragPositions)))
         {
             return true;
         }
 
         SkillData newSkillData;
-        if(m_character.TryProcessPattern(ConvertList(m_dragPositions), out newSkillData))
+        if(m_character.TryProcessPattern(MathUtils.ConvertList(m_dragPositions), out newSkillData))
         {
             Debug.Log("Ability Found!: " + newSkillData.SkillDefinition.SkillName);            
             m_skillToCast = newSkillData;
@@ -141,14 +140,5 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
         RecognitionResult result;
         return m_forceFinish = PatternManager.Instance.ProcessSkillPattern(vector2, GameManager.Instance.FinishPattern, out result);
     }
-
-    private Vector2[] ConvertList(List<Vector3> points)
-    {
-        Vector2[] pointsV2 = new Vector2[points.Count];
-        for(int i=0; i<points.Count; i++)
-        {
-            pointsV2[i] = points[i];
-        }
-        return pointsV2;
-    }
+    
 }

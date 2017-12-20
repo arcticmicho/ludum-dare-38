@@ -5,12 +5,10 @@ using UnityEngine;
 public class SerializeTest : MonoBehaviour
 {
     private GameSerializer m_serializer;
-    private PlayerData m_playerData;
 	// Use this for initialization
 	void Start ()
     {
         m_serializer = new GameSerializer();
-        m_playerData = new PlayerData(m_serializer);
 	}
 	
 	// Update is called once per frame

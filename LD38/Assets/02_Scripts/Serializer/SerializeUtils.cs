@@ -110,24 +110,28 @@ public static class SerializeUtils
         }
         catch (UnauthorizedAccessException e)
         {
+            Debug.LogError(e.ToString());
             savedData = string.Empty;
             error = ESerializeError.UnauthorizedAccess;
             return false;
         }
         catch (FileNotFoundException e)
         {
+            Debug.LogError(e.ToString());
             savedData = string.Empty;
             error = ESerializeError.FileNotFound;
             return false;
         }
         catch (NotSupportedException e)
         {
+            Debug.LogError(e.ToString());
             savedData = string.Empty;
             error = ESerializeError.UnauthorizedAccess;
             return false;
         }     
         catch (Exception e)
         {
+            Debug.LogError(e.ToString());
             savedData = string.Empty;
             error = ESerializeError.FileNotFound;
             return false;

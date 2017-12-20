@@ -57,4 +57,14 @@ public class MathUtils
         }
         return new List<int>(randomList);
     }
+
+    public static Vector2[] ConvertList(List<Vector3> points)
+    {
+        Vector2[] pointsV2 = new Vector2[points.Count];
+        for (int i = 0; i < points.Count; i++)
+        {
+            pointsV2[i] = points[i];
+        }
+        return pointsV2;
+    }
 }

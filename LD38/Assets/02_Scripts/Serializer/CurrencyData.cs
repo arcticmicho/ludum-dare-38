@@ -16,6 +16,8 @@ public class CurrencyData : SerializableObject
 
     public CurrencyData(GameSerializer serializer) : base(serializer)
     {
+        m_amount = new SerializableProperty<int>(serializer, 0);
+        m_type = new SerializableProperty<ECurrencyType>(serializer, ECurrencyType.Soft);
     }
 
     public override void DeserializeObject(Dictionary<string, object> dict)

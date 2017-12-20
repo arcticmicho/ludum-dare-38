@@ -39,38 +39,14 @@ public class GenericState<Actor, Data> where Data : class
 
 public class TransitionData
 {
-    private bool m_hasInputData;
-    public bool HasInputData
-    {
-        get { return m_hasInputData; }
-    }
-
-    private Vector3 m_initDrag;
-    public Vector3 InitialDrag
-    {
-        get { return m_initDrag; }
-    }
-
     private SkillData m_selectedSkill;
     public SkillData SelectedSkill
     {
         get { return m_selectedSkill; }
     }
 
-    public TransitionData()
+    public TransitionData(SkillData skillData)
     {
-        m_hasInputData = false;
-    }
-
-    public TransitionData(Vector3 initialDrag)
-    {
-        m_hasInputData = true;
-        m_initDrag = initialDrag;
-    }
-
-    public TransitionData(SkillData skillDef)
-    {
-        m_hasInputData = false;
-        m_selectedSkill = skillDef;
+        m_selectedSkill = skillData;
     }
 }
