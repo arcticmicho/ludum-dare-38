@@ -21,7 +21,7 @@ public class EnemyIdleState : GenericState<EnemyCharacter, EnemyTransitionData>
         {
             SetIdleTime();
             SkillData skillData = m_character.GetRandomAbility();
-            m_character.Session.ActionManager.EnqueueAction(new CastAction(m_character.Session, skillData, m_character, new Character[] { m_character.Session.MainCharacter}));
+            m_character.Session.ActionManager.EnqueueAction(new CastAction(m_character.Session, skillData, m_character));
         }
     }
 

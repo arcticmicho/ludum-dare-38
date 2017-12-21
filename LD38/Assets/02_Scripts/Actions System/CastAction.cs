@@ -5,31 +5,13 @@ using UnityEngine;
 
 public class CastAction : GameAction
 {
-    public enum ECastStep
-    {
-        Casting,
-        Throwing,
-        Hitting,
-        Ending
-    }
-
-    private ECastStep m_currentStep;
     private SkillData m_skillData;
     private Character m_owner;
 
-    private Character[] m_targets;
-
-    private float m_elapsedCastingTime;
-    private float m_castingTime;
-
-    private GameObject m_projectile;
-    private Character m_projectileTarget;
-
-    private float m_hitWaitTime = 1f;
-    private float m_elapsedHitTime = 0f;
-
     public Action OnActionEnds;
     public Action OnFinishCasting;
+
+    private BaseSkillProcessor m_processor;
 
     public override DateTime ActionTime
     {
@@ -39,16 +21,17 @@ public class CastAction : GameAction
         }
     }
 
-    public CastAction(GameSession session, SkillData skillData, Character owner, Character[] targets) : base(session)
+    public CastAction(GameSession session, SkillData skillData, Character owner) : base(session)
     {
         m_skillData = skillData;
-        m_targets = targets;
         m_owner = owner;
     }
 
     public override void StartAction()
     {
-        ChangeStep(ECastStep.Casting);
+        m_processor = CreateProcessorSkill();
+        m_processor.OnFinishCasting += FinishCasting;
+        m_processor.StartProcessor();
     }
 
     public override void EndAction()
@@ -61,85 +44,30 @@ public class CastAction : GameAction
 
     public override bool ProcessAction(float deltaTime)
     {
-        if (m_owner.IsDeath && m_currentStep == ECastStep.Casting)
-        {
-            return true;
-        }
-        UpdateStep();
-        return m_currentStep == ECastStep.Ending;
-    }    
+        return m_processor.UpdateProcessor();
+    }
 
-    private void UpdateStep()
+    private void FinishCasting()
     {
-        switch (m_currentStep)
+        if(OnFinishCasting != null)
         {
-            case ECastStep.Casting:
-                m_elapsedCastingTime += TimeManager.Instance.DeltaTime;
-                if(m_elapsedCastingTime >= m_castingTime)
-                {
-                    if(OnFinishCasting != null)
-                    {
-                        OnFinishCasting();
-                    }
-                    ChangeStep(ECastStep.Throwing);
-                }
-                break;
-            case ECastStep.Throwing:
-                Vector3 dir = (m_projectileTarget.Entity.transform.position - m_projectile.transform.position);
-                float magn = dir.sqrMagnitude;
-                if(magn > 0.1f)
-                {
-                    m_projectile.transform.position += dir.normalized * (m_skillData.SkillDefinition.SpellSpeed * TimeManager.Instance.DeltaTime);
-                }
-                else
-                {
-                    m_projectile.transform.position = m_projectileTarget.Entity.transform.position;
-                    ChangeStep(ECastStep.Hitting);
-                }
-                break;
-            case ECastStep.Hitting:
-                m_elapsedHitTime += TimeManager.Instance.DeltaTime;
-                if(m_elapsedHitTime >= m_hitWaitTime)
-                {
-                    ChangeStep(ECastStep.Ending);
-                }
-                break;
-            case ECastStep.Ending:
-                break;
+            OnFinishCasting();
         }
     }
 
-    private void ChangeStep(ECastStep newStep)
+    private BaseSkillProcessor CreateProcessorSkill()
     {
-        m_currentStep = newStep;
-        switch (newStep)
+        switch (m_skillData.SkillDefinition.SkillTarget)
         {
-            case ECastStep.Casting:
-                m_castingTime = m_skillData.SkillDefinition.CastingTime;
-                m_elapsedCastingTime = 0f;
-                m_owner.Entity.PlayCastAnimation();
-                break;
-            case ECastStep.Throwing:
-                m_projectile = GameObject.Instantiate<GameObject>(m_skillData.SkillDefinition.SpellPrefab);
-                m_projectileTarget = m_targets[0];
-                m_projectile.transform.position = m_owner.Entity.transform.position + new Vector3(0.5f * Mathf.Sign((m_projectileTarget.Entity.transform.position - m_owner.Entity.transform.position).x), 0f, 0f);
-                m_owner.Entity.PlayThrowAbilityAnimation();
-                break;
-            case ECastStep.Hitting:
-                GameObject.Destroy(m_projectile.gameObject);
-                GameObject particle = GameObject.Instantiate(m_skillData.SkillDefinition.ImpactPrefab);
-                particle.transform.position = m_projectileTarget.Entity.transform.position;
-                m_elapsedCastingTime = 0f;
-                ApplyDamage();
-                break;
-            case ECastStep.Ending:
-                break;
+            case ESkillTarget.SimpleTarget:
+                return new SingleTargetProcessor(m_contextSession, m_owner, m_owner.CurrentTarget, m_skillData);
+            case ESkillTarget.Self:
+                return new SelfTargetProcessor(m_contextSession, m_owner, new Character[] { m_owner }, m_skillData);
+            case ESkillTarget.MultiTarget:
+                Debug.LogError("To Be Implemented");
+                return null;
+            default:
+                return new SingleTargetProcessor(m_contextSession, m_owner, m_owner.CurrentTarget, m_skillData);
         }
-    }
-
-    private void ApplyDamage()
-    {
-        DamageFlow flow = new DamageFlow(m_owner, m_projectileTarget, m_skillData, m_contextSession);
-        m_projectileTarget.ApplyDamage(flow.ExecuteFlow());
     }
 }

@@ -16,6 +16,14 @@ public class Wizard : Character
         get { return m_data as IWizardData; }
     }
 
+    public override Character CurrentTarget
+    {
+        get
+        {
+            return m_contextSession.CurrentTarget;
+        }
+    }
+
     public Wizard(GameSession session, IWizardData template, CharacterEntity entity) : base(session, template, entity)
     {
         m_skillTree = new SkillTree();

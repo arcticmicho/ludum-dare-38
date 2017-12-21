@@ -7,6 +7,14 @@ public class EnemyCharacter : Character
 {
     private GenericStateMachine<EnemyCharacter, EnemyTransitionData> m_enemySM;
 
+    public override Character CurrentTarget
+    {
+        get
+        {
+            return m_contextSession.MainCharacter;
+        }
+    }
+
     public EnemyCharacter(GameSession session, CharacterTemplate template, CharacterEntity entity) : base(session, template, entity)
     {
         m_enemySM = new GenericStateMachine<EnemyCharacter, EnemyTransitionData>(this);                               

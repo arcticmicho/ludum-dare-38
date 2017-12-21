@@ -55,7 +55,7 @@ public class CharacterEntity : MonoBehaviour
 
     public void PlayAnimationWithTrigger(string trigger)
     {
-        if(m_animator != null)
+        if(m_animator != null && !string.IsNullOrEmpty(trigger))
         {
             m_animator.SetTrigger(trigger);
         }

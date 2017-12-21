@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character
+public abstract class Character
 {
     protected GameSession m_contextSession;
 
@@ -79,6 +79,8 @@ public class Character
         get { return m_currentPoint; }
         set { m_currentPoint = value; }
     }
+
+    public abstract Character CurrentTarget { get; }
 
     public Character(GameSession session, ICharacterData data, CharacterEntity entityTemplate)
     {

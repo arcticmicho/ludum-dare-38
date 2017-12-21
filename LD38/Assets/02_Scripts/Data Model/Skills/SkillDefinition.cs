@@ -34,6 +34,13 @@ public class SkillDefinition : ScriptableObject
         get { return m_spellDamage; }
     }
 
+    [SerializeField]
+    private ESkillTarget m_skillTarget;
+    public ESkillTarget SkillTarget
+    {
+        get { return m_skillTarget; }
+    }
+
     [SerializeField, Range(0f, 1f)]
     private float m_damageIncrease;
     public float DamageIncrease
@@ -56,10 +63,45 @@ public class SkillDefinition : ScriptableObject
     }
 
     [SerializeField]
+    private bool m_isHealingSkill;
+    public bool IsHealingSkill
+    {
+        get { return m_isHealingSkill; }
+    }
+
+    [SerializeField]
+    private float m_healingAmount;
+    public float HealingAmount
+    {
+        get { return m_healingAmount; }
+    }
+
+    [SerializeField]
+    private string m_castingAnimationTrigger;
+    public string CastingAnimationTrigger
+    {
+        get { return m_castingAnimationTrigger; }
+    }
+
+    [SerializeField]
     private float m_castingTime;
     public float CastingTime
     {
         get { return m_castingTime; }
+    }
+
+    [SerializeField]
+    private string m_skillAnimationTrigger;
+    public string SkillAnimationTrigger
+    {
+        get { return m_skillAnimationTrigger; }
+    }
+
+    [SerializeField]
+    private float m_skillAnimationWaitingTime;
+    public float SkillAnimationWaitingTime
+    {
+        get { return m_skillAnimationWaitingTime; }
     }
 
     [SerializeField]
@@ -90,3 +132,12 @@ public class SkillDefinition : ScriptableObject
         get { return m_spellSpeed; }
     }
 }
+
+public enum ESkillTarget
+{
+    SimpleTarget = 1,
+    Self = 2,
+    MultiTarget = 4
+}
+
+
