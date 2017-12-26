@@ -1,0 +1,8 @@
+{
+    "name": "InputManager",
+    "references": [
+        "Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}
