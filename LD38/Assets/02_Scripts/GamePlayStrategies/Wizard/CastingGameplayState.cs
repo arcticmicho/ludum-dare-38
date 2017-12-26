@@ -14,8 +14,8 @@ public class CastingGameplayState : GenericState<Wizard, TransitionData>
             CastAction action = new CastAction(m_character.Session, data.SelectedSkill, m_character);
             action.OnFinishCasting += OnFinishCasting;
             m_character.Session.ActionManager.EnqueueAction(action);
-            UIPartyManager.Instance.RequestView<CastingView>();
-            UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
+            // UIPartyManager.Instance.RequestView<CastingView>();
+            // UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
         }else
         {
             m_finishCasting = true;

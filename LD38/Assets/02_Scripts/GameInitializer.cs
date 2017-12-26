@@ -3,16 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameInitializer : MonoSingleton<GameInitializer>
+public class GameInitializer :MonoBehaviour
 {
     [SerializeField]
-    private ViewContainer m_initContainer;
+    private List<GameObject> _preloadManagers;
 
-	void Start ()
+    [SerializeField]
+    private List<GameObject> _postLoadManagers;
+
+    private void Start()
     {
-        UIPartyManager.Instance.Init();
-        UIPartyManager.Instance.LoadViews(m_initContainer);
-        UIPartyManager.Instance.RequestView<LoadingView>();
+        foreach (var manager in _preloadManagers)
+        {
+            GameObject managerGameObject = Instantiate(manager) as GameObject;
+            managerGameObject.name = manager.name;
+        }
+
         StartCoroutine(InitGame());
     }
 
@@ -20,13 +26,20 @@ public class GameInitializer : MonoSingleton<GameInitializer>
     {
         yield return SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
 
-        GameManager.Instance.Init();
+        foreach (var manager in _postLoadManagers)
+        {
+            GameObject managerGameObject = Instantiate(manager) as GameObject;
+            managerGameObject.name = manager.name;
+        }
+
         ResourceManager.Instance.Initialize();
-        GameManager.Instance.Serializer.DeserializeData();
         InventoryManager.Instance.Initialize();
         CharactersManager.Instance.Initialize();
         GameStateManager.Instance.Initialize();
+
+        GameManager.Instance.Serializer.DeserializeData();
         GameManager.Instance.PostLoad();
-        //UIPartyManager.Instance.RequestView<MainMenuView>();
+
+        Destroy(gameObject);
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
+public class UIPartyManager : MonoSingleton<UIPartyManager>
 {
     private Stack<UIView> m_viewStack;
     private Queue<ViewRequest> m_requests;
@@ -38,10 +38,10 @@ public class UIPartyManager : UIManagerParty.MonoSingleton<UIPartyManager>
         }
     }
 
-    
-    public override void Init()
+
+    protected override void OnAwake()
     {
-        base.Init();
+        base.OnAwake();
         m_viewStack = new Stack<UIView>();
         m_requests = new Queue<ViewRequest>();
         m_cachedViews = new Dictionary<Type, UIView>();

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+using GameModules;
+
+
 public class GameIdleState : GenericState<GameStateManager, GameStateData>
 {
     private GameStateData m_sessionData;
@@ -11,7 +14,7 @@ public class GameIdleState : GenericState<GameStateManager, GameStateData>
         base.OnEnter(data);
         m_sessionData = null;
         LoadResources();
-        UIPartyManager.Instance.RequestView<MainMenuView>();
+        UIManager.Instance.RequestPopup<MainMenuPopup>().Show();
     }
 
     public override StateTransition<GameStateData> EvaluateTransition()
@@ -36,11 +39,11 @@ public class GameIdleState : GenericState<GameStateManager, GameStateData>
     public override void OnExtit()
     {
         base.OnExtit();
-        UIPartyManager.Instance.UnloadViews(ResourceManager.Instance.UIResources.MainMenuViewContainer);
+       // UIPartyManager.Instance.UnloadViews(ResourceManager.Instance.UIResources.MainMenuViewContainer);
     }
 
     private void LoadResources()
     {
-        UIPartyManager.Instance.LoadViews(ResourceManager.Instance.UIResources.MainMenuViewContainer);
+       // UIPartyManager.Instance.LoadViews(ResourceManager.Instance.UIResources.MainMenuViewContainer);
     }
 }

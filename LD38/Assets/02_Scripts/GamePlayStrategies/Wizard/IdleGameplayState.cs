@@ -19,8 +19,10 @@ public class IdleGameplayState : GenericState<Wizard, TransitionData>
         m_dragPositions.Clear();
         InputManager.Instance.OnDragEvent += OnDrag;
         Debug.Log("Entering Idle Gameplay State");
-        UIPartyManager.Instance.RequestView<IdleView>();
-        UIPartyManager.Instance.GetView<IdleView>().CreateSkillsBook(m_character.SkillTree);
+
+      //  UIPartyManager.Instance.RequestView<IdleView>(); ZTODO
+       // UIPartyManager.Instance.GetView<IdleView>().CreateSkillsBook(m_character.SkillTree);
+
         m_character.ResetSkillTree();
         m_character.Entity.PlayIdleAnimation();
     }

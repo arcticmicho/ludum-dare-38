@@ -47,11 +47,11 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
 
     private void LoadResources()
     {
-        UIPartyManager.Instance.LoadViews(ResourceManager.Instance.UIResources.GameSessionViewContainer);
+        // UIPartyManager.Instance.LoadViews(ResourceManager.Instance.UIResources.GameSessionViewContainer);
     }
 
     private void UnloadResources()
     {
-        UIPartyManager.Instance.UnloadViews(ResourceManager.Instance.UIResources.GameSessionViewContainer);
+        // UIPartyManager.Instance.UnloadViews(ResourceManager.Instance.UIResources.GameSessionViewContainer);
     }
 }

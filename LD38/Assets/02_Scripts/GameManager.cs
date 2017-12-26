@@ -25,7 +25,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     private GameData m_gameData;
 
-    public override void Init()
+    protected override void OnAwake()
     {
         m_serializer = new GameSerializer();
         m_serializer.ShiftData = true;
@@ -66,11 +66,6 @@ public class GameManager : MonoSingleton<GameManager>
     public RoomSessionData GetSelectedRoomData()
     {
         return ResourceManager.Instance.RoomTemplateResources.GetRoomSessionTemplateById(m_gameData.SelectRoomId);
-    }
-
-    private void Start()
-    {
-
     }
 
     public void RequestGameSession()

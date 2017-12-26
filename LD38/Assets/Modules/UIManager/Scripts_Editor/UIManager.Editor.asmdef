@@ -1,0 +1,13 @@
+{
+    "name": "UIManager.Editor",
+    "references": [
+        "Core",
+        "Core.Editor",
+        "UIManager",
+        "LeanTween"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": []
+}

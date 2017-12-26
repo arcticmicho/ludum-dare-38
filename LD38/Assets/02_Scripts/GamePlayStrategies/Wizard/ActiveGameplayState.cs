@@ -18,8 +18,6 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
     private Camera m_mainCamera;
     private Vector3 m_trailRendererDepth;
 
-    private DetectingView m_view;
-
     private List<Vector3> m_dragPositions = new List<Vector3>();
 
     public override void OnEnter(TransitionData data)
@@ -43,9 +41,9 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
             //SetTrailPosition(data.InitialDrag);
         }
 
-        UIPartyManager.Instance.RequestView<DetectingView>();
+        /*UIPartyManager.Instance.RequestView<DetectingView>(); //ZTODO
         m_view = UIPartyManager.Instance.GetView<DetectingView>();
-        m_view.SetTimerValue(1f);
+        m_view.SetTimerValue(1f);*/
 
         Debug.Log("Entering Active Gameplay State");
     }
@@ -69,7 +67,6 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
         //if(!m_detectingPattern)
         //{
             m_detectingTime += TimeManager.Instance.DeltaTime;
-            m_view.SetTimerValue((k_maxWaitingPatternTime - m_detectingTime) / k_maxWaitingPatternTime);
             if(m_detectingTime >= k_maxWaitingPatternTime)
             {
                 m_finishActiveGameplay = true;

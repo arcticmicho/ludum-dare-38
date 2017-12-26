@@ -1,0 +1,9 @@
+{
+    "name": "UIManager",
+    "references": [
+        "Core",
+        "LeanTween"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

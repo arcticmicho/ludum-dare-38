@@ -93,9 +93,9 @@ public class PartyRecognitionManager : MonoSingleton<PartyRecognitionManager>
         get { return (int)m_neuronalNetwork.NeuronNumberInput + 1; }
     }
 
-    public override void Init()
+    protected override void OnAwake()
     {
-        base.Init();
+        base.OnAwake();
         m_patternDefinitionSet = new List<PRPatternDefinition>();
         m_patternsDefinitionsDict = new Dictionary<string, PRPatternDefinition>();
         LoadDefinitionSet();
