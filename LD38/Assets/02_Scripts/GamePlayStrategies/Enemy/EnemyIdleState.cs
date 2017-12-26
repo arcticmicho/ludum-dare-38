@@ -30,5 +30,4 @@ public class EnemyIdleState : GenericState<EnemyCharacter, EnemyTransitionData>
         m_idleTime = UnityEngine.Random.Range(8f, 10f);
         m_elapsedIdleTime = 0;
     }
-
 }
