@@ -51,5 +51,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1334cc08c0a1a074b80bdbbc234ad971, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_isFinishPatternActive: 0
-  m_finishPattern: {fileID: 0}
+  m_isFinishPatternActive: 1
+  m_finishPattern: {fileID: 11400000, guid: e1cce0563c813e544ae3a5e631e80511, type: 2}

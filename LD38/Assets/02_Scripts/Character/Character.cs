@@ -60,7 +60,6 @@ public abstract class Character
     protected StatModifier<float> m_movementSpeedModifier;
     public StatModifier<float> MovementSpeedModifier
     {
-        set { m_movementSpeedModifier = value; }
         get { return m_movementSpeedModifier; }
     }
 
@@ -69,9 +68,15 @@ public abstract class Character
         get { return m_data.MovementSpeed * (m_movementSpeedModifier.HasModifiers ? m_movementSpeedModifier.TotalModifier : 1); }
     }
 
+    protected StatModifier<DamageTable> m_resistanceTableModifier;
+    public StatModifier<DamageTable> ResistanceTableModifier
+    {
+        get { return m_resistanceTableModifier; }
+    }
+
     public DamageTable ResistanceTable
     {
-        get { return m_data.ResistanceTable; }
+        get { return m_data.ResistanceTable - (m_data.ResistanceTable * m_resistanceTableModifier.TotalModifier); }
     }
 
     public BaseRoomPoint CurrentPoint
@@ -98,7 +103,8 @@ public abstract class Character
 
     private void InitializeModifiers()
     {
-        m_movementSpeedModifier = new StatModifier<float>((mod1, mod2) => { return mod1 + mod2; });
+        m_movementSpeedModifier = new StatModifier<float>((mod1, mod2) => { return mod1 + mod2; }, 0f);
+        m_resistanceTableModifier = new StatModifier<DamageTable>((mod1, mod2) => { return mod1 + mod2;}, new DamageTable());
     }
 
     public virtual void InstantiateCharacterEntity(CharacterEntity entityTemplate, bool force = false)

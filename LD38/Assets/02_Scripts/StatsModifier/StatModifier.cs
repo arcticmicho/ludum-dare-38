@@ -21,9 +21,10 @@ public class StatModifier<T>
         get { return m_totalValue; }
     }
 
-    public StatModifier(ModifierAddOperation operation)
+    public StatModifier(ModifierAddOperation operation, T defaulTotaltValue)
     {
         m_addOperation = operation;
+        m_totalValue = defaulTotaltValue;
     }
 
     public Modifier<T> AddModifier(T value)
