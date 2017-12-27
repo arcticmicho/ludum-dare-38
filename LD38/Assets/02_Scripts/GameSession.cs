@@ -33,8 +33,8 @@ public class GameSession
         get { return m_currentTarget != null; }
     }
 
-    private ActionsManager m_actions;
-    public ActionsManager ActionManager
+    private ActionController m_actions;
+    public ActionController ActionManager
     {
         get { return m_actions; }
     }
@@ -64,7 +64,7 @@ public class GameSession
     public GameSession(GameStateData data)
     {
         m_sessionData = data.SessionData;
-        m_actions = new ActionsManager();
+        m_actions = new ActionController();
         m_gameStateData = data;
     }
 
@@ -113,7 +113,7 @@ public class GameSession
 
     }
 
-    public bool ProcessSession(float deltaTime)
+    public bool UpdateSession(float deltaTime)
     {
         m_mainCharacterStateMachine.UpdateSM();
         m_actions.UpdateActions();
@@ -132,7 +132,8 @@ public class GameSession
             WinSession();
             m_sessionFinished = true;
             return true;
-        }else if(m_gameOver)
+        }
+        else if(m_gameOver)
         {
             GameOver();
             m_sessionFinished = true;
@@ -144,12 +145,13 @@ public class GameSession
     private void GameOver()
     {
         EndView.RequestEndView(OnEndViewFinished);
-        UIPartyManager.Instance.GetView<EndView>().SetEndText("You Lose!");
+        // UIPartyManager.Instance.GetView<EndView>().SetEndText("You Lose!"); ZTODO
     }
+
     private void WinSession()
     {
         EndView.RequestEndView(OnEndViewFinished);
-        UIPartyManager.Instance.GetView<EndView>().SetEndText("You Win!");
+      //  UIPartyManager.Instance.GetView<EndView>().SetEndText("You Win!"); ZTODO
     }
 
     private void OnEndViewFinished()

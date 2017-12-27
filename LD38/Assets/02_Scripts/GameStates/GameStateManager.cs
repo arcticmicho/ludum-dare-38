@@ -13,18 +13,13 @@ public class GameStateManager : MonoSingleton<GameStateManager>
         m_stateMachine.StartGameplayStateMachine<GameIdleState>();
     }
 
-    public void RequestGameSession()
+    internal void StartGameSession()
     {
         if (m_stateMachine.CurrentState is GameIdleState)
         {
             GameIdleState idleState = (GameIdleState)m_stateMachine.CurrentState;
             idleState.StartGameSession(new GameStateData(GameManager.Instance.GetSelectedRoomData(), GameManager.Instance.GetSelectedWizard()));
         }
-    }
-
-    internal void StartGameSession()
-    {
-        RequestGameSession();
     }
 
     private void Update()

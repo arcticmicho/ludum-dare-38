@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActionsManager
+public class ActionController
 {
     private PriorityQueue<long,GameAction> m_actions;
     private List<GameAction> m_activeActions;

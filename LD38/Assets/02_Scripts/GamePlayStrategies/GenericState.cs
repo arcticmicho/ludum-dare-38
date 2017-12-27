@@ -13,6 +13,7 @@ public class GenericState<Actor, Data> where Data : class
 
     public virtual void OnEnter(Data data)
     {
+        Debug.LogWarning("Enter " + GetType().Name);
         m_data = data;
     }
 

@@ -15,7 +15,6 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
     {
         base.OnEnter(data);
         m_currentGameSession = new GameSession(data);
-        LoadResources();
         m_currentGameSession.StartSession();
     }
 
@@ -23,7 +22,7 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
     {
         if (m_currentGameSession != null && !m_currentGameSession.SessionFinished)
         {
-            if (m_currentGameSession.ProcessSession(TimeManager.Instance.DeltaTime))
+            if (m_currentGameSession.UpdateSession(TimeManager.Instance.DeltaTime))
             {
                 m_currentGameSession.EndSession();
             }
@@ -42,16 +41,5 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
     public override void OnExtit()
     {
         base.OnExtit();
-        UnloadResources();
-    }
-
-    private void LoadResources()
-    {
-        // UIPartyManager.Instance.LoadViews(ResourceManager.Instance.UIResources.GameSessionViewContainer);
-    }
-
-    private void UnloadResources()
-    {
-        // UIPartyManager.Instance.UnloadViews(ResourceManager.Instance.UIResources.GameSessionViewContainer);
     }
 }

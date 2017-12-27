@@ -13,7 +13,6 @@ public class GameIdleState : GenericState<GameStateManager, GameStateData>
     {
         base.OnEnter(data);
         m_sessionData = null;
-        LoadResources();
         UIManager.Instance.RequestPopup<MainMenuPopup>().Show();
     }
 
@@ -39,11 +38,6 @@ public class GameIdleState : GenericState<GameStateManager, GameStateData>
     public override void OnExtit()
     {
         base.OnExtit();
-       // UIPartyManager.Instance.UnloadViews(ResourceManager.Instance.UIResources.MainMenuViewContainer);
     }
 
-    private void LoadResources()
-    {
-       // UIPartyManager.Instance.LoadViews(ResourceManager.Instance.UIResources.MainMenuViewContainer);
-    }
 }
