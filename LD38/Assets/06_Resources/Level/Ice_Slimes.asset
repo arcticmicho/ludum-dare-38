@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e11d1f7e5e7deae4187007583f9d2adc, type: 3}
   m_Name: Ice_Slimes
   m_EditorClassIdentifier: 
-  m_spawnRate: 3
+  m_spawnRate: 1
   m_enemyCount: 5
   m_maxConcurrentEnemies: 3
   m_enemies:

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using GameModules;
+
 public class GameSession
 {
     private bool m_sessionFinished;
@@ -77,6 +79,14 @@ public class GameSession
         m_currentTarget = null;
 
         m_levelController.StartLevel(m_sessionData.Level);
+
+        DebugManager.Instance.AddDebugAction("Kill Target", () =>
+        {
+            if (m_currentTarget != null)
+            {
+                m_currentTarget.KillCharacter();
+            }
+        },false);
     }
 
     private void InstantiateCharacter()
@@ -108,7 +118,7 @@ public class GameSession
 
     public void EndSession()
     {
-
+        DebugManager.Instance.RemoveDebugAction("Kill Target");
     }
 
     public bool Update(float deltaTime)
@@ -172,8 +182,6 @@ public class GameSession
         }
     }
 
- 
-
     public void NotifyMainCharacterDeath(Wizard mainCharacter)
     {
         if(m_mainCharacter == mainCharacter)
@@ -201,9 +209,8 @@ public class GameSession
 
     public void NotifyEnemyDeath(EnemyCharacter enemyCharacter)
     {
-        if (m_activeEnemies.Contains(enemyCharacter))
+        if (m_activeEnemies.Remove(enemyCharacter))
         {
-            m_activeEnemies.Remove(enemyCharacter);
             enemyCharacter.CurrentPoint.ReleasePoint();
             if (enemyCharacter == m_currentTarget)
             {
