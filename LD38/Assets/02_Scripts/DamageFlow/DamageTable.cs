@@ -7,7 +7,7 @@ using UnityEngine;
 public class DamageTable
 {
     [SerializeField]
-    private List<DamageTypeValue> m_damage;
+    private List<DamageTypeValue> m_damage = new List<DamageTypeValue>();
 
     public List<DamageTypeValue> DamageInfo
     {
@@ -16,7 +16,6 @@ public class DamageTable
 
     public DamageTable()
     {
-        m_damage = new List<DamageTypeValue>();
     }
 
     public DamageTable(List<DamageTypeValue> values)
