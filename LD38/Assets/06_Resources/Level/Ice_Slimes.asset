@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e11d1f7e5e7deae4187007583f9d2adc, type: 3}
+  m_Name: Ice_Slimes
+  m_EditorClassIdentifier: 
+  m_spawnRate: 3
+  m_enemyCount: 5
+  m_maxConcurrentEnemies: 3
+  m_enemies:
+  - {fileID: 11400000, guid: 0d11a5476eadf864682b894e17cde165, type: 2}
+  - {fileID: 11400000, guid: 1663dd10854ad024caa7ab106194388d, type: 2}
+  - {fileID: 11400000, guid: 796e730eca757b546a7683931672990a, type: 2}

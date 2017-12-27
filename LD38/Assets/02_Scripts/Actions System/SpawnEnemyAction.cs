@@ -29,7 +29,7 @@ public class SpawnEnemyAction : GameAction
 
     public override bool ProcessAction(float deltaTime)
     {
-        m_contextSession.SpawnEnemy(m_enemyTemplate);
+        m_contextSession.CreateEnemy(m_enemyTemplate);
         return true;
     }
 

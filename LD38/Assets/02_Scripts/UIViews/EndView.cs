@@ -27,9 +27,9 @@ public class EndView : UIView
 
     public static void RequestEndView(System.Action onOkPressed)
     {
-        UIPartyManager.Instance.GetView<EndView>().OnOkPressed = null;
+      /*  UIPartyManager.Instance.GetView<EndView>().OnOkPressed = null;
         UIPartyManager.Instance.RequestView<EndView>();
-        UIPartyManager.Instance.GetView<EndView>().OnOkPressed += onOkPressed;
+        UIPartyManager.Instance.GetView<EndView>().OnOkPressed += onOkPressed;*/
     }
     	
 }
