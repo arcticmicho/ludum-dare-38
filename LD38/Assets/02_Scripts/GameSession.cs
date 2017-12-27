@@ -8,9 +8,11 @@ public class GameSession
     private bool m_sessionFinished;
     private bool m_sessionClosed;
 
-    private GameStateData m_gameStateData;
+    private float m_timeSession;
 
-    private GenericStateMachine<Wizard,TransitionData> m_mainCharacterStateMachine;
+    private bool m_gameOver;
+
+    private GameStateData m_gameStateData;
 
     private RoomSessionData m_sessionData;
     private RoomSessionView m_sessionView;
@@ -22,7 +24,10 @@ public class GameSession
     private int m_totalEnemies;
     private int m_defeatedEnemies;
 
-    private EnemyCharacter m_currentTarget;
+    private EnemyCharacter   m_currentTarget;
+    private ActionController m_actionController;
+
+    #region Get/Set
     public EnemyCharacter CurrentTarget
     {
         get { return m_currentTarget; }
@@ -33,18 +38,14 @@ public class GameSession
         get { return m_currentTarget != null; }
     }
 
-    private ActionController m_actions;
-    public ActionController ActionManager
+    public ActionController ActionController
     {
-        get { return m_actions; }
+        get { return m_actionController; }
     }
 
     public Character MainCharacter
     {
-        get
-        {
-            return m_mainCharacter;
-        }
+        get { return m_mainCharacter; }
     }
 
     public bool SessionFinished
@@ -56,27 +57,21 @@ public class GameSession
     {
         get { return m_sessionClosed; }
     }
-
-    private float m_timeSession;
-
-    private bool m_gameOver;
+    #endregion
 
     public GameSession(GameStateData data)
     {
         m_sessionData = data.SessionData;
-        m_actions = new ActionController();
+        m_actionController = new ActionController();
         m_gameStateData = data;
     }
 
 	public void StartSession()
     {
         m_gameOver = false;
-        m_actions.Initialize();
+        m_actionController.Initialize();
         InstantiateRoomView();
         InstantiateCharacter();        
-
-        m_mainCharacterStateMachine = new GenericStateMachine<Wizard, TransitionData>(m_mainCharacter);
-        m_mainCharacterStateMachine.StartGameplayStateMachine<IdleGameplayState>();
 
         GenerateSpawnEnemyAction();
 
@@ -96,7 +91,7 @@ public class GameSession
     {        
         for(int i=0, count=m_sessionData.EnemiesSpawnData.Count; i<count; i++)
         {
-            m_actions.EnqueueAction(new SpawnEnemyAction(this, m_sessionData.EnemiesSpawnData[i].EnemyTemplate, TimeManager.Instance.CurrentTime.AddSeconds(m_sessionData.EnemiesSpawnData[i].SpawnTime)));
+            m_actionController.EnqueueAction(new SpawnEnemyAction(this, m_sessionData.EnemiesSpawnData[i].EnemyTemplate, TimeManager.Instance.CurrentTime.AddSeconds(m_sessionData.EnemiesSpawnData[i].SpawnTime)));
         }
         m_totalEnemies = m_sessionData.EnemiesSpawnData.Count;
         m_defeatedEnemies = 0;
@@ -113,10 +108,11 @@ public class GameSession
 
     }
 
-    public bool UpdateSession(float deltaTime)
+    public bool Update(float deltaTime)
     {
-        m_mainCharacterStateMachine.UpdateSM();
-        m_actions.UpdateActions();
+        m_mainCharacter.Update();
+
+        m_actionController.UpdateActions();
         if(m_currentTarget == null)
         {
             FindNewTarget();
@@ -220,7 +216,7 @@ public class GameSession
             m_enemies[i] = null;
         }
         GameObject.Destroy(m_sessionView.gameObject);
-        m_actions.ClearAction();
+        m_actionController.ClearAction();
     }
 }
 

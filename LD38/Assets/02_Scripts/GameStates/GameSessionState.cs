@@ -22,7 +22,7 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
     {
         if (m_currentGameSession != null && !m_currentGameSession.SessionFinished)
         {
-            if (m_currentGameSession.UpdateSession(TimeManager.Instance.DeltaTime))
+            if (m_currentGameSession.Update(TimeManager.Instance.DeltaTime))
             {
                 m_currentGameSession.EndSession();
             }
