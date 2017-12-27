@@ -14,7 +14,7 @@ MonoBehaviour:
   m_skillId: ice
   m_skillName: Ice
   m_skillPatterns:
-  - {fileID: 11400000, guid: dfcc0b82c03ed2d49bc59f1733c96bad, type: 2}
+  - {fileID: 11400000, guid: 929380cbf83baf34b85d76bf401d311c, type: 2}
   m_spellDamage:
     m_damage:
     - m_damageType: {fileID: 11400000, guid: 7415fa0bae52564409aa3767490a0206, type: 2}

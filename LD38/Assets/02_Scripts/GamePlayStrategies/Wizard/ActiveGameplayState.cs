@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using GestureRecognizer;
 
 public class ActiveGameplayState : GenericState<Wizard, TransitionData>
 {

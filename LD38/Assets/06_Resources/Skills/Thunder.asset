@@ -14,7 +14,7 @@ MonoBehaviour:
   m_skillId: thunder
   m_skillName: Thunder
   m_skillPatterns:
-  - {fileID: 11400000, guid: 54b11b800e0cc5c408dceee4e02d9183, type: 2}
+  - {fileID: 11400000, guid: 3f917cbf2b0c5d04b86cfb3fd7c0bd96, type: 2}
   m_spellDamage:
     m_damage:
     - m_damageType: {fileID: 11400000, guid: 6234d4e4d92aa694ea37332abb169d09, type: 2}

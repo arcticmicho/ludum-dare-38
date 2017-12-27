@@ -21,6 +21,13 @@ public class SkillPattern : ScriptableObject
     }
 
     [SerializeField]
+    private GestureRecognizer.GesturePattern m_pattern;
+    public GestureRecognizer.GesturePattern Pattern
+    {
+        get { return m_pattern; }
+    }
+
+    [SerializeField]
     private Sprite m_skillPatternImage;
     public Sprite SkillPatternImage
     {

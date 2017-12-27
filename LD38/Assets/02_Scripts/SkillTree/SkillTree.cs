@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GestureRecognizer;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -77,20 +78,38 @@ public class SkillTree
         SkillLeaf searchLeaf = m_current;
         SkillData selectedSkill = null;
         float lastScore = -1f;
-        PropagateResult propagateResult = PartyRecognitionManager.Instance.Recognize(patternPoints);
+        RecognitionResult propagateResult = PatternManager.Instance.ProcessPattern(patternPoints);
+
 
         for(int i=0; i< searchLeaf.LeafConnections.Count; i++)
         {
             if(!searchLeaf.LeafConnections[i].IsEmptyLeaf)
             {
-                float score = propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId);
-                if (score >= searchLeaf.LeafConnections[i].Pattern.PatternThreshold && score >= lastScore)
+                //float score = propagateResult.GetScore(searchLeaf.LeafConnections[i].Pattern.PatternRecognitionId);
+                //if (score >= searchLeaf.LeafConnections[i].Pattern.PatternThreshold && score >= lastScore)
+                //{
+                //    lastScore = score;
+                //    selectedSkill = searchLeaf.LeafConnections[i].SkillData;
+                //    if (moveToNext)
+                //    {
+                //        m_current = searchLeaf.LeafConnections[i];
+                //    }
+                //}
+                if(propagateResult.gesture == searchLeaf.LeafConnections[i].Pattern.Pattern)
                 {
-                    lastScore = score;
-                    selectedSkill = searchLeaf.LeafConnections[i].SkillData;
-                    if (moveToNext)
+                    if(propagateResult.score.score >= searchLeaf.LeafConnections[i].Pattern.PatternThreshold)
                     {
-                        m_current = searchLeaf.LeafConnections[i];
+                        lastScore = propagateResult.score.score;
+                        selectedSkill = searchLeaf.LeafConnections[i].SkillData;
+                        if(moveToNext)
+                        {
+                            m_current = searchLeaf.LeafConnections[i];
+                        }
+                        break;
+                    }else
+                    {
+                        selectedSkill = null;
+                        break;
                     }
                 }
             }            
