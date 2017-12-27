@@ -73,7 +73,7 @@ public class DamageFlow
         {
             for(int i=0, count = m_flowInfo.SkillData.SkillDefinition.SkillEffects.Count; i<count; i++)
             {
-                m_session.ActionManager.EnqueueAction(new SkillEffectAction(m_flowInfo.SkillData.SkillDefinition.SkillEffects[0], m_flowInfo.Target, m_flowInfo.Owner, m_session));
+                m_session.ActionController.EnqueueAction(new SkillEffectAction(m_flowInfo.SkillData.SkillDefinition.SkillEffects[0], m_flowInfo.Target, m_flowInfo.Owner, m_session));
             }            
         }
     }
