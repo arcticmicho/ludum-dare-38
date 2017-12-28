@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using GameModules;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,8 +15,15 @@ public class CastingGameplayState : GenericState<Wizard, TransitionData>
             CastAction action = new CastAction(m_character.Session, data.SelectedSkill, m_character);
             action.OnFinishCasting += OnFinishCasting;
             m_character.Session.ActionController.EnqueueAction(action);
-            // UIPartyManager.Instance.RequestView<CastingView>(); ZTODO
-            // UIPartyManager.Instance.GetView<CastingView>().SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
+
+            UIManager.Instance.HideHUD();
+            CastingHUD hud = UIManager.Instance.GetHUDElement<CastingHUD>();
+            if(hud == null)
+            {
+                hud = UIManager.Instance.AddHUDElement<CastingHUD>();
+            }
+            hud.Show();
+            hud.SetSkillName(data.SelectedSkill.SkillDefinition.SkillName);
         }else
         {
             m_finishCasting = true;
@@ -46,5 +54,6 @@ public class CastingGameplayState : GenericState<Wizard, TransitionData>
     {
         base.OnExtit();
         m_finishCasting = false;
+        UIManager.Instance.GetHUDElement<CastingHUD>().Hide();
     }
 }

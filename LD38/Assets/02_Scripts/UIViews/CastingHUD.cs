@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using GameModules;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CastingView : UIView
+public class CastingHUD : UIPanel
 {
     [SerializeField]
     private Text m_skillName;

@@ -102,7 +102,7 @@ public abstract class Character
     }
 
     private void InitializeModifiers()
-    {
+    {        
         m_movementSpeedModifier = new StatModifier<float>((mod1, mod2) => { return mod1 + mod2; }, 0f);
         m_resistanceTableModifier = new StatModifier<DamageTable>((mod1, mod2) => { return mod1 + mod2;}, new DamageTable());
     }

@@ -140,13 +140,13 @@ public class GameSession
 
     private void GameOver()
     {
-        EndView.RequestEndView(OnEndViewFinished);
+        EndPopup.RequestEndView(OnEndViewFinished);
         // UIPartyManager.Instance.GetView<EndView>().SetEndText("You Lose!"); ZTODO
     }
 
     private void WinSession()
     {
-        EndView.RequestEndView(OnEndViewFinished);
+        EndPopup.RequestEndView(OnEndViewFinished);
       //  UIPartyManager.Instance.GetView<EndView>().SetEndText("You Win!"); ZTODO
     }
 

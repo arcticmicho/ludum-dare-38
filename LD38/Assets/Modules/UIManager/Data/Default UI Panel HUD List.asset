@@ -11,4 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76af4f0c6d0003944bac621179887ae6, type: 3}
   m_Name: Default UI Panel HUD List
   m_EditorClassIdentifier: 
-  _panels: []
+  _panels:
+  - {fileID: 114373747221059320, guid: 2419242ea1edc214f87ec3a5e35cc5fb, type: 2}
+  - {fileID: 114535061934710380, guid: aab4a92e5aa2c214693337f41abb8ced, type: 2}
+  - {fileID: 114096414576707868, guid: bfba9c39879ad34498d5bff6dd00a3b7, type: 2}

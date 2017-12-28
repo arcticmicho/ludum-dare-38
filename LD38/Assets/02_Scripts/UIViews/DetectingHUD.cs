@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using GameModules;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DetectingView : UIView
+public class DetectingHUD : UIPanel
 {
     [SerializeField]
     private Slider m_timeSlider;

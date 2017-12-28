@@ -20,8 +20,13 @@ public class IdleGameplayState : GenericState<Wizard, TransitionData>
         InputManager.Instance.OnDragEvent += OnDrag;
         Debug.Log("Entering Idle Gameplay State");
 
-      //  UIPartyManager.Instance.RequestView<IdleView>(); ZTODO
-       // UIPartyManager.Instance.GetView<IdleView>().CreateSkillsBook(m_character.SkillTree);
+        IdleHUD idleHud = UIManager.Instance.GetHUDElement<IdleHUD>();
+        if(idleHud == null)
+        {
+            idleHud = UIManager.Instance.AddHUDElement<IdleHUD>();
+        }
+        idleHud.Show();
+        idleHud.CreateSkillsBook(m_character.SkillTree);
 
         m_character.ResetSkillTree();
         m_character.Entity.PlayIdleAnimation();
@@ -93,5 +98,6 @@ public class IdleGameplayState : GenericState<Wizard, TransitionData>
         m_dragPositions.Clear();
         m_skillToCast = null;
         InputManager.Instance.OnDragEvent -= OnDrag;
+        UIManager.Instance.GetHUDElement<IdleHUD>().Hide();
     }
 }

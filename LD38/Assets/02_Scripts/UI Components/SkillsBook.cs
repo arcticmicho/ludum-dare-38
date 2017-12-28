@@ -24,7 +24,7 @@ public class SkillsBook : MonoBehaviour
         {
             SkillView newView = GameObject.Instantiate(m_skillViewPrefab);
             newView.InitializeSkillView(skillDef.SkillDefinition);
-            newView.transform.SetParent(m_skillsViewGrid);
+            newView.transform.SetParent(m_skillsViewGrid, false);
         }
     }
 }

@@ -16,6 +16,8 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
     private SkillData m_skillToCast;
     private TrailRenderer m_currentTrailRenderer;
 
+    private DetectingHUD m_detectingHud;
+
     private Camera m_mainCamera;
     private Vector3 m_trailRendererDepth;
 
@@ -39,12 +41,16 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
             m_detectingPattern = true;
             m_skillToCast = data.SelectedSkill;
             m_currentTrailRenderer = EffectsManager.Instance.RequestTrailRenderer();
-            //SetTrailPosition(data.InitialDrag);
         }
 
-        /*UIPartyManager.Instance.RequestView<DetectingView>(); //ZTODO
-        m_view = UIPartyManager.Instance.GetView<DetectingView>();
-        m_view.SetTimerValue(1f);*/
+        UIManager.Instance.HideHUD();
+        m_detectingHud = UIManager.Instance.GetHUDElement<DetectingHUD>();
+        if(m_detectingHud == null)
+        {
+            m_detectingHud = UIManager.Instance.AddHUDElement<DetectingHUD>();
+        }
+        m_detectingHud.Show();
+        m_detectingHud.SetTimerValue(1f);
 
         Debug.Log("Entering Active Gameplay State");
     }
@@ -72,6 +78,7 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
             {
                 m_finishActiveGameplay = true;
             }
+            m_detectingHud.SetTimerValue(m_detectingTime / k_maxWaitingPatternTime);
         //}
     }
 
@@ -79,6 +86,7 @@ public class ActiveGameplayState : GenericState<Wizard, TransitionData>
     {
         base.OnExtit();
         InputManager.Instance.OnDragEvent -= OnDrag;
+        m_detectingHud.Hide();
     }
 
     private void OnDrag(DragStatus status, Vector3 position, Vector3 lastPosition)

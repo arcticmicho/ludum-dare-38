@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameModules;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -40,6 +41,7 @@ public class GameSessionState : GenericState<GameStateManager, GameStateData>
 
     public override void OnExtit()
     {
+        UIManager.Instance.ClosePopup<EndPopup>();
         base.OnExtit();
     }
 }
