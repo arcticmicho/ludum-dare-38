@@ -32,7 +32,7 @@ public class GameManager : MonoSingleton<GameManager>
         m_serializer.EncrypData = false;
     }
 
-    public void PostLoad()
+    public void PostLoad(bool isNewGame)
     {
         m_gameData = m_serializer.GameData;
     }

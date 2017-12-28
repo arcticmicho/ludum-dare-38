@@ -97,6 +97,13 @@ public class StateTransition<Data> where Data : class
         m_transitionData = transitionData;
     }
 
+    public StateTransition(Type stateType, Data transitionData)
+    {
+        m_stateType = stateType;
+        m_nullTransition = false;
+        m_transitionData = transitionData;
+    }
+
     public static StateTransition<Data> Transition<T,Actor>() where T: GenericState<Actor, Data> where Actor: Character
     {
         return new StateTransition<Data>(typeof(T), false);

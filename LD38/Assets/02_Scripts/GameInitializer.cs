@@ -18,27 +18,7 @@ public class GameInitializer :MonoBehaviour
             GameObject managerGameObject = Instantiate(manager) as GameObject;
             managerGameObject.name = manager.name;
         }
-
-        StartCoroutine(InitGame());
-    }
-
-    private IEnumerator InitGame()
-    {
-        yield return SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
-
-        foreach (var manager in _postLoadManagers)
-        {
-            GameObject managerGameObject = Instantiate(manager) as GameObject;
-            managerGameObject.name = manager.name;
-        }
-
-        ResourceManager.Instance.Initialize();
-        InventoryManager.Instance.Initialize();
-        CharactersManager.Instance.Initialize();
         GameStateManager.Instance.Initialize();
-
-        GameManager.Instance.Serializer.DeserializeData();
-        GameManager.Instance.PostLoad();
 
         Destroy(gameObject);
     }

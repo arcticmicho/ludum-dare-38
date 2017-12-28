@@ -16,6 +16,12 @@ public partial class GameSerializer
         get { return m_gameData; }
     }
 
+    private bool m_isNewGame;
+    public bool IsNewGame
+    {
+        get { return m_isNewGame; }
+    }
+
     public GameSerializer()
     {
         m_playerData = new PlayerData(this);
@@ -38,13 +44,16 @@ public partial class GameSerializer
         }
     }
 
-    public void DeserializeData()
+    public IEnumerator DeserializeData()
     {
         Dictionary<string, object> gameData;
         SerializeUtils.ESerializeError error;
+
+        //TODO: Add other kinds of Load Game (maybe cloud save?)
         if (LoadGame(kDefaultSaveName, out gameData, out error))
         {
             LoadData(gameData);
+            m_isNewGame = false;
         }
         else
         {
@@ -52,9 +61,11 @@ public partial class GameSerializer
             {
                 //Initializating the game for the very first time. We need to create the default data.
                 CreateDataFromScratch();
+                m_isNewGame = true;
             }
             Debug.LogError(error.ToString());
         }
+        yield return null;
     }
 
     private void LoadData(Dictionary<string, object> data)

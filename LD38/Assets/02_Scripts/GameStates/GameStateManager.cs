@@ -10,7 +10,7 @@ public class GameStateManager : MonoSingleton<GameStateManager>
     public void Initialize()
     {
         m_stateMachine = new GenericStateMachine<GameStateManager, GameStateData>(this);
-        m_stateMachine.StartGameplayStateMachine<GameIdleState>();
+        m_stateMachine.StartGameplayStateMachine<GameInitState>();
     }
 
     internal void StartGameSession()
