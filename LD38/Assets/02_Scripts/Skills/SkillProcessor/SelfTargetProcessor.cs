@@ -28,4 +28,14 @@ public class SelfTargetProcessor : BaseSkillProcessor
     {
         return true;
     }
+
+    protected override void OnActionCanceled()
+    {
+
+    }
+
+    protected override bool ShouldCancelAction()
+    {
+        return false;
+    }
 }

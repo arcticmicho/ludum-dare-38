@@ -45,4 +45,18 @@ public class SingleTargetProcessor : BaseSkillProcessor
     {
         return true;
     }
+
+    protected override bool ShouldCancelAction()
+    {
+        return m_projectileTarget.IsDeath;
+    }
+
+
+    protected override void OnActionCanceled()
+    {
+        if(m_projectile != null)
+        {
+            GameObject.Destroy(m_projectile.gameObject);
+        }
+    }
 }

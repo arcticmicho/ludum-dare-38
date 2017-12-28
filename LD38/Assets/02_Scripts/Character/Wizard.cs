@@ -36,7 +36,7 @@ public class Wizard : Character
         m_stateMachine.StartGameplayStateMachine<IdleGameplayState>();
     }  
 
-    public bool TryProcessPattern(Vector2[] patternPoints, out SkillData skillData)
+    public bool TrySearchSkill(Vector2[] patternPoints, out SkillData skillData)
     {
         if(m_skillTree != null && m_skillTree.SearchForPattern(patternPoints, out skillData, true))
         {

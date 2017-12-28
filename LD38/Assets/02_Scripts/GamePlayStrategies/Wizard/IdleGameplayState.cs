@@ -81,7 +81,7 @@ public class IdleGameplayState : GenericState<Wizard, TransitionData>
     private bool ProcessPattern()
     {
         SkillData newSkillData;
-        if (m_character.TryProcessPattern(MathUtils.ConvertList(m_dragPositions), out newSkillData))
+        if (m_character.TrySearchSkill(MathUtils.ConvertList(m_dragPositions), out newSkillData))
         {
             Debug.Log("Ability Found!: " + newSkillData.SkillDefinition.SkillName);
             m_skillToCast = newSkillData;

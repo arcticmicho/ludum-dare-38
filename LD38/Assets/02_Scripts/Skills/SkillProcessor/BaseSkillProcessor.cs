@@ -47,8 +47,9 @@ public abstract class BaseSkillProcessor
 
     public bool UpdateProcessor()
     {
-        if (m_owner.IsDeath && m_currentStep == ESkillProcessorStep.Casting)
+        if ((m_owner.IsDeath && m_currentStep == ESkillProcessorStep.Casting) || ShouldCancelAction())
         {
+            OnActionCanceled();
             return true;
         }
         UpdateStep();
@@ -127,7 +128,9 @@ public abstract class BaseSkillProcessor
     {
         for(int i=0, count = m_targets.Length; i<count; i++)
         {
-            if(!m_skillData.SkillDefinition.IsHealingSkill)
+            GameObject particle = GameObject.Instantiate(m_skillData.SkillDefinition.ImpactPrefab);
+            particle.transform.position = m_targets[i].Entity.transform.position;
+            if (!m_skillData.SkillDefinition.IsHealingSkill)
             {
                 DamageFlow flow = new DamageFlow(m_owner, m_targets[i], m_skillData, m_session);
                 m_targets[i].ApplyDamage(flow.ExecuteFlow());
@@ -135,9 +138,7 @@ public abstract class BaseSkillProcessor
             else
             {
                 m_targets[i].ApplyHeal(m_skillData.SkillDefinition.HealingAmount);
-            }
-            GameObject particle = GameObject.Instantiate(m_skillData.SkillDefinition.ImpactPrefab);
-            particle.transform.position = m_targets[i].Entity.transform.position;
+            }            
         }        
     }
 
@@ -160,4 +161,15 @@ public abstract class BaseSkillProcessor
     /// Method called when the processor change to the Hitting step (called just once)
     /// </summary>
     protected abstract void OnChangedToHittingStep();
+
+    /// <summary>
+    /// Method called to check if the action should be canceled 
+    /// </summary>
+    /// <returns></returns>
+    protected abstract bool ShouldCancelAction();
+
+    /// <summary>
+    /// Method called when the action is caneled by the ShouldCancelAction or if the Owner dies before launching the Skill
+    /// </summary>
+    protected abstract void OnActionCanceled();
 }
