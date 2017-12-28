@@ -7,7 +7,7 @@ using GameModules;
 
 public class GameSession
 {
-    // change those for an enum Session Status
+    // Change those to an enum Session Status
     private bool m_finished;
     private bool m_closed;
 
@@ -20,15 +20,15 @@ public class GameSession
     private RoomSessionData m_sessionData;
     private RoomSessionView m_roomView;
 
+    private ActionController m_actionController;
+    private LevelController m_levelController;
+
     private Wizard m_mainCharacter;
 
-    private List<EnemyCharacter> m_activeEnemies;
-    private List<EnemyCharacter> m_enemies;
+    private List<EnemyCharacter> m_activeEnemies = new List<EnemyCharacter>();
+    private List<EnemyCharacter> m_enemies = new List<EnemyCharacter>();
 
     private EnemyCharacter   m_currentTarget;
-    private ActionController m_actionController;
-
-    private LevelController m_levelController;
 
     #region Get/Set
     public EnemyCharacter CurrentTarget
@@ -73,14 +73,14 @@ public class GameSession
 
 	public void StartSession()
     {
+        CreateRoomView();
+        CreatePlayerCharacter();
+
         m_gameOver = false;
-        m_actionController.Initialize();
-        InstantiateRoomView();
-        InstantiateCharacter();        
 
         m_currentTarget = null;
 
-        m_levelController.StartLevel(m_sessionData.Level);
+        m_levelController.StartLevel(m_sessionData.Level,100);
 
         DebugManager.Instance.AddDebugAction("Kill Target", () =>
         {
@@ -91,11 +91,8 @@ public class GameSession
         },false);
     }
 
-    private void InstantiateCharacter()
+    private void CreatePlayerCharacter()
     {
-        m_activeEnemies = new List<EnemyCharacter>();
-        m_enemies = new List<EnemyCharacter>();
-
         m_mainCharacter = new Wizard(this, m_gameStateData.WizardData, CharactersManager.Instance.MainCharacterEntity);
 
         m_roomView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
@@ -112,7 +109,7 @@ public class GameSession
         m_defeatedEnemies = 0;
     }*/
 
-    private void InstantiateRoomView()
+    private void CreateRoomView()
     {
         m_roomView = GameObject.Instantiate<RoomSessionView>(m_sessionData.RoomViewTemplate);
         m_roomView.transform.position = Vector3.zero;
@@ -240,7 +237,7 @@ public class GameSession
             m_enemies[i] = null;
         }
         GameObject.Destroy(m_roomView.gameObject);
-        m_actionController.ClearAction();
+        m_actionController.ClearActions();
     }
 }
 
