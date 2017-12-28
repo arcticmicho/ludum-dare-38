@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_skillPatternName: Thunder
   m_patternRecognitionId: Thunder
-  m_pattern: {fileID: 11400000, guid: b97eaa9d4cf084946a4cdddceb3135a2, type: 2}
+  m_patterns:
+  - {fileID: 11400000, guid: b97eaa9d4cf084946a4cdddceb3135a2, type: 2}
   m_skillPatternImage: {fileID: 0}
   m_patternThreshold: 0.8

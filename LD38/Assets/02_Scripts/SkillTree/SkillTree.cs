@@ -95,7 +95,7 @@ public class SkillTree
                 //        m_current = searchLeaf.LeafConnections[i];
                 //    }
                 //}
-                if(propagateResult.gesture == searchLeaf.LeafConnections[i].Pattern.Pattern)
+                if(searchLeaf.LeafConnections[i].Pattern.ContainPattern(propagateResult.gesture))
                 {
                     if(propagateResult.score.score >= searchLeaf.LeafConnections[i].Pattern.PatternThreshold)
                     {

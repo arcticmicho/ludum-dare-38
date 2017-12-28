@@ -24,7 +24,7 @@ public class PatternManager : MonoSingleton<PatternManager>
     public bool ProcessSkillPattern(Vector2[] points, SkillPattern pattern, out RecognitionResult result)
     {
         result = ProcessPattern(points);
-        return result.gesture == pattern.Pattern && result.score.score >= pattern.PatternThreshold;
+        return pattern.ContainPattern(result.gesture) && result.score.score >= pattern.PatternThreshold;
     }
 
     public RecognitionResult ProcessPattern(Vector2[] points)

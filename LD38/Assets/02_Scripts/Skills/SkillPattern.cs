@@ -21,10 +21,10 @@ public class SkillPattern : ScriptableObject
     }
 
     [SerializeField]
-    private GestureRecognizer.GesturePattern m_pattern;
-    public GestureRecognizer.GesturePattern Pattern
+    private GestureRecognizer.GesturePattern[] m_patterns;
+    public GestureRecognizer.GesturePattern[] Patterns
     {
-        get { return m_pattern; }
+        get { return m_patterns; }
     }
 
     [SerializeField]
@@ -39,5 +39,17 @@ public class SkillPattern : ScriptableObject
     public float PatternThreshold
     {
         get { return m_patternThreshold; }
+    }
+
+    public bool ContainPattern(GestureRecognizer.GesturePattern pattern)
+    {
+        for(int i=0, count=m_patterns.Length; i<count; i++)
+        {
+            if(pattern == m_patterns[i])
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

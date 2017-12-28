@@ -13,7 +13,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_skillPatternName: VerticalLine
   m_patternRecognitionId: verticalLine
-  m_pattern: {fileID: 11400000, guid: 606b6abfa65091e469f7759779697930, type: 2}
+  m_patterns:
+  - {fileID: 11400000, guid: 606b6abfa65091e469f7759779697930, type: 2}
   m_skillPatternImage: {fileID: 21300016, guid: db8af784a64270d48ba79329a3be55e6,
     type: 3}
   m_patternThreshold: 0.9
