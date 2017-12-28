@@ -8,9 +8,6 @@ public class GameInitializer :MonoBehaviour
     [SerializeField]
     private List<GameObject> _preloadManagers;
 
-    [SerializeField]
-    private List<GameObject> _postLoadManagers;
-
     private void Start()
     {
         foreach (var manager in _preloadManagers)

@@ -12,7 +12,9 @@ public class WizardData : SerializableObject, IWizardData
     private SerializableProperty<string> m_wizardTemplateId;
     private SerializableProperty<float> m_healthPoints;
     private SerializableProperty<float> m_movementSpeed;
+    private SerializableProperty<float> m_hpMultiplier;
     private SerializableProperty<string> m_entityTemplateId;
+
     private List<SkillData> m_skills;
     private DamageTable m_resistanceTable;
     private SerializableProperty<string> m_weaponInstanceId;
@@ -153,12 +155,19 @@ public class WizardData : SerializableObject, IWizardData
             if(!string.IsNullOrEmpty(m_weaponInstanceId))
             {
                 return GetWeaponTemplate();
-            }else
+            }
+            else
             {
                 return null;
             }
         }
 
+        set { }
+    }
+
+    public float HpMultiplier
+    {
+        get { return m_hpMultiplier; }
         set { }
     }
 

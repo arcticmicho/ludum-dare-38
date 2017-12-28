@@ -18,6 +18,7 @@ public class LevelController
     private WaveStatus m_currentWave;
 
     private int m_waveIndex = 0;
+    private int m_originWaveIndex = 0;
 
     private LevelStatus m_levelStatus = LevelStatus.NotStarted;
 
@@ -33,9 +34,11 @@ public class LevelController
         m_gameSession = gameSession;
     }
 
-    public void StartLevel(Level level)
+    public void StartLevel(Level level, int originWaveIndex)
     {
         m_currentLevel = level;
+        m_originWaveIndex = originWaveIndex;
+
         m_waveIndex = 0;
         m_levelStatus = LevelStatus.Running;
 
