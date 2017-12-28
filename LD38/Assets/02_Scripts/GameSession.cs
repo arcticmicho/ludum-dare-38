@@ -7,8 +7,9 @@ using GameModules;
 
 public class GameSession
 {
-    private bool m_sessionFinished;
-    private bool m_sessionClosed;
+    // change those for an enum Session Status
+    private bool m_finished;
+    private bool m_closed;
 
     private float m_sessionTime;
 
@@ -17,7 +18,7 @@ public class GameSession
     private GameStateData m_gameStateData;
 
     private RoomSessionData m_sessionData;
-    private RoomSessionView m_sessionView;
+    private RoomSessionView m_roomView;
 
     private Wizard m_mainCharacter;
 
@@ -52,21 +53,22 @@ public class GameSession
 
     public bool SessionFinished
     {
-        get { return m_sessionFinished; }
+        get { return m_finished; }
     }
 
     public bool SessionClosed
     {
-        get { return m_sessionClosed; }
+        get { return m_closed; }
     }
     #endregion
 
     public GameSession(GameStateData data)
     {
+        m_gameStateData = data;
         m_sessionData = data.SessionData;
         m_actionController = new ActionController();
         m_levelController = new LevelController(this);
-        m_gameStateData = data;
+    
     }
 
 	public void StartSession()
@@ -96,8 +98,8 @@ public class GameSession
 
         m_mainCharacter = new Wizard(this, m_gameStateData.WizardData, CharactersManager.Instance.MainCharacterEntity);
 
-        m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
-        m_mainCharacter.Entity.TranslateEntity(m_sessionView.MainCharacterPoint.transform.position);
+        m_roomView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
+        m_mainCharacter.Entity.TranslateEntity(m_roomView.MainCharacterPoint.transform.position);
     }
 
     /*private void GenerateSpawnEnemyAction()
@@ -112,8 +114,8 @@ public class GameSession
 
     private void InstantiateRoomView()
     {
-        m_sessionView = GameObject.Instantiate<RoomSessionView>(m_sessionData.RoomViewTemplate);
-        m_sessionView.transform.position = Vector3.zero;
+        m_roomView = GameObject.Instantiate<RoomSessionView>(m_sessionData.RoomViewTemplate);
+        m_roomView.transform.position = Vector3.zero;
     }
 
     public void EndSession()
@@ -138,7 +140,7 @@ public class GameSession
         {
             Debug.LogWarning("Level Status Finished");
             WinSession();
-            m_sessionFinished = true;
+            m_finished = true;
             return true;
         }
 
@@ -150,7 +152,7 @@ public class GameSession
         if(m_gameOver)
         {
             GameOver();
-            m_sessionFinished = true;
+            m_finished = true;
             return true;
         }
         return false;
@@ -168,7 +170,7 @@ public class GameSession
 
     private void OnEndViewFinished()
     {
-        m_sessionClosed = true;
+        m_closed = true;
         UnloadSession();
     }
 
@@ -192,11 +194,11 @@ public class GameSession
 
     public EnemyCharacter CreateEnemy(CharacterTemplate enemyTemplate)
     {
-        BaseRoomPoint spawnPoint = m_sessionView.GetRandomAvailableEnemyPoint();
+        BaseRoomPoint spawnPoint = m_roomView.GetRandomAvailableEnemyPoint();
 
         EnemyCharacter enemy = CharactersManager.Instance.GetEnemy(this, enemyTemplate);
         spawnPoint.AssignCharacter(enemy);
-        enemy.Entity.TranslateEntity(m_sessionView.GetNearestSpawnPoint(spawnPoint.transform.position));
+        enemy.Entity.TranslateEntity(m_roomView.GetNearestSpawnPoint(spawnPoint.transform.position));
         enemy.Entity.SetDirection(spawnPoint.Direction);
 
         m_activeEnemies.Add(enemy);
@@ -216,6 +218,11 @@ public class GameSession
             {
                 m_currentTarget = null;
             }
+
+            if(m_enemies.Remove(enemyCharacter))
+            {
+                GameObject.Destroy(enemyCharacter.Entity.gameObject);
+            }
         }
         else
         {
@@ -232,7 +239,7 @@ public class GameSession
             GameObject.Destroy(m_enemies[i].Entity.gameObject);
             m_enemies[i] = null;
         }
-        GameObject.Destroy(m_sessionView.gameObject);
+        GameObject.Destroy(m_roomView.gameObject);
         m_actionController.ClearAction();
     }
 }

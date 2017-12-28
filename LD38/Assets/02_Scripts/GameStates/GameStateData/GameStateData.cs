@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GameStateData
 {
-    private RoomSessionData m_roomData;
+    private RoomSessionData m_sessionData;
     public RoomSessionData SessionData
     {
         get
         {
-            return m_roomData;
+            return m_sessionData;
         }
     }
 
@@ -21,7 +21,7 @@ public class GameStateData
 
     public GameStateData(RoomSessionData sessionData, WizardData wizardData)
     {
-        m_roomData = sessionData;
+        m_sessionData = sessionData;
         m_wizardData = wizardData;
     }
     
