@@ -69,11 +69,11 @@ public class MainMenuPopup : UIPanel
     protected override void OnHideEnd()
     {
         base.OnHideEnd();
-        for(int i=0, count=m_activeRoomWidgets.Count; i<count; i++)
+        for (int i = 0, count = m_activeRoomWidgets.Count; i < count; i++)
         {
             Destroy(m_activeRoomWidgets[i].gameObject);
         }
-        for(int i=0, count=m_activeWizardWidgets.Count; i<count; i++)
+        for (int i = 0, count = m_activeWizardWidgets.Count; i < count; i++)
         {
             Destroy(m_activeWizardWidgets[i].gameObject);
         }

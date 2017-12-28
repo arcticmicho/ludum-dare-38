@@ -13,15 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_roomSessionId: testRoom
   m_roomName: Test Room
-  m_enemiesSpawnData:
-  - m_enemyTemplate: {fileID: 11400000, guid: 0d11a5476eadf864682b894e17cde165, type: 2}
-    m_spawnTime: 1
-  - m_enemyTemplate: {fileID: 11400000, guid: ace19ce97b4b73c4c95f151ad307f87b, type: 2}
-    m_spawnTime: 20
-  - m_enemyTemplate: {fileID: 11400000, guid: 796e730eca757b546a7683931672990a, type: 2}
-    m_spawnTime: 40
-  - m_enemyTemplate: {fileID: 11400000, guid: 1b8d50803fcf8b54abee916bb10d5176, type: 2}
-    m_spawnTime: 60
-  m_bossTemplate: {fileID: 11400000, guid: 15638bd2d26c2b843b0f4b5221b1baa0, type: 2}
+  m_level: {fileID: 11400000, guid: 64a511adc57c31e43afafd6feb447f4d, type: 2}
   m_viewTemplate: {fileID: 114162792392812950, guid: 10a270f5bcf41ce49bdb42df7880bce7,
     type: 2}

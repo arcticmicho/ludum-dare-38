@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using GameModules;
+
 public class GameSession
 {
     private bool m_sessionFinished;
     private bool m_sessionClosed;
 
-    private float m_timeSession;
+    private float m_sessionTime;
 
     private bool m_gameOver;
 
@@ -21,11 +23,11 @@ public class GameSession
 
     private List<EnemyCharacter> m_activeEnemies;
     private List<EnemyCharacter> m_enemies;
-    private int m_totalEnemies;
-    private int m_defeatedEnemies;
 
     private EnemyCharacter   m_currentTarget;
     private ActionController m_actionController;
+
+    private LevelController m_levelController;
 
     #region Get/Set
     public EnemyCharacter CurrentTarget
@@ -63,6 +65,7 @@ public class GameSession
     {
         m_sessionData = data.SessionData;
         m_actionController = new ActionController();
+        m_levelController = new LevelController(this);
         m_gameStateData = data;
     }
 
@@ -73,21 +76,31 @@ public class GameSession
         InstantiateRoomView();
         InstantiateCharacter();        
 
-        GenerateSpawnEnemyAction();
-
         m_currentTarget = null;
+
+        m_levelController.StartLevel(m_sessionData.Level);
+
+        DebugManager.Instance.AddDebugAction("Kill Target", () =>
+        {
+            if (m_currentTarget != null)
+            {
+                m_currentTarget.KillCharacter();
+            }
+        },false);
     }
 
     private void InstantiateCharacter()
     {
         m_activeEnemies = new List<EnemyCharacter>();
         m_enemies = new List<EnemyCharacter>();
+
         m_mainCharacter = new Wizard(this, m_gameStateData.WizardData, CharactersManager.Instance.MainCharacterEntity);
+
         m_sessionView.MainCharacterPoint.AssignCharacter(m_mainCharacter);
         m_mainCharacter.Entity.TranslateEntity(m_sessionView.MainCharacterPoint.transform.position);
     }
 
-    private void GenerateSpawnEnemyAction()
+    /*private void GenerateSpawnEnemyAction()
     {        
         for(int i=0, count=m_sessionData.EnemiesSpawnData.Count; i<count; i++)
         {
@@ -95,7 +108,7 @@ public class GameSession
         }
         m_totalEnemies = m_sessionData.EnemiesSpawnData.Count;
         m_defeatedEnemies = 0;
-    }
+    }*/
 
     private void InstantiateRoomView()
     {
@@ -105,7 +118,7 @@ public class GameSession
 
     public void EndSession()
     {
-
+        DebugManager.Instance.RemoveDebugAction("Kill Target");
     }
 
     public bool Update(float deltaTime)
@@ -113,9 +126,20 @@ public class GameSession
         m_mainCharacter.Update();
 
         m_actionController.UpdateActions();
+
         if(m_currentTarget == null)
         {
             FindNewTarget();
+        }
+
+        var levelResult = m_levelController.Update();
+
+        if(levelResult == LevelStatus.Finished)
+        {
+            Debug.LogWarning("Level Status Finished");
+            WinSession();
+            m_sessionFinished = true;
+            return true;
         }
 
         for (int i = 0, count = m_activeEnemies.Count; i < count; i++)
@@ -123,13 +147,7 @@ public class GameSession
             m_activeEnemies[i].UpdateEnemy();
         }
 
-        if (m_defeatedEnemies >= m_totalEnemies)
-        {
-            WinSession();
-            m_sessionFinished = true;
-            return true;
-        }
-        else if(m_gameOver)
+        if(m_gameOver)
         {
             GameOver();
             m_sessionFinished = true;
@@ -141,13 +159,11 @@ public class GameSession
     private void GameOver()
     {
         EndPopup.RequestEndView(OnEndViewFinished);
-        // UIPartyManager.Instance.GetView<EndView>().SetEndText("You Lose!"); ZTODO
     }
 
     private void WinSession()
     {
         EndPopup.RequestEndView(OnEndViewFinished);
-      //  UIPartyManager.Instance.GetView<EndView>().SetEndText("You Win!"); ZTODO
     }
 
     private void OnEndViewFinished()
@@ -166,33 +182,15 @@ public class GameSession
         }
     }
 
-    public void NotifyEnemyDeath(EnemyCharacter enemyCharacter)
-    {
-        if(m_activeEnemies.Contains(enemyCharacter))
-        {
-            m_activeEnemies.Remove(enemyCharacter);
-            m_defeatedEnemies++;
-            enemyCharacter.CurrentPoint.ReleasePoint();
-            if(enemyCharacter == m_currentTarget)
-            {
-                m_currentTarget = null;
-            }
-        }else
-        {
-            Debug.LogError("Trying to Remove a not valid enemy");
-        }
-    }
-
     public void NotifyMainCharacterDeath(Wizard mainCharacter)
     {
-        //lets check if its true
         if(m_mainCharacter == mainCharacter)
         {
             m_gameOver = true;
         }
     }
 
-    public void SpawnEnemy(CharacterTemplate enemyTemplate)
+    public EnemyCharacter CreateEnemy(CharacterTemplate enemyTemplate)
     {
         BaseRoomPoint spawnPoint = m_sessionView.GetRandomAvailableEnemyPoint();
 
@@ -200,11 +198,30 @@ public class GameSession
         spawnPoint.AssignCharacter(enemy);
         enemy.Entity.TranslateEntity(m_sessionView.GetNearestSpawnPoint(spawnPoint.transform.position));
         enemy.Entity.SetDirection(spawnPoint.Direction);
+
         m_activeEnemies.Add(enemy);
         m_enemies.Add(enemy);
+
         enemy.EnemySpawned();
+
+        return enemy;
     }
 
+    public void NotifyEnemyDeath(EnemyCharacter enemyCharacter)
+    {
+        if (m_activeEnemies.Remove(enemyCharacter))
+        {
+            enemyCharacter.CurrentPoint.ReleasePoint();
+            if (enemyCharacter == m_currentTarget)
+            {
+                m_currentTarget = null;
+            }
+        }
+        else
+        {
+            Debug.LogError("Trying to Remove a not valid enemy");
+        }
+    }
 
     internal void UnloadSession()
     {

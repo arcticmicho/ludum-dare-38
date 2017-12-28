@@ -1,0 +1,8 @@
+{
+    "name": "DebugManager",
+    "references": [
+        "Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": []
+}

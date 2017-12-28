@@ -8,53 +8,36 @@ public class RoomSessionData : ScriptableObject
 {
     [SerializeField]
     private string m_roomSessionId;
+
+    [SerializeField]
+    private string m_roomName;
+
+
+    [SerializeField]
+    private Level m_level;
+
+    [SerializeField]
+    private RoomSessionView m_viewTemplate;
+
+    #region Get/Set
     public string RoomSessionId
     {
         get { return m_roomSessionId; }
     }
 
-    [SerializeField]
-    private string m_roomName;
     public string RoomName
     {
         get { return m_roomName; }
     }
 
-    [SerializeField]
-    private List<EnemySpawnData> m_enemiesSpawnData;
-    public List<EnemySpawnData> EnemiesSpawnData
-    {
-        get { return m_enemiesSpawnData; }
-    }
-
-    [SerializeField]
-    private CharacterTemplate m_bossTemplate;
-
-    [SerializeField]
-    private RoomSessionView m_viewTemplate;
     public RoomSessionView RoomViewTemplate
     {
-        get
-        {
-            return m_viewTemplate;
-        }
-    }   	
-}
-
-[Serializable]
-public class EnemySpawnData
-{
-    [SerializeField]
-    private CharacterTemplate m_enemyTemplate;
-    public CharacterTemplate EnemyTemplate
-    {
-        get { return m_enemyTemplate; }
+        get { return m_viewTemplate; }
     }
 
-    [SerializeField]
-    private float m_spawnTime;
-    public float SpawnTime
+    public Level Level
     {
-        get { return m_spawnTime; }
+        get { return m_level; }
     }
+    #endregion
 }
