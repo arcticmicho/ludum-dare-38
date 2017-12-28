@@ -7,13 +7,19 @@ using UnityEngine;
 public class WizardDataTemplate : CharacterTemplate, IWizardData
 {
     [SerializeField]
+    private int m_level;
+    public int Level
+    {
+        get { return m_level; }
+        set { }
+    }
+
+
+    [SerializeField]
     private int m_exp;
     public int Exp
     {
-        get
-        {
-            return m_exp;
-        }
+        get { return m_exp; }
         set { }
     }
 
@@ -21,10 +27,8 @@ public class WizardDataTemplate : CharacterTemplate, IWizardData
     private string m_wizardId;
     public string WizardID
     {
-        get
-        {
-            return m_wizardId;
-        }
+        get { return m_wizardId; }
         set { }
     }
+
 }

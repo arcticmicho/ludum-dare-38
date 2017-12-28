@@ -15,14 +15,6 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     }
 
     [SerializeField]
-    private int m_level;
-    public int Level
-    {
-        get { return m_level; }
-        set { }
-    }
-
-    [SerializeField]
     private CharacterEntity m_prefab;
     public CharacterEntity Prefab
     {
@@ -66,10 +58,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     private string m_name;
     public string Name
     {
-        get
-        {
-            return m_name;
-        }
+        get { return m_name; }
         set { }
     }
 
@@ -77,25 +66,25 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     private string m_entityTemplateId;
     public string EntityTemplateId
     {
-        get
-        {
-            return m_entityTemplateId;
-        }
-
-        set
-        {
-           
-        }
+        get { return m_entityTemplateId; }
+        set { }
     }
 
     [SerializeField]
     private EquippableItemTemplate m_weaponTemplate;
     public EquippableItemTemplate WeaponTemplate
     {
-        get
-        {
-            return m_weaponTemplate;
-        }
+        get { return m_weaponTemplate; }
         set { }
     }
+
+    [Header("Wave Multipliers")]
+    [SerializeField]
+    private float m_HpMultiplier = 1.01f;
+    public float HpMultiplier
+    {
+        get { return m_HpMultiplier; }
+        set { }
+    }
+
 }

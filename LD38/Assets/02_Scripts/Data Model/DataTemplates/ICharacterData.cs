@@ -6,8 +6,6 @@ public interface ICharacterData
 {
     string Name { get; set; }
 
-    int Level { get; set; }
-
     float HealthPoints { get; }
 
     DamageTable ResistanceTable { get; set; }
@@ -20,5 +18,5 @@ public interface ICharacterData
 
     EquippableItemTemplate WeaponTemplate { get; set; }
 
-
+    float HpMultiplier { get; set; }
 }

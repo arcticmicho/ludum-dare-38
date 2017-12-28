@@ -8,9 +8,6 @@ public class GameInitializer :MonoBehaviour
     [SerializeField]
     private List<GameObject> _preloadManagers;
 
-    [SerializeField]
-    private List<GameObject> _postLoadManagers;
-
     private void Start()
     {
         foreach (var manager in _preloadManagers)
@@ -25,12 +22,6 @@ public class GameInitializer :MonoBehaviour
     private IEnumerator InitGame()
     {
         yield return SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
-
-        foreach (var manager in _postLoadManagers)
-        {
-            GameObject managerGameObject = Instantiate(manager) as GameObject;
-            managerGameObject.name = manager.name;
-        }
 
         ResourceManager.Instance.Initialize();
         InventoryManager.Instance.Initialize();
