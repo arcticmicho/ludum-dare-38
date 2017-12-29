@@ -5,21 +5,16 @@ using UnityEngine;
 public partial class GameSerializer
 {
     private PlayerData m_playerData;
+    private GameData m_gameData;
+
     public PlayerData PlayerData
     {
         get { return m_playerData; }
     }
 
-    private GameData m_gameData;
     public GameData GameData
     {
         get { return m_gameData; }
-    }
-
-    private bool m_isNewGame;
-    public bool IsNewGame
-    {
-        get { return m_isNewGame; }
     }
 
     public GameSerializer()

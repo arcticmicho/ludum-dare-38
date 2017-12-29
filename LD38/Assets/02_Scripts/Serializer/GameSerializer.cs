@@ -8,38 +8,41 @@ public partial class GameSerializer
     public const string kDefaultSaveName = "Save1";
 
     private bool m_shiftData;
+
+    private bool m_encryptData;
+
+    private bool m_isDirty;
+
+    private bool m_isNewGame = false;
+
+    #region Get/Set
     public bool ShiftData
     {
         get { return m_shiftData; }
         set { m_shiftData = value; }
     }
-    private bool m_encryptData;
+
     public bool EncrypData
     {
         get { return m_encryptData; }
         set { m_encryptData = value; }
     }
-    private const string c_saveName = "";
 
-    private bool m_isDirty;
     public bool IsDirty
     {
         get { return m_isDirty; }
     }
 
+    public bool IsNewGame
+    {
+        get { return m_isNewGame; }
+    }
+
+    #endregion
+
     public void SetDirty()
     {
         m_isDirty = true;
-    }
-
-    public void Serialize()
-    {
-        
-    }
-
-    public void Deserialize()
-    {
-
     }
 
     private bool SaveGame(Dictionary<string,object> dataToSave, string saveName, out SerializeUtils.ESerializeError error)

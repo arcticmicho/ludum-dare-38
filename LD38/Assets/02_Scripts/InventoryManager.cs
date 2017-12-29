@@ -7,7 +7,7 @@ public class InventoryManager : MonoSingleton<InventoryManager>
 {
     private PlayerData m_playerData;
 
-	public void Initialize()
+	public void PostLoad(bool newGame)
     {
         m_playerData = GameManager.Instance.Serializer.PlayerData;
     }
