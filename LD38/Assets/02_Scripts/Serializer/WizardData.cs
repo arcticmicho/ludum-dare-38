@@ -82,7 +82,7 @@ public class WizardData : SerializableObject, IWizardData
         }
     }
 
-    public float HealthPoints
+    public float Hp
     {
         get
         {
@@ -192,7 +192,7 @@ public class WizardData : SerializableObject, IWizardData
         m_wizardExp = new SerializableProperty<int>(m_serializer, template.Exp);
         m_wizardName = new SerializableProperty<string>(m_serializer, template.Name);
         m_wizardId = new SerializableProperty<string>(m_serializer, template.WizardID);
-        m_healthPoints = new SerializableProperty<float>(m_serializer, template.HealthPoints);
+        m_healthPoints = new SerializableProperty<float>(m_serializer, template.Hp);
         m_movementSpeed = new SerializableProperty<float>(m_serializer, template.MovementSpeed);
         m_skills = new List<SkillData>(template.Skills);
         m_resistanceTable = new DamageTable(template.ResistanceTable.DamageInfo);

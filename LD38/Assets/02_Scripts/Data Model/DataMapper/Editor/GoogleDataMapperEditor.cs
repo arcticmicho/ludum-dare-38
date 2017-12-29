@@ -11,6 +11,9 @@ public partial class GoogleDataMapperEditor : Editor
     private GoogleDataMapper _target;
     private const string kNotExport = "NOT_EXPORT";
 
+    private int _loadCount = 0;
+    private int _loadCurrent = 0;
+
     void OnEnable()
     {
         _target = target as GoogleDataMapper;
@@ -27,13 +30,17 @@ public partial class GoogleDataMapperEditor : Editor
         {
             if (GUILayout.Button("Load All"))
             {
-                float total = 0.95f / 4.0f;
+                SetLoadCount(2);
 
-                EditorUtility.DisplayProgressBar("Loading Data From Google", "Clearing volatile Data", 0.0f);
-                ClearVolatileData();
-                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, 0.05f);
+              /*  EditorUtility.DisplayProgressBar("Loading Data From Google", "Clearing volatile Data", UpdateLoadProgress());
+                ClearVolatileData();*/
+
+
+                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, UpdateLoadProgress());
                 LoadSkillList(kSkillListRange);
 
+                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, UpdateLoadProgress());
+                LoadEnemyList(kEnemyListRange);
             }
         }
         catch (Exception e)
@@ -48,6 +55,19 @@ public partial class GoogleDataMapperEditor : Editor
         AssetDatabase.Refresh();
 
         base.OnInspectorGUI();
+    }
+
+    private void SetLoadCount(int count)
+    {
+        _loadCount = count;
+        _loadCurrent = 0;
+    }
+
+    private float UpdateLoadProgress()
+    {
+        float percent = _loadCurrent / (float)_loadCount;
+        _loadCurrent++;
+        return percent;
     }
 
     private void ClearVolatileData()

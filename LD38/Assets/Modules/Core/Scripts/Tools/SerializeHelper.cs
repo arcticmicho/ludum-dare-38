@@ -181,6 +181,17 @@ public class SerializeHelper
         return default(T);
     }
 
+    public static T GetValue<T>(Dictionary<string, object> dic, string field, T defaultValue)
+    {
+        object obj;
+        if (dic.TryGetValue(field, out obj))
+        {
+            return Interpret<T>(obj);
+        }
+
+        return defaultValue;
+    }
+
     public static T Interpret<T>(object obj)
     {
         if (obj is T)
