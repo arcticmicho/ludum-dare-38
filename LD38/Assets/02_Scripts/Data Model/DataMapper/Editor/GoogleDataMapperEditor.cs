@@ -9,6 +9,7 @@ using System;
 public partial class GoogleDataMapperEditor : Editor
 {
     private GoogleDataMapper _target;
+    private const string kNotExport = "NOT_EXPORT";
 
     void OnEnable()
     {
@@ -30,8 +31,8 @@ public partial class GoogleDataMapperEditor : Editor
 
                 EditorUtility.DisplayProgressBar("Loading Data From Google", "Clearing volatile Data", 0.0f);
                 ClearVolatileData();
-                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + sSkillListRange, 0.05f);
-                LoadSkillList(sSkillListRange);
+                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, 0.05f);
+                LoadSkillList(kSkillListRange);
 
             }
         }
@@ -43,6 +44,8 @@ public partial class GoogleDataMapperEditor : Editor
         {
             EditorUtility.ClearProgressBar();
         }
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
 
         base.OnInspectorGUI();
     }
@@ -78,13 +81,16 @@ public partial class GoogleDataMapperEditor : Editor
 
                 for (int b = 0; b < chunkValues.Count; ++b)
                 {
-                    if (!valueDictionarie.ContainsKey(keys[b]))
+                    if (keys[b] != kNotExport)
                     {
-                        valueDictionarie.Add(keys[b], chunkValues[b]);
-                    }
-                    else
-                    {
-                        Debug.LogError("Repeated Key: " + keys[b]);
+                        if (!valueDictionarie.ContainsKey(keys[b]))
+                        {
+                            valueDictionarie.Add(keys[b], chunkValues[b]);
+                        }
+                        else
+                        {
+                            Debug.LogError("Repeated Key: " + keys[b]);
+                        }
                     }
                 }
 

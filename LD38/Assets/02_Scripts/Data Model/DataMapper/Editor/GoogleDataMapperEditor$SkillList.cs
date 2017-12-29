@@ -8,8 +8,8 @@ using System;
 // Skill List
 public partial class GoogleDataMapperEditor : Editor
 {
-    private static string sSkillPath      = "06_Resources/Skills/";
-    private static string sSkillListRange = "Export_SpellList";
+    private const string kSkillPath      = "06_Resources/Skills/";
+    private const string kSkillListRange = "Export_SkillList";
 
     private void LoadSkillList(string range)
     {
@@ -34,7 +34,7 @@ public partial class GoogleDataMapperEditor : Editor
     private void ProcessSkillTableElement(Dictionary<string,object> skillTableElementData)
     {
         var skillName = SerializeHelper.GetValue<string>(skillTableElementData, "Name");
-        var skill = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(skillName);
+        var skill = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + skillName+".asset");
 
         skill.Editor_SetExportData(skillTableElementData);
         EditorUtility.SetDirty(skill);
