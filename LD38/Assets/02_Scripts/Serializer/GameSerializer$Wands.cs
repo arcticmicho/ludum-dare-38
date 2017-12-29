@@ -95,7 +95,7 @@ public partial class GameSerializer
         }
 
         m_gameData = new GameData(this);
-        m_gameData.SelectedWizardId = m_playerData.WizardsData[0].WizardID;
+        m_gameData.SelectedWizardId = m_playerData.WizardsData[0].WizardTemplateId;
 
         m_gameData.SelectRoomId = ResourceManager.Instance.RoomTemplateResources.RoomSessionTemplates[0].RoomSessionId;
     }

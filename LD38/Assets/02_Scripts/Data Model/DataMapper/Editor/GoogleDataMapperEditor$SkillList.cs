@@ -31,12 +31,12 @@ public partial class GoogleDataMapperEditor : Editor
         }
     }
 
-    private void ProcessSkillTableElement(Dictionary<string,object> skillTableElementData)
+    private void ProcessSkillTableElement(Dictionary<string,object> elementData)
     {
-        var id = SerializeHelper.GetValue<string>(skillTableElementData, "Id");
+        var id = SerializeHelper.GetValue<string>(elementData, "Id");
         var skill = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + id + ".asset");
 
-        skill.Editor_SetExportData(skillTableElementData);
+        skill.Editor_SetExportData(elementData);
         EditorUtility.SetDirty(skill);
     }
 }

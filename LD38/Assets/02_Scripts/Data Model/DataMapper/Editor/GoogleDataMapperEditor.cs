@@ -28,66 +28,63 @@ public partial class GoogleDataMapperEditor : Editor
 
         GUILayout.Space(10);
 
-        try
+        if (GUILayout.Button("Load Skill List"))
         {
-            if (GUILayout.Button("Load Enemy List"))
-            {
-                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, 0.5f);
-                LoadEnemyList(kEnemyListRange);
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error during load: " + e.Message);
-        }
-        finally
-        {
-            EditorUtility.ClearProgressBar();
+            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, 0.5f);
+            LoadSkillList(kSkillListRange);
         }
 
+        if (GUILayout.Button("Load Wizard List"))
+        {
+            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, 0.5f);
+            LoadWizardList(kWizardListRange);
+        }
+
+        if (GUILayout.Button("Load Enemy List"))
+        {
+            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, 0.5f);
+            LoadEnemyList(kEnemyListRange);
+        }
+  
         GUILayout.Space(10);
 
-        try
+        if (GUILayout.Button("Load All"))
         {
-            if (GUILayout.Button("Load All"))
-            {
-                SetLoadCount(2);
-
-              /*  EditorUtility.DisplayProgressBar("Loading Data From Google", "Clearing volatile Data", UpdateLoadProgress());
-                ClearVolatileData();*/
-
-                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, UpdateLoadProgress());
-                LoadSkillList(kSkillListRange);
-
-                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, UpdateLoadProgress());
-                LoadEnemyList(kEnemyListRange);
-            }
+            TrackProgress("Loading Data From Google", "Loading Sheets",
+            () => { LoadSkillList(kSkillListRange);     },
+            () => { LoadEnemyList(kEnemyListRange);     },
+            () => { LoadWizardList(kWizardListRange);   });
         }
-        catch (Exception e)
-        {
-            Debug.LogError("Error during load: " + e.Message);
-        }
-        finally
-        {
-            EditorUtility.ClearProgressBar();
-        }
+    
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
 
         base.OnInspectorGUI();
     }
 
-    private void SetLoadCount(int count)
-    {
-        _loadCount = count;
-        _loadCurrent = 0;
-    }
 
-    private float UpdateLoadProgress()
+    private void TrackProgress(string title,string text, params Action[] actions)
     {
-        float percent = _loadCurrent / (float)_loadCount;
-        _loadCurrent++;
-        return percent;
+        try
+        {
+            int loadCount = actions.Length;
+            int loadCurrent = 0;
+
+            for (int a = 0; a < actions.Length; ++a)
+            {
+                EditorUtility.DisplayProgressBar(title, text, _loadCurrent / (float)_loadCount);
+                loadCurrent++;
+                actions[a].SafeInvoke();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error during load: " + e.Message);
+        }
+        finally
+        {
+            EditorUtility.ClearProgressBar();
+        }
     }
 
     private void ClearVolatileData()

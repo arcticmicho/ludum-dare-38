@@ -8,17 +8,17 @@ using System;
 // Skill List
 public partial class GoogleDataMapperEditor : Editor
 {
-    private const string kEnemyPath      = "06_Resources/CharactersTemplate/";
-    private const string kEnemyListRange = "Export_EnemyList";
+    private const string kWizardPath      = "06_Resources/CharactersTemplate/";
+    private const string kWizardListRange = "Export_WizardList";
 
-    private void LoadEnemyList(string range)
+    private void LoadWizardList(string range)
     {
         var googleSheet = new GoogleSheet(_target.DataSpreadSheet, _target.GoogleApiKey);
 
         GoogleDataManager.RequestData(googleSheet, range, GoogleDataDirection.ROWS, OnGetEnemyListData, _target.ShowResponse);
     }
 
-    private void OnGetEnemyListData(bool success, string range, Dictionary<string, object> data)
+    private void OnGetWizardListData(bool success, string range, Dictionary<string, object> data)
     {
         if (success)
         {
@@ -26,16 +26,16 @@ public partial class GoogleDataMapperEditor : Editor
 
             for (int a = 0; a < tableElements.Count; ++a)
             {
-                ProcessEnemyTableElement(tableElements[a]);
+                ProcessWizardTableElement(tableElements[a]);
             }
         }
     }
 
 
-    private void ProcessEnemyTableElement(Dictionary<string,object> elementData)
+    private void ProcessWizardTableElement(Dictionary<string,object> elementData)
     {
         var id = SerializeHelper.GetValue<string>(elementData, "Id");
-        var character = EditorScriptableObjectTools.AddOrGetAsset<CharacterTemplate>(kEnemyPath + id + ".asset");
+        var character = EditorScriptableObjectTools.AddOrGetAsset<WizardDataTemplate>(kWizardPath + id + ".asset");
 
         character.Editor_SetExportData(elementData);
         EditorUtility.SetDirty(character);

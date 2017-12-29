@@ -41,7 +41,7 @@ public class GameManager : MonoSingleton<GameManager>
     {
         if(newWizard != null)
         {
-            m_gameData.SelectedWizardId = newWizard.WizardID;
+            m_gameData.SelectedWizardId = newWizard.WizardTemplateId;
         }
     }
 
@@ -55,7 +55,7 @@ public class GameManager : MonoSingleton<GameManager>
 
     public WizardData GetSelectedWizard()
     {
-        WizardData wizardData = CharactersManager.Instance.UnlockedWizards.Find((w) => string.Equals(w.WizardID, m_gameData.SelectedWizardId));
+        WizardData wizardData = CharactersManager.Instance.UnlockedWizards.Find((w) => string.Equals(w.WizardTemplateId, m_gameData.SelectedWizardId));
         if(wizardData == null)
         {
             wizardData = CharactersManager.Instance.UnlockedWizards[0];

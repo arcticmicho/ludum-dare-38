@@ -105,7 +105,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
 
     #region Editor Functions and export
    
-    public void Editor_SetExportData(Dictionary<string, object> exportData)
+    public virtual void Editor_SetExportData(Dictionary<string, object> exportData)
     {
         m_templateId    = SerializeHelper.GetValue<string>(exportData, "Id");
         m_name          = SerializeHelper.GetValue<string>(exportData, "Name");
