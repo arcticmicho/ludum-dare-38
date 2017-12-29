@@ -59,11 +59,11 @@ public class CastAction : GameAction
     {
         switch (m_skillData.SkillDefinition.SkillTarget)
         {
-            case ESkillTarget.SimpleTarget:
+            case ESkillTarget.Single:
                 return new SingleTargetProcessor(m_contextSession, m_owner, m_owner.CurrentTarget, m_skillData);
             case ESkillTarget.Self:
                 return new SelfTargetProcessor(m_contextSession, m_owner, new Character[] { m_owner }, m_skillData);
-            case ESkillTarget.MultiTarget:
+            case ESkillTarget.Multi:
                 Debug.LogError("To Be Implemented");
                 return null;
             default:
