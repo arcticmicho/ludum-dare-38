@@ -11,9 +11,6 @@ public partial class GoogleDataMapperEditor : Editor
     private GoogleDataMapper _target;
     private const string kNotExport = "NOT_EXPORT";
 
-    private int _loadCount = 0;
-    private int _loadCurrent = 0;
-
     void OnEnable()
     {
         _target = target as GoogleDataMapper;
@@ -72,7 +69,7 @@ public partial class GoogleDataMapperEditor : Editor
 
             for (int a = 0; a < actions.Length; ++a)
             {
-                EditorUtility.DisplayProgressBar(title, text, _loadCurrent / (float)_loadCount);
+                EditorUtility.DisplayProgressBar(title, text, loadCurrent / (float)loadCount);
                 loadCurrent++;
                 actions[a].SafeInvoke();
             }
