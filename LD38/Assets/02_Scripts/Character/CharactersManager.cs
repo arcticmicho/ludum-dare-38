@@ -4,32 +4,33 @@ using UnityEngine;
 
 public class CharactersManager : MonoSingleton<CharactersManager>
 {
-    private PlayerData m_playerData;
-
     [SerializeField]
     private WizardDataTemplate m_mainCharacter;
 
     [SerializeField]
     private CharacterEntity m_mainCharacterEntity;
+
+    [SerializeField]
+    private CharacterTemplate m_enemyCharacter;
+
+    [SerializeField]
+    private CharacterEntity m_enemyEntity;
+
+    private PlayerData m_playerData;
+
+    #region Get/Set
     public CharacterEntity MainCharacterEntity
     {
         get { return m_mainCharacterEntity; }
     }
 
-    [SerializeField]
-    private CharacterTemplate m_enemyCharacter;
-    [SerializeField]
-    private CharacterEntity m_enemyEntity;
-
     public List<WizardData> UnlockedWizards
     {
-        get
-        {
-            return GameManager.Instance.Serializer.PlayerData.WizardsData;
-        }
+        get { return m_playerData.WizardsData; }
     }
-    
-    public void Initialize()
+    #endregion
+
+    public void PostLoad(bool newGame)
     {
         m_playerData = GameManager.Instance.Serializer.PlayerData;
     }

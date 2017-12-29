@@ -44,7 +44,7 @@ public class EquippableItemInstance : ItemInstance
 
     public void Equip(WizardData wizard)
     {
-        m_characterOwnerId.Property = wizard.WizardID;
+        m_characterOwnerId.Property = wizard.WizardTemplateId;
     }
 
     public override Dictionary<string, object> SerializeObject()

@@ -5,21 +5,16 @@ using UnityEngine;
 public partial class GameSerializer
 {
     private PlayerData m_playerData;
+    private GameData m_gameData;
+
     public PlayerData PlayerData
     {
         get { return m_playerData; }
     }
 
-    private GameData m_gameData;
     public GameData GameData
     {
         get { return m_gameData; }
-    }
-
-    private bool m_isNewGame;
-    public bool IsNewGame
-    {
-        get { return m_isNewGame; }
     }
 
     public GameSerializer()
@@ -100,7 +95,7 @@ public partial class GameSerializer
         }
 
         m_gameData = new GameData(this);
-        m_gameData.SelectedWizardId = m_playerData.WizardsData[0].WizardID;
+        m_gameData.SelectedWizardId = m_playerData.WizardsData[0].WizardTemplateId;
 
         m_gameData.SelectRoomId = ResourceManager.Instance.RoomTemplateResources.RoomSessionTemplates[0].RoomSessionId;
     }

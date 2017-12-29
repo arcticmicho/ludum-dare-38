@@ -8,27 +8,26 @@ public class WizardDataTemplate : CharacterTemplate, IWizardData
 {
     [SerializeField]
     private int m_level;
+
+    [SerializeField]
+    private int m_exp;
+
+    #region Get/Set
     public int Level
     {
         get { return m_level; }
         set { }
     }
 
-
-    [SerializeField]
-    private int m_exp;
     public int Exp
     {
         get { return m_exp; }
         set { }
     }
+    #endregion
 
-    [SerializeField]
-    private string m_wizardId;
-    public string WizardID
+    public override void Editor_SetExportData(Dictionary<string, object> exportData)
     {
-        get { return m_wizardId; }
-        set { }
+        base.Editor_SetExportData(exportData);
     }
-
 }

@@ -6,7 +6,6 @@ using UnityEngine;
 public class WizardData : SerializableObject, IWizardData
 {
     private SerializableProperty<string> m_wizardName;
-    private SerializableProperty<string> m_wizardId;
     private SerializableProperty<int> m_wizardLevel;
     private SerializableProperty<int> m_wizardExp;
     private SerializableProperty<string> m_wizardTemplateId;
@@ -27,19 +26,6 @@ public class WizardData : SerializableObject, IWizardData
         {
             if (m_wizardTemplateId == value) return;
             m_wizardTemplateId.Property = value;
-        }
-    }
-
-    public string WizardID
-    {
-        get
-        {
-            return m_wizardId;
-        }
-        set
-        {
-            if (m_wizardId == value) return;
-            m_wizardId.Property = value;
         }
     }
 
@@ -82,7 +68,7 @@ public class WizardData : SerializableObject, IWizardData
         }
     }
 
-    public float HealthPoints
+    public float Hp
     {
         get
         {
@@ -191,8 +177,7 @@ public class WizardData : SerializableObject, IWizardData
         m_wizardTemplateId = new SerializableProperty<string>(m_serializer, template.TemplateId);
         m_wizardExp = new SerializableProperty<int>(m_serializer, template.Exp);
         m_wizardName = new SerializableProperty<string>(m_serializer, template.Name);
-        m_wizardId = new SerializableProperty<string>(m_serializer, template.WizardID);
-        m_healthPoints = new SerializableProperty<float>(m_serializer, template.HealthPoints);
+        m_healthPoints = new SerializableProperty<float>(m_serializer, template.Hp);
         m_movementSpeed = new SerializableProperty<float>(m_serializer, template.MovementSpeed);
         m_skills = new List<SkillData>(template.Skills);
         m_resistanceTable = new DamageTable(template.ResistanceTable.DamageInfo);
@@ -230,7 +215,6 @@ public class WizardData : SerializableObject, IWizardData
         m_entityTemplateId = new SerializableProperty<string>(m_serializer, dict.TryParseValue<string>("WizardEntityTemplateId", string.Empty));
         m_wizardExp = new SerializableProperty<int>(m_serializer, dict.TryParseValue<int>("WizardExp", 0, parserInt));
         m_wizardName = new SerializableProperty<string>(m_serializer, dict.TryParseValue<string>("WizardName", string.Empty));
-        m_wizardId = new SerializableProperty<string>(m_serializer, dict.TryParseValue<string>("WizardId", string.Empty));
         m_healthPoints = new SerializableProperty<float>(m_serializer, dict.TryParseValue<float>("WizardHP", 1, parserFloat));
         m_movementSpeed = new SerializableProperty<float>(m_serializer, dict.TryParseValue<float>("WizardMovementSpeed", 1f, parserFloat));
         m_skills = DeserializeSkills(dict["WizardSkills"] as List<object>);
@@ -246,7 +230,6 @@ public class WizardData : SerializableObject, IWizardData
         newDict.Add("WizardEntityTemplateId", m_entityTemplateId.Property);
         newDict.Add("WizardExp", m_wizardExp.Property);
         newDict.Add("WizardName", m_wizardName.Property);
-        newDict.Add("WizardId", m_wizardId.Property);
         newDict.Add("WizardHP", m_healthPoints.Property);
         newDict.Add("WizardMovementSpeed", m_movementSpeed.Property);
         newDict.Add("WizardSkills", SerializeSkills(m_skills));

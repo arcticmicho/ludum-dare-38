@@ -6,7 +6,7 @@ public interface ICharacterData
 {
     string Name { get; set; }
 
-    float HealthPoints { get; }
+    float Hp { get; }
 
     DamageTable ResistanceTable { get; set; }
 

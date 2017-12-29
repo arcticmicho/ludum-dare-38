@@ -98,7 +98,7 @@ public abstract class Character
     protected virtual void SetTemplateData(ICharacterData data)
     {
         m_data = data;
-        m_healthPoints = data.HealthPoints;
+        m_healthPoints = data.Hp;
     }
 
     private void InitializeModifiers()
@@ -133,7 +133,7 @@ public abstract class Character
 
     public virtual void ApplyHeal(float healAmount)
     {
-        m_healthPoints = Mathf.Min(m_data.HealthPoints, m_healthPoints + healAmount);
+        m_healthPoints = Mathf.Min(m_data.Hp, m_healthPoints + healAmount);
         m_entity.CharacterCanvas.RequestFlotingText(healAmount.ToString());
     }
 

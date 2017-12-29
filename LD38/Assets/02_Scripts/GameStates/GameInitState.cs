@@ -18,14 +18,20 @@ public class GameInitState : GenericState<GameStateManager, GameStateData>
         yield return SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
 
         ResourceManager.Instance.Initialize();
-        InventoryManager.Instance.Initialize();
-        CharactersManager.Instance.Initialize();
 
         yield return GameManager.Instance.Serializer.DeserializeData();
 
-        GameManager.Instance.PostLoad(GameManager.Instance.Serializer.IsNewGame);
+        PostLoad();
 
         m_finishLoading = true;
+    }
+
+    private void PostLoad()
+    {
+        bool newGame = GameManager.Instance.Serializer.IsNewGame;
+        GameManager.Instance.PostLoad(newGame);
+        InventoryManager.Instance.PostLoad(newGame);
+        CharactersManager.Instance.PostLoad(newGame);
     }
 
     public override StateTransition<GameStateData> EvaluateTransition()
