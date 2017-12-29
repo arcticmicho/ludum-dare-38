@@ -49,7 +49,7 @@ public class MainMenuPopup : UIPanel
         {
             RoomTemplateWidget newWidget = Instantiate<RoomTemplateWidget>(m_roomTemplateWidget);
             newWidget.SetupWidget(ResourceManager.Instance.RoomTemplateResources.RoomSessionTemplates[i]);
-            newWidget.transform.SetParent(m_roomTemplatesListParent);
+            newWidget.transform.SetParent(m_roomTemplatesListParent, false);
             m_activeRoomWidgets.Add(newWidget);
         }
     }
@@ -61,7 +61,7 @@ public class MainMenuPopup : UIPanel
         {
             WizardWidget newWidget = Instantiate<WizardWidget>(m_wizardWidgetPrefab);
             newWidget.SetupWidget(CharactersManager.Instance.UnlockedWizards[i]);
-            newWidget.transform.SetParent(m_wizardListParent);
+            newWidget.transform.SetParent(m_wizardListParent, false);
             m_activeWizardWidgets.Add(newWidget);
         }
     }

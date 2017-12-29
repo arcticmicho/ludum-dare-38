@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SingleTargetProcessor : BaseSkillProcessor
 {
-    private GameObject m_projectile;
+    private BaseEffectController m_projectile;
     private Character m_projectileTarget;
 
     public SingleTargetProcessor(GameSession gameSession, Character owner, Character target, SkillData skillData) : base(gameSession, owner, new Character[]{ target }, skillData)
@@ -31,14 +31,15 @@ public class SingleTargetProcessor : BaseSkillProcessor
 
     protected override void OnChangedToActionStep()
     {
-        m_projectile = GameObject.Instantiate<GameObject>(m_skillData.SkillDefinition.SpellPrefab);
+        m_projectile = GameObject.Instantiate<BaseEffectController>(m_skillData.SkillDefinition.SpellPrefab);
         m_projectile.transform.position = m_owner.Entity.transform.position + new Vector3(0.5f * Mathf.Sign((m_projectileTarget.Entity.transform.position - m_owner.Entity.transform.position).x), 0f, 0f);
+        m_projectile.StartEffect(0, true);
         m_owner.Entity.PlayThrowAbilityAnimation();
     }
 
     protected override void OnChangedToHittingStep()
     {
-        GameObject.Destroy(m_projectile.gameObject);
+        m_projectile.StopEffect();
     }
 
     protected override bool OnHittingStep()

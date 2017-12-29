@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_skillPatternName: Z
   m_patternRecognitionId: Z
-  m_pattern: {fileID: 11400000, guid: d17ca6f4a7c931546b3462e1472e44b9, type: 2}
+  m_patterns:
+  - {fileID: 11400000, guid: d17ca6f4a7c931546b3462e1472e44b9, type: 2}
   m_skillPatternImage: {fileID: 0}
   m_patternThreshold: 0.7

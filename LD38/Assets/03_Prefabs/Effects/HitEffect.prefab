@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4792220499595834}
   - component: {fileID: 198907296874807680}
   - component: {fileID: 199172262274611060}
+  - component: {fileID: 114401313003250882}
   m_Layer: 0
   m_Name: HitEffect
   m_TagString: Untagged
@@ -36,7 +37,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4262321817927022}
-  - component: {fileID: 114592906246994760}
+  - component: {fileID: 114050092808711588}
   m_Layer: 0
   m_Name: HitEffect
   m_TagString: Untagged
@@ -71,7 +72,7 @@ Transform:
   m_Father: {fileID: 4262321817927022}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114592906246994760
+--- !u!114 &114050092808711588
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -79,10 +80,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1991565867731480}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f89849f48fbca34087e6c9b06b9fc41, type: 3}
+  m_Script: {fileID: 11500000, guid: ed8af35222621194b975f585333d0a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_timeToDestroy: 3
+  m_effects:
+  - {fileID: 114401313003250882}
+  m_playAtStart: 0
+--- !u!114 &114401313003250882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1385875248178506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb0a4e2a61a5c147a313ae729c0e2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_particles:
+  - m_system: {fileID: 198907296874807680}
+    m_emissionDuration: 3
 --- !u!198 &198907296874807680
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -95,7 +112,7 @@ ParticleSystem:
   stopAction: 0
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1

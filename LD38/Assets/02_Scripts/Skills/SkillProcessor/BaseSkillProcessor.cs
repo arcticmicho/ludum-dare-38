@@ -128,8 +128,9 @@ public abstract class BaseSkillProcessor
     {
         for(int i=0, count = m_targets.Length; i<count; i++)
         {
-            GameObject particle = GameObject.Instantiate(m_skillData.SkillDefinition.ImpactPrefab);
+            BaseEffectController particle = GameObject.Instantiate< BaseEffectController>(m_skillData.SkillDefinition.ImpactPrefab);
             particle.transform.position = m_targets[i].Entity.transform.position;
+            particle.StartEffect(0, true);
             if (!m_skillData.SkillDefinition.IsHealingSkill)
             {
                 DamageFlow flow = new DamageFlow(m_owner, m_targets[i], m_skillData, m_session);
