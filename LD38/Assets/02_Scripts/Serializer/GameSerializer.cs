@@ -16,6 +16,7 @@ public partial class GameSerializer
     private bool m_isNewGame = false;
 
     #region Get/Set
+
     public bool ShiftData
     {
         get { return m_shiftData; }
@@ -47,6 +48,12 @@ public partial class GameSerializer
 
     private bool SaveGame(Dictionary<string,object> dataToSave, string saveName, out SerializeUtils.ESerializeError error)
     {
+
+    #if UNITY_EDITOR
+         string encodedEditorData = EncodeEditorData(dataToSave);
+         SerializeUtils.SaveToPersistentPath(encodedEditorData, saveName + "_editor.json", out error);
+    #endif
+
         string encodedData = EncodeData(dataToSave);
         return SerializeUtils.SaveToPersistentPath(encodedData, saveName, out error);
     }
@@ -82,7 +89,12 @@ public partial class GameSerializer
         }
         return encodedData;
     }
-    
+
+    private string EncodeEditorData(Dictionary<string, object> dataToSave)
+    {
+        return SerializeUtils.ToJSON(dataToSave);
+    }
+
     private Dictionary<string, object> DecodeData(string encodedString)
     {
         string decodedData = encodedString;
