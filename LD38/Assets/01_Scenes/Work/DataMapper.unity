@@ -236,4 +236,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _googleApiKey: AIzaSyBRbP5HBxCKd09RmPk1lhr3PHbiRsbFs7Q
   _dataSpreadSheet: 1FPtpppFdc28JDnvRZz8K_fGdWFWDEE5ccckYOtzSvpQ
-  _showResponse: 1
+  _showResponse: 0

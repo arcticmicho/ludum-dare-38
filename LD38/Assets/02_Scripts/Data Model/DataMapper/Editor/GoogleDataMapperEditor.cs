@@ -26,6 +26,27 @@ public partial class GoogleDataMapperEditor : Editor
             ClearVolatileData();
         }
 
+        GUILayout.Space(10);
+
+        try
+        {
+            if (GUILayout.Button("Load Enemy List"))
+            {
+                EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, 0.5f);
+                LoadEnemyList(kEnemyListRange);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error during load: " + e.Message);
+        }
+        finally
+        {
+            EditorUtility.ClearProgressBar();
+        }
+
+        GUILayout.Space(10);
+
         try
         {
             if (GUILayout.Button("Load All"))
@@ -34,7 +55,6 @@ public partial class GoogleDataMapperEditor : Editor
 
               /*  EditorUtility.DisplayProgressBar("Loading Data From Google", "Clearing volatile Data", UpdateLoadProgress());
                 ClearVolatileData();*/
-
 
                 EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, UpdateLoadProgress());
                 LoadSkillList(kSkillListRange);

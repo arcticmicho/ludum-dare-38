@@ -33,8 +33,8 @@ public partial class GoogleDataMapperEditor : Editor
 
     private void ProcessSkillTableElement(Dictionary<string,object> skillTableElementData)
     {
-        var skillName = SerializeHelper.GetValue<string>(skillTableElementData, "Name");
-        var skill = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + skillName+".asset");
+        var id = SerializeHelper.GetValue<string>(skillTableElementData, "Id");
+        var skill = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + id + ".asset");
 
         skill.Editor_SetExportData(skillTableElementData);
         EditorUtility.SetDirty(skill);

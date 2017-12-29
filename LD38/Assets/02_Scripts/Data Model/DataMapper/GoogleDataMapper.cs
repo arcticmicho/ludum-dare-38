@@ -5,10 +5,10 @@ using UnityEngine;
 public class GoogleDataMapper : MonoBehaviour
 {
     [Header("Common")]
-    [SerializeField]
+    [SerializeField][ReadOnly]
     private string _googleApiKey;
 
-    [SerializeField]
+    [SerializeField][ReadOnly]
     private string _dataSpreadSheet;
 
     [SerializeField]

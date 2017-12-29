@@ -31,13 +31,15 @@ public partial class GoogleDataMapperEditor : Editor
         }
     }
 
+
     private void ProcessEnemyTableElement(Dictionary<string,object> skillTableElementData)
     {
-       /* var skillName = SerializeHelper.GetValue<string>(skillTableElementData, "Name");
-        var skill = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + skillName+".asset");
+        var id = SerializeHelper.GetValue<string>(skillTableElementData, "Id");
+        var character = EditorScriptableObjectTools.AddOrGetAsset<CharacterTemplate>(kEnemyPath + id + ".asset");
 
-        skill.Editor_SetExportData(skillTableElementData);
-        EditorUtility.SetDirty(skill);*/
+        character.Editor_SetExportData(skillTableElementData);
+        EditorUtility.SetDirty(character);
     }
+
 }
 

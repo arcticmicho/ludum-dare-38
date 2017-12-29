@@ -103,4 +103,15 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
 
     #endregion
 
+    #region Editor Functions and export
+   
+    public void Editor_SetExportData(Dictionary<string, object> exportData)
+    {
+        m_templateId    = SerializeHelper.GetValue<string>(exportData, "Id");
+        m_name          = SerializeHelper.GetValue<string>(exportData, "Name");
+        m_hp            = SerializeHelper.GetValue<int>(exportData, "BaseHp");
+        m_HpMultiplier  = SerializeHelper.GetValue<int>(exportData, "HpMultiplier");
+    }
+    #endregion
+
 }
