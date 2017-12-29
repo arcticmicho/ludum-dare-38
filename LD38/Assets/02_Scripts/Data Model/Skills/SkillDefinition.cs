@@ -14,15 +14,18 @@ public enum ESkillTarget
 [Serializable, CreateAssetMenu(fileName = "SkillDefinition", menuName = "GamePlay/Skills/SkillDefinition")]
 public class SkillDefinition : ScriptableObject
 {
+    [Header("Info")]
     [SerializeField]
     private string m_skillId;
 
     [SerializeField]
     private string m_skillName;
 
+    [Header("Not Exported")]
     [SerializeField]
     private SkillPattern[] m_skillPatterns;
 
+    [Header("Attack")]
     [SerializeField]
     private DamageTable m_spellDamage;
 
@@ -50,6 +53,8 @@ public class SkillDefinition : ScriptableObject
     [SerializeField]
     private float m_castingTime;
 
+
+    [Header("Effect")]
     [SerializeField]
     private string m_skillAnimationTrigger;
 
