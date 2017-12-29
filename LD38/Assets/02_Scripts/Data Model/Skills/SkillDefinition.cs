@@ -149,12 +149,12 @@ public class SkillDefinition : ScriptableObject
         get { return m_skillEffects; }
     }
 
-    public GameObject SpellPrefab
+    public BaseEffectController SpellPrefab
     {
         get { return m_spellPrefab; }
     }
 
-    public GameObject ImpactPrefab
+    public BaseEffectController ImpactPrefab
     {
         get { return m_impactPrefab; }
     }
