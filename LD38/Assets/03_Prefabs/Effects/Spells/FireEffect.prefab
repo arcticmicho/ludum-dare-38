@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4895770140593058}
-  - component: {fileID: 114164437689262156}
+  - component: {fileID: 114427239668995252}
   m_Layer: 0
   m_Name: FireEffect
   m_TagString: Untagged
@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4179846366264762}
   - component: {fileID: 198556713952222786}
   - component: {fileID: 199001719636592306}
+  - component: {fileID: 114436491600300724}
   m_Layer: 0
   m_Name: FireEffect
   m_TagString: Untagged
@@ -71,7 +72,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114164437689262156
+--- !u!114 &114427239668995252
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -79,10 +80,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1383043109043076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f89849f48fbca34087e6c9b06b9fc41, type: 3}
+  m_Script: {fileID: 11500000, guid: ed8af35222621194b975f585333d0a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_timeToDestroy: 8
+  m_effects:
+  - {fileID: 114436491600300724}
+  m_playAtStart: 0
+--- !u!114 &114436491600300724
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1526698440618728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb0a4e2a61a5c147a313ae729c0e2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_particles:
+  - m_system: {fileID: 198556713952222786}
+    m_emissionDuration: 0
 --- !u!198 &198556713952222786
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -95,7 +112,7 @@ ParticleSystem:
   stopAction: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -143,7 +160,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1237187744
+  randomSeed: -1526911721
   InitialModule:
     serializedVersion: 3
     enabled: 1

@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4842031729053540}
-  - component: {fileID: 114159976411650610}
+  - component: {fileID: 114061093271260922}
   m_Layer: 0
   m_Name: ThunderEffect
   m_TagString: Untagged
@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4548527344447948}
   - component: {fileID: 198677029686663698}
   - component: {fileID: 199934368300757206}
+  - component: {fileID: 114709853861758892}
   m_Layer: 0
   m_Name: ThunderEffect
   m_TagString: Untagged
@@ -71,7 +72,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114159976411650610
+--- !u!114 &114061093271260922
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -79,10 +80,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1029212584787944}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f89849f48fbca34087e6c9b06b9fc41, type: 3}
+  m_Script: {fileID: 11500000, guid: ed8af35222621194b975f585333d0a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_timeToDestroy: 8
+  m_effects:
+  - {fileID: 114709853861758892}
+  m_playAtStart: 0
+--- !u!114 &114709853861758892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1134836043418236}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb0a4e2a61a5c147a313ae729c0e2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_particles:
+  - m_system: {fileID: 198677029686663698}
+    m_emissionDuration: 0
 --- !u!198 &198677029686663698
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -95,7 +112,7 @@ ParticleSystem:
   stopAction: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1

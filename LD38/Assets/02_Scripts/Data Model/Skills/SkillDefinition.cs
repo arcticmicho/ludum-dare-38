@@ -65,10 +65,10 @@ public class SkillDefinition : ScriptableObject
     private List<SkillEffect> m_skillEffects;
 
     [SerializeField]
-    private GameObject m_spellPrefab;
+    private BaseEffectController m_spellPrefab;
 
     [SerializeField]
-    private GameObject m_impactPrefab;
+    private BaseEffectController m_impactPrefab;
 
     [SerializeField]
     private float m_spellSpeed;
@@ -149,12 +149,12 @@ public class SkillDefinition : ScriptableObject
         get { return m_skillEffects; }
     }
 
-    public GameObject SpellPrefab
+    public BaseEffectController SpellPrefab
     {
         get { return m_spellPrefab; }
     }
 
-    public GameObject ImpactPrefab
+    public BaseEffectController ImpactPrefab
     {
         get { return m_impactPrefab; }
     }

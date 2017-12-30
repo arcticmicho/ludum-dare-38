@@ -195,7 +195,6 @@ MonoBehaviour:
   - {fileID: 1000013472673514, guid: db01e182a245c50439279e0b0d457fe9, type: 2}
   - {fileID: 1432297112337250, guid: fa73605cb4a91a8439c96d2197c08757, type: 2}
   - {fileID: 1023466200740958, guid: ce02da3ec21bb7b42a5a197e2a38a00c, type: 2}
-  _postLoadManagers: []
 --- !u!4 &2061312006
 Transform:
   m_ObjectHideFlags: 0

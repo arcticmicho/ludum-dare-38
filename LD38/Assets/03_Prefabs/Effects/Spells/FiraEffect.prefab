@@ -36,7 +36,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4811315809094422}
-  - component: {fileID: 114399194416861776}
+  - component: {fileID: 114585472996810398}
   m_Layer: 0
   m_Name: FiraEffect
   m_TagString: Untagged
@@ -54,6 +54,7 @@ GameObject:
   - component: {fileID: 4492074248259614}
   - component: {fileID: 198997251062444266}
   - component: {fileID: 199428040646752726}
+  - component: {fileID: 114127604236285960}
   m_Layer: 0
   m_Name: FiraEffect
   m_TagString: Untagged
@@ -102,7 +103,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114399194416861776
+--- !u!114 &114127604236285960
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1721900736806570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb0a4e2a61a5c147a313ae729c0e2df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_particles:
+  - m_system: {fileID: 198997251062444266}
+    m_emissionDuration: 0
+  - m_system: {fileID: 198151673433011328}
+    m_emissionDuration: 0
+--- !u!114 &114585472996810398
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -110,10 +127,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1617673265614036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f89849f48fbca34087e6c9b06b9fc41, type: 3}
+  m_Script: {fileID: 11500000, guid: ed8af35222621194b975f585333d0a93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_timeToDestroy: 8
+  m_effects:
+  - {fileID: 114127604236285960}
+  m_playAtStart: 0
 --- !u!198 &198151673433011328
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -126,7 +145,7 @@ ParticleSystem:
   stopAction: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -174,7 +193,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -738986553
+  randomSeed: -1098419718
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -722,7 +741,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 99.08
+      scalar: 396.5
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -3475,7 +3494,7 @@ ParticleSystem:
   stopAction: 0
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -3523,14 +3542,14 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1259561150
+  randomSeed: 71332113
   InitialModule:
     serializedVersion: 3
     enabled: 1
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -4101,7 +4120,7 @@ ParticleSystem:
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 141.3
+      scalar: 300.1
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4195,21 +4214,15 @@ ParticleSystem:
         - serializedVersion: 2
           time: 0
           value: 1
-          inSlope: -2
-          outSlope: -2
-          tangentMode: 0
+          inSlope: -1
+          outSlope: -1
+          tangentMode: 34
         - serializedVersion: 2
-          time: 0.5885669
-          value: 0.6240888
-          inSlope: -1.2150407
-          outSlope: -1.2150407
-          tangentMode: 0
-        - serializedVersion: 2
-          time: 0.99694824
+          time: 1
           value: 0
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
+          inSlope: -1
+          outSlope: -1
+          tangentMode: 34
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 0

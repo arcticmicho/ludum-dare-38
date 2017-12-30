@@ -30,8 +30,8 @@ MonoBehaviour:
   m_skillAnimationTrigger: 
   m_skillAnimationWaitingTime: 0
   m_skillEffects: []
-  m_spellPrefab: {fileID: 1443850723466156, guid: 931477fe7dfd1ac42834585f8aa1a349,
+  m_spellPrefab: {fileID: 114963191058144352, guid: 931477fe7dfd1ac42834585f8aa1a349,
     type: 2}
-  m_impactPrefab: {fileID: 1991565867731480, guid: 8b73851059b17e64797a48557c0227a6,
+  m_impactPrefab: {fileID: 114050092808711588, guid: 8b73851059b17e64797a48557c0227a6,
     type: 2}
   m_spellSpeed: 5
