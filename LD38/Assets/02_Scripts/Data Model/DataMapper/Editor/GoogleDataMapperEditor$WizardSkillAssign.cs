@@ -25,22 +25,22 @@ public partial class GoogleDataMapperEditor : Editor
 
             for (int a = 0; a < tableElements.Count; ++a)
             {
-                ProcessSkillAssignTableElement(tableElements[a]);
+                ProcessWizardSkillAssignTableElement(tableElements[a]);
             }
         }
     }
 
 
-    private void ProcessSkillAssignTableElement(Dictionary<string,object> elementData)
+    private void ProcessWizardSkillAssignTableElement(Dictionary<string,object> elementData)
     {
         var wizardId = SerializeHelper.GetValue<string>(elementData, "WizardId");
         var skillId  = SerializeHelper.GetValue<string>(elementData, "SkillId");
-        var level    = SerializeHelper.GetValue<string>(elementData, "Level");
+        var level    = SerializeHelper.GetValue<int>(elementData, "Level");
 
         var wizard = EditorScriptableObjectTools.AddOrGetAsset<WizardDataTemplate>(kWizardPath + wizardId + ".asset");
-        var skill  = EditorScriptableObjectTools.AddOrGetAsset<WizardDataTemplate>(kSkillPath + skillId + ".asset");
+        var skill  = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + skillId + ".asset");
 
-        wizard.Editor_SetExportData(elementData);
+        wizard.Editor_AddSkill(skill,level);
         EditorUtility.SetDirty(wizard);
     }
 

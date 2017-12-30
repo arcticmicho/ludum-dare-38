@@ -26,7 +26,7 @@ public partial class GoogleDataMapperEditor : Editor
 
         if (GUILayout.Button("Load Wizard List"))
         {
-            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, 0.5f);
+            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kWizardListRange, 0.5f);
             LoadWizardList(kWizardListRange);
         }
 
@@ -35,15 +35,33 @@ public partial class GoogleDataMapperEditor : Editor
             EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemyListRange, 0.5f);
             LoadEnemyList(kEnemyListRange);
         }
+
+
+        if (GUILayout.Button("Load Wizard Skill Assign"))
+        {
+            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kWizardSkillAssignRange, 0.5f);
+            LoadWizardSkillAssign(kWizardSkillAssignRange);
+        }
+
+
+        if (GUILayout.Button("Load Enemy Skill Assign"))
+        {
+            EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kEnemySkillAssignRange, 0.5f);
+            LoadEnemySkillAssign(kEnemySkillAssignRange);
+        }
+
+
   
         GUILayout.Space(10);
 
         if (GUILayout.Button("Load All"))
         {
             TrackProgress("Loading Data From Google", "Loading Sheets",
-            () => { LoadSkillList(kSkillListRange);     },
-            () => { LoadEnemyList(kEnemyListRange);     },
-            () => { LoadWizardList(kWizardListRange);   });
+            () => { LoadSkillList(kSkillListRange);},
+            () => { LoadEnemyList(kEnemyListRange);},
+            () => { LoadWizardList(kWizardListRange);},
+            () => { LoadWizardSkillAssign(kWizardListRange);},
+            () => { LoadEnemySkillAssign(kEnemySkillAssignRange);});
         }
     
         AssetDatabase.SaveAssets();
