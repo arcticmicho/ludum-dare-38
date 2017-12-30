@@ -60,7 +60,7 @@ public partial class GoogleDataMapperEditor : Editor
             () => { LoadSkillList(kSkillListRange);},
             () => { LoadEnemyList(kEnemyListRange);},
             () => { LoadWizardList(kWizardListRange);},
-            () => { LoadWizardSkillAssign(kWizardListRange);},
+            () => { LoadWizardSkillAssign(kWizardSkillAssignRange);},
             () => { LoadEnemySkillAssign(kEnemySkillAssignRange);});
         }
     

@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Wizard Data Template", menuName = "GamePlay/Characters/Wizard")]
 public class WizardDataTemplate : CharacterTemplate, IWizardData
 {
+    [Header("Wizard Data")]
     [SerializeField]
     private int m_level;
 

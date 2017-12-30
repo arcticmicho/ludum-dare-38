@@ -37,6 +37,11 @@ public partial class GoogleDataMapperEditor : Editor
         var skillId  = SerializeHelper.GetValue<string>(elementData, "SkillId");
         var level    = SerializeHelper.GetValue<int>(elementData, "Level");
 
+        if(string.IsNullOrEmpty(enemyId) || string.IsNullOrEmpty(skillId))
+        {
+            return;
+        }
+
         var enemy  = EditorScriptableObjectTools.AddOrGetAsset<CharacterTemplate>(kEnemyPath + enemyId + ".asset");
         var skill  = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + skillId + ".asset");
 
