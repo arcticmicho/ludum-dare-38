@@ -153,4 +153,23 @@ public static class ArrayListExtensionMethods
 
         return list[0];
     }
+
+
+
+    // Get the first element of a list
+    public static void AddOrReplace<T>(this List<T> list, T newObject, Predicate<T> filter)
+    {
+        int index = list.FindIndex(filter);
+
+        if (index != -1)
+        {
+            list[index] = newObject;
+        }
+        else
+        {
+            list.Add(newObject);
+        }
+
+        int count = list.Count;
+    }
 }

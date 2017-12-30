@@ -18,13 +18,6 @@ public partial class GoogleDataMapperEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        if (GUILayout.Button("Clear Volatile Data"))
-        {
-            ClearVolatileData();
-        }
-
-        GUILayout.Space(10);
-
         if (GUILayout.Button("Load Skill List"))
         {
             EditorUtility.DisplayProgressBar("Loading Data From Google", "Loading " + kSkillListRange, 0.5f);
@@ -82,14 +75,6 @@ public partial class GoogleDataMapperEditor : Editor
         {
             EditorUtility.ClearProgressBar();
         }
-    }
-
-    private void ClearVolatileData()
-    {
-     /*   var levelDirector = _target.LevelDirector;
-        levelDirector.EditorClearVolatileData();
-        EditorUtility.SetDirty(levelDirector);
-        AssetDatabase.SaveAssets();*/
     }
 
     private List<Dictionary<string,object>> GetTableElements(Dictionary<string, object> data)

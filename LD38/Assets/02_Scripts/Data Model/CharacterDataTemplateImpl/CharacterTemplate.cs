@@ -112,6 +112,12 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
         m_hp            = SerializeHelper.GetValue<int>(exportData, "BaseHp");
         m_HpMultiplier  = SerializeHelper.GetValue<int>(exportData, "HpMultiplier");
     }
+
+    public virtual void Editor_AddSkill(SkillDefinition skill, int level)
+    {
+        var skillData = new SkillData(level, skill);
+        m_skills.AddOrReplace(skillData, x => x.SkillDefinition.SkillId == skill.SkillId);
+    }
     #endregion
 
 }

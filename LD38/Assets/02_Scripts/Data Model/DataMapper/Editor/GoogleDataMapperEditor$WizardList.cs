@@ -15,7 +15,7 @@ public partial class GoogleDataMapperEditor : Editor
     {
         var googleSheet = new GoogleSheet(_target.DataSpreadSheet, _target.GoogleApiKey);
 
-        GoogleDataManager.RequestData(googleSheet, range, GoogleDataDirection.ROWS, OnGetEnemyListData, _target.ShowResponse);
+        GoogleDataManager.RequestData(googleSheet, range, GoogleDataDirection.ROWS, OnGetWizardListData, _target.ShowResponse);
     }
 
     private void OnGetWizardListData(bool success, string range, Dictionary<string, object> data)

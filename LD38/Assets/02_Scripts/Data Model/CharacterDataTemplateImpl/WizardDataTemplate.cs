@@ -26,8 +26,12 @@ public class WizardDataTemplate : CharacterTemplate, IWizardData
     }
     #endregion
 
+    #region Editor Functions and export
+
     public override void Editor_SetExportData(Dictionary<string, object> exportData)
     {
         base.Editor_SetExportData(exportData);
     }
+
+    #endregion
 }
