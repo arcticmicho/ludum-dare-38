@@ -28,7 +28,7 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
     private DamageTable m_resistanceTable;
 
     [SerializeField]
-    private List<SkillData> m_skills;
+    private List<SkillData> m_skills = new List<SkillData>();
 
     [SerializeField]
     private float m_movementSpeed = 5f;

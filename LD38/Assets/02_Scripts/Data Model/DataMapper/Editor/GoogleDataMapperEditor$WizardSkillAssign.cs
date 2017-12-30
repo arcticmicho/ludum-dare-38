@@ -37,6 +37,11 @@ public partial class GoogleDataMapperEditor : Editor
         var skillId  = SerializeHelper.GetValue<string>(elementData, "SkillId");
         var level    = SerializeHelper.GetValue<int>(elementData, "Level");
 
+        if (string.IsNullOrEmpty(wizardId) || string.IsNullOrEmpty(skillId))
+        {
+            return;
+        }
+
         var wizard = EditorScriptableObjectTools.AddOrGetAsset<WizardDataTemplate>(kWizardPath + wizardId + ".asset");
         var skill  = EditorScriptableObjectTools.AddOrGetAsset<SkillDefinition>(kSkillPath + skillId + ".asset");
 
