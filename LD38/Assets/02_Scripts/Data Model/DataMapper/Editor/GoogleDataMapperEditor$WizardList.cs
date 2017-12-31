@@ -34,10 +34,15 @@ public partial class GoogleDataMapperEditor : Editor
 
     private void ProcessWizardTableElement(Dictionary<string,object> elementData)
     {
+        // Normal Data
         var id = SerializeHelper.GetValue<string>(elementData, "Id");
         var character = EditorScriptableObjectTools.AddOrGetAsset<WizardDataTemplate>(kWizardPath + id + ".asset");
 
         character.Editor_SetExportData(elementData);
+
+        // Resistances
+        SetCharacterResistences(character, elementData);
+
         EditorUtility.SetDirty(character);
     }
 

@@ -6,6 +6,9 @@ using UnityEngine;
 public class DamageType : ScriptableObject
 {
     [SerializeField]
+    private string m_id;
+
+    [SerializeField]
     private string m_damageTypeName;
 
     [SerializeField]
@@ -13,6 +16,12 @@ public class DamageType : ScriptableObject
 
     [SerializeField]
     private Texture m_damageTypeTexture;
+
+    #region Get/Set
+    public string Id
+    {
+        get { return m_id; }
+    }
 
     public string DamageTypeName
     {
@@ -28,5 +37,5 @@ public class DamageType : ScriptableObject
     {
         get { return m_damageTypeTexture; }
     }
-	
+    #endregion
 }

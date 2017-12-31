@@ -8,8 +8,10 @@ using System;
 [CustomEditor(typeof(GoogleDataMapper))]
 public partial class GoogleDataMapperEditor : Editor
 {
-    private GoogleDataMapper _target;
     private const string kNotExport = "NOT_EXPORT";
+    private const string kDamageTypePath = "06_Resources/DamageTypes/";
+
+    private GoogleDataMapper _target;
 
     void OnEnable()
     {
@@ -138,54 +140,57 @@ public partial class GoogleDataMapperEditor : Editor
         return valueDictionaries;
     }
 
-  /*  private void CreateChunks<T>(List<Dictionary<string,object>> values) where T : LevelChunkGenerator
+    private void SetCharacterResistences(CharacterTemplate character, Dictionary<string, object> elementData)
     {
-        var levelDirector = _target.LevelDirector;
+        // Get all damage type
+        var damageTypeList = EditorScriptableObjectTools.GetAssetsOfType<DamageType>();
 
-        for (int a = 0; a < values.Count; ++a)
+        Dictionary<string, DamageType> damageTypeDatabase = new Dictionary<string, DamageType>();
+
+        foreach (var damageType in damageTypeList)
         {
-            var chunkValues = values[a];
-
-            string name       = SerializeHelper.GetValue<string>(chunkValues, "Name");
-            string difficulty = SerializeHelper.GetValue<string>(chunkValues, "Difficulty");
-            string setName    = SerializeHelper.GetValue<string>(chunkValues, "GroupName");
-            int quantity      = SerializeHelper.GetValue<int>   (chunkValues, "Quantity");
-
-            if(string.IsNullOrEmpty(name))
-            {
-                Debug.LogError("Invalid Name: "+name);
-                continue;
-            }
-
-            var chunkGenerator = ScriptableObjectTools.AddOrGetAsset<T>(sChunkPath + difficulty + "/" + name + ".asset");
-            if (chunkGenerator != null)
-            {
-                chunkGenerator.EditorSetupData(name, _target.ObjectSet);
-                chunkGenerator.CreateFromData(chunkValues);
-                EditorUtility.SetDirty(chunkGenerator);
-            }
-
-            var chunkSet = levelDirector.GetChunkSetByName(difficulty);
-
-            if (chunkSet != null)
-            {
-                var set = chunkSet.GetChunkSetDefinition(setName);
-                if (set == null)
-                {
-                    set = new LevelChunkSetDefinition(setName);
-                    chunkSet.LevelChunks.Add(set);
-                }
-
-                set.LevelChunks.Add(new LevelChunkDefinition(quantity, chunkGenerator));
-            }
-
-            chunkSet.EditorSort();
-            chunkSet.EditorSave();
+            damageTypeDatabase.Add(damageType.Id, damageType);
         }
 
-        // Save Changes
-        EditorUtility.SetDirty(levelDirector);
-        AssetDatabase.SaveAssets();
-    }*/
+        string[] modList = new string[]
+        {
+            "NeutralMod",
+            "FireMod",
+            "ColdMod",
+            "DarkMod",
+            "HolyMod",
+            "ArcanaMod",
+            "LightningMod",
+            "PoisonMod"
+        };
+
+        string[] modDamageType = new string[]
+        {
+            "Neutral",
+            "Fire",
+            "Cold",
+            "Dark",
+            "Holy",
+            "Arcana",
+            "Lightning",
+            "Poison"
+        };
+
+        for (int a = 0; a < modList.Length; ++a)
+        {
+            var modName = modList[a];
+            var damageId = modDamageType[a];
+
+            var modValue = SerializeHelper.GetValue<float>(elementData, modName, 0);
+
+            DamageType damageType;
+
+            if (damageTypeDatabase.TryGetValue(damageId, out damageType))
+            {
+
+                character.Editor_AddResistance(damageType, modValue);
+            }
+        }
+    }
 }
 

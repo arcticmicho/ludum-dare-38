@@ -9,9 +9,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 15897b8639cd8d949876032d0529f095, type: 3}
-  m_Name: Fire
+  m_Name: Lightning
   m_EditorClassIdentifier: 
-  m_id: Fire
-  m_damageTypeName: Fire
-  m_damageTypeDescription: Fire element
+  m_id: Lightning
+  m_damageTypeName: Lightning
+  m_damageTypeDescription: Lightning Element
   m_damageTypeTexture: {fileID: 0}

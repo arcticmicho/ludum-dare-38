@@ -18,4 +18,22 @@ public class EditorScriptableObjectTools
         AssetDatabase.CreateAsset(asset, "Assets/" + assetPath);
         return asset;
     }
+
+
+    public static T[] GetAssetsOfType<T>() where T : ScriptableObject
+    {
+        var foundAssets = AssetDatabase.FindAssets("t:" + typeof(T).Name);
+
+        List<T> assetList = new List<T>();
+
+        foreach (string path in foundAssets)
+        {
+            var lockeyData = AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(path));
+            if (lockeyData != null)
+            {
+                assetList.Add(lockeyData);
+            }
+        }
+        return assetList.ToArray();
+    }
 }

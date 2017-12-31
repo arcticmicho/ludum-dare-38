@@ -111,12 +111,24 @@ public class CharacterTemplate : ScriptableObject, ICharacterData
         m_name          = SerializeHelper.GetValue<string>(exportData, "Name");
         m_hp            = SerializeHelper.GetValue<int>(exportData, "BaseHp");
         m_HpMultiplier  = SerializeHelper.GetValue<int>(exportData, "HpMultiplier");
+
     }
 
     public virtual void Editor_AddSkill(SkillDefinition skill, int level)
     {
         var skillData = new SkillData(level, skill);
         m_skills.AddOrReplace(skillData, x => x.SkillDefinition.SkillId == skill.SkillId);
+    }
+
+    public virtual void Editor_AddResistance(DamageType damage, float value)
+    {
+        if(m_resistanceTable == null)
+        {
+            m_resistanceTable = new DamageTable();
+        }
+
+        var skillData = new DamageTypeValue(damage, value);
+        m_resistanceTable.DamageInfo.AddOrReplace(skillData, x => x.DamageType.Id == damage.Id);
     }
     #endregion
 
